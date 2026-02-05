@@ -19,9 +19,9 @@ export function SMSEmailComponent() {
   const [honeypotResult, setHoneypotResult] = useState<any>(null);
   const [isHoneypotActive, setIsHoneypotActive] = useState(false);
 
+  const DETECTION_URL = process.env.NEXT_PUBLIC_DETECTION_URL! || "http://localhost:8080/detect"; // Fallback to localhost if env variable is not set
   const triggerHoneypot = async () => {
     setIsHoneypotActive(true);
-    
     // Simulate API delay for realistic experience
     await new Promise(resolve => setTimeout(resolve, 1500));
     
@@ -176,8 +176,7 @@ export function SMSEmailComponent() {
     setIsAnalyzing(true);
 
     try {
-      // Send request to localhost:8080 for detection
-      const response = await fetch("http://localhost:8080/detect", {
+      const response = await fetch(`${DETECTION_URL}/detect`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

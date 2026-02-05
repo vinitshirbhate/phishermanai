@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { jsPDF } from "jspdf";
 
 export async function GET(request: NextRequest) {
+
+  const TRANSCRIPTION_URL = process.env.NEXT_PUBLIC_TRANSCRIPTION_URL! 
   try {
     const { searchParams } = new URL(request.url);
     const transcriptId = searchParams.get("transcriptId");
@@ -24,7 +26,7 @@ export async function GET(request: NextRequest) {
 
     // Step 2: Fetch transcript data from backend
     const transcriptResponse = await fetch(
-      `http://localhost:8000/transcript/${transcriptId}`
+      `${TRANSCRIPTION_URL}/transcript/${transcriptId}`
     );
 
     if (!transcriptResponse.ok) {

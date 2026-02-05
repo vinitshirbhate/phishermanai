@@ -45,6 +45,9 @@ export default function AudioVideoPage() {
   const [isLoadingHistory, setIsLoadingHistory] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const TRANSCRIPTION_URL = process.env.NEXT_PUBLIC_TRANSCRIPTION_URL! 
+
+
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
@@ -57,7 +60,7 @@ export default function AudioVideoPage() {
   const loadHistory = async () => {
     setIsLoadingHistory(true);
     try {
-      const response = await fetch("http://localhost:8000/transcripts/");
+      const response = await fetch(`${TRANSCRIPTION_URL}/transcripts`);
       if (response.ok) {
         const transcripts = await response.json();
         console.log(transcripts);
@@ -131,7 +134,7 @@ export default function AudioVideoPage() {
     }
 
     try {
-      const response = await fetch("http://localhost:8000/transcribe/", {
+      const response = await fetch(`${TRANSCRIPTION_URL}/transcribe/`, {
         method: "POST",
         body: formData,
       });
@@ -144,7 +147,7 @@ export default function AudioVideoPage() {
 
       // Get the full transcript from the API
       const transcriptResponse = await fetch(
-        `http://localhost:8000/transcript/${result.transcript_id}`
+        `${TRANSCRIPTION_URL}/transcript/${result.transcript_id}`
       );
       if (transcriptResponse.ok) {
         const transcriptData = await transcriptResponse.json();
