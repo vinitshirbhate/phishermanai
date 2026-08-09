@@ -1,0 +1,138 @@
+{
+  "_comment": "Seed registry of authentic market-communication sources. Domains and handles are the ground truth a lookalike check measures against, so entries must be verified before being added -- a wrong domain here would whitelist an attacker. Extend via NSE/BSE listed-company feeds (see engines/exchanges.py).",
+  "organisations": [
+    {
+      "name": "Securities and Exchange Board of India",
+      "short_name": "SEBI",
+      "type": "regulator",
+      "domains": ["sebi.gov.in", "scores.sebi.gov.in", "siportal.sebi.gov.in"],
+      "x_handles": ["SEBI_India"],
+      "email_domains": ["sebi.gov.in"],
+      "requires_digital_signature": true
+    },
+    {
+      "name": "National Stock Exchange of India",
+      "short_name": "NSE",
+      "type": "exchange",
+      "domains": ["nseindia.com", "www.nseindia.com", "nseinvest.com"],
+      "x_handles": ["NSEIndia"],
+      "email_domains": ["nse.co.in", "nseindia.com"],
+      "requires_digital_signature": true
+    },
+    {
+      "name": "BSE Limited",
+      "short_name": "BSE",
+      "type": "exchange",
+      "domains": ["bseindia.com", "www.bseindia.com"],
+      "x_handles": ["BSEIndia"],
+      "email_domains": ["bseindia.com"],
+      "requires_digital_signature": true
+    },
+    {
+      "name": "National Securities Depository Limited",
+      "short_name": "NSDL",
+      "type": "depository",
+      "domains": ["nsdl.co.in", "nsdl.com"],
+      "x_handles": ["NSDL_India"],
+      "email_domains": ["nsdl.co.in"],
+      "requires_digital_signature": true
+    },
+    {
+      "name": "Central Depository Services Limited",
+      "short_name": "CDSL",
+      "type": "depository",
+      "domains": ["cdslindia.com", "www.cdslindia.com"],
+      "x_handles": ["CDSLIndia"],
+      "email_domains": ["cdslindia.com"],
+      "requires_digital_signature": true
+    },
+    {
+      "name": "Association of Mutual Funds in India",
+      "short_name": "AMFI",
+      "type": "industry_body",
+      "domains": ["amfiindia.com", "www.amfiindia.com"],
+      "x_handles": ["amfiindia"],
+      "email_domains": ["amfiindia.com"],
+      "requires_digital_signature": false
+    },
+    {
+      "name": "Reserve Bank of India",
+      "short_name": "RBI",
+      "type": "regulator",
+      "domains": ["rbi.org.in", "www.rbi.org.in"],
+      "x_handles": ["RBI"],
+      "email_domains": ["rbi.org.in"],
+      "requires_digital_signature": true
+    },
+    {
+      "name": "Reliance Industries Limited",
+      "short_name": "RELIANCE",
+      "type": "listed_company",
+      "tickers": ["RELIANCE"],
+      "domains": ["ril.com", "www.ril.com"],
+      "x_handles": ["RIL_Updates"],
+      "email_domains": ["ril.com"],
+      "requires_digital_signature": false
+    },
+    {
+      "name": "Tata Consultancy Services",
+      "short_name": "TCS",
+      "type": "listed_company",
+      "tickers": ["TCS"],
+      "domains": ["tcs.com", "www.tcs.com"],
+      "x_handles": ["TCS"],
+      "email_domains": ["tcs.com"],
+      "requires_digital_signature": false
+    },
+    {
+      "name": "HDFC Bank Limited",
+      "short_name": "HDFCBANK",
+      "type": "listed_company",
+      "tickers": ["HDFCBANK"],
+      "domains": ["hdfcbank.com", "www.hdfcbank.com"],
+      "x_handles": ["HDFC_Bank"],
+      "email_domains": ["hdfcbank.com"],
+      "requires_digital_signature": false
+    },
+    {
+      "name": "Infosys Limited",
+      "short_name": "INFY",
+      "type": "listed_company",
+      "tickers": ["INFY"],
+      "domains": ["infosys.com", "www.infosys.com"],
+      "x_handles": ["Infosys"],
+      "email_domains": ["infosys.com"],
+      "requires_digital_signature": false
+    },
+    {
+      "name": "ICICI Bank Limited",
+      "short_name": "ICICIBANK",
+      "type": "listed_company",
+      "tickers": ["ICICIBANK"],
+      "domains": ["icicibank.com", "www.icicibank.com"],
+      "x_handles": ["ICICIBank"],
+      "email_domains": ["icicibank.com"],
+      "requires_digital_signature": false
+    },
+    {
+      "name": "State Bank of India",
+      "short_name": "SBIN",
+      "type": "listed_company",
+      "tickers": ["SBIN"],
+      "domains": ["sbi.co.in", "onlinesbi.sbi", "bank.sbi"],
+      "x_handles": ["TheOfficialSBI"],
+      "email_domains": ["sbi.co.in"],
+      "requires_digital_signature": false
+    },
+    {
+      "name": "Life Insurance Corporation of India",
+      "short_name": "LICI",
+      "type": "listed_company",
+      "tickers": ["LICI"],
+      "domains": ["licindia.in", "www.licindia.in"],
+      "x_handles": ["LICIndiaForever"],
+      "email_domains": ["licindia.com"],
+      "requires_digital_signature": false
+    }
+  ]
+}

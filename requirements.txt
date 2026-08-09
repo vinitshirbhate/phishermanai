@@ -1,0 +1,42 @@
+# APIF — AI Propaganda Intelligence Framework
+# Install into the repo-root venv:  .\.venv\Scripts\pip install -r requirements.txt
+#
+# torch + transformers are intentionally absent: the venv is created with
+# --system-site-packages so it reuses the ~2GB CPU build already installed
+# globally, along with the pre-downloaded Whisper models in the HF cache.
+
+# --- web service ---
+fastapi
+uvicorn[standard]
+pydantic-settings
+python-multipart
+httpx
+
+# --- LLM enrichment ---
+anthropic
+
+# --- audio: ASR + spoof detection ---
+# The spoof model is a local checkpoint (deepfake_detection/voice_detection) run through
+# plain torch; it decodes audio with ffmpeg, so no extra audio backend is required.
+# speechbrain and torchaudio were dropped along with speaker verification -- torchaudio
+# only existed to satisfy speechbrain, and its wheel had to be version-matched by hand
+# against the global torch (2.7.1) or its C extension failed to load on Windows.
+librosa
+soundfile
+
+# --- video deepfake (remote HF Space client) ---
+gradio_client
+
+# --- market correlation ---
+yfinance
+pandas
+numpy
+
+# --- coordination graph ---
+networkx
+scikit-learn
+
+# --- storage + source authentication ---
+SQLAlchemy
+pypdf
+python-Levenshtein

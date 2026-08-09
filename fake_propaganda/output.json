@@ -1,0 +1,692 @@
+{
+  "official_news": [
+    {
+      "company": "Reliance Industries",
+      "headline": "Reliance Industries shares rise 3.5% on crossing key technical indicator, multiple block deals",
+      "summary": "Shares of Reliance Industries gained 3.5% following the crossing of a key technical indicator and multiple block deals.",
+      "source": "Moneycontrol",
+      "url": "https://www.moneycontrol.com/news/business/markets/reliance-industries-shares-rise-3-5-on-crossing-key-technical-indicator-multiple-block-deals-13996710.html",
+      "official": true,
+      "impact": "High"
+    },
+    {
+      "company": "Trent",
+      "headline": "Trent Q1 net profit rises 26% to Rs 532 crore, revenue up 18.5%",
+      "summary": "Trent reported a 26% increase in Q1 net profit to Rs 532 crore, along with an 18.5% jump in revenue.",
+      "source": "Moneycontrol",
+      "url": "https://www.moneycontrol.com/news/business/earnings/trent-q1-net-profit-rises-26-to-rs-532-crore-shares-up-3-13996478.html",
+      "official": true,
+      "impact": "Medium"
+    },
+    {
+      "company": "Cabinet",
+      "headline": "Cabinet approves GOBARdhan scheme with Rs 23,731 crore outlay to boost compressed biogas production",
+      "summary": "The Indian Cabinet has approved the GOBARdhan scheme with an outlay of Rs 23,731 crore to enhance biogas production.",
+      "source": "Moneycontrol",
+      "url": "https://www.moneycontrol.com/news/india/cabinet-approves-gobardhan-scheme-with-rs-23-731-crore-outlay-to-boost-compressed-biogas-production-13996708.html",
+      "official": true,
+      "impact": "Medium"
+    },
+    {
+      "company": "LIC",
+      "headline": "LIC Q1 Results: Profit rises 23% YoY to Rs 13,492 cr, NPI up 7%",
+      "summary": "Life Insurance Corporation of India reported a 23% increase in Q1 profit, reaching Rs 13,492 crore, with net premium income up 7%.",
+      "source": "Economic Times",
+      "url": "https://economictimes.indiatimes.com/markets/stocks/earnings/lic-q1-results-profit-rises-23-yoy-to-rs-13492-crore/articleshow/133002094.cms",
+      "official": true,
+      "impact": "High"
+    },
+    {
+      "company": "Deccan Gold Mines",
+      "headline": "Deccan Gold Mines shares rally 13% after maiden gold doré production at Altyn Tor Project",
+      "summary": "Deccan Gold Mines' shares surged 13% following the successful maiden doré production from Altyn Tor Project.",
+      "source": "Economic Times",
+      "url": "https://economictimes.indiatimes.com/markets/stocks/earnings/deccan-gold-mines-shares-rally-13-after-maiden-gold-dor-production-at-altyn-tor-project/articleshow/132990723.cms",
+      "official": true,
+      "impact": "High"
+    },
+    {
+      "company": "Sterlite Tech",
+      "headline": "Sterlite Tech shares gain 4% on Rs 1,760 crore international order win",
+      "summary": "Sterlite Tech's stock increased by 4% after securing an international order worth Rs 1,760 crore.",
+      "source": "Economic Times",
+      "url": "https://economictimes.indiatimes.com/markets/stocks/news/sterlite-tech-shares-gain-4-on-rs-1760-crore-international-order-win/articleshow/132983554.cms",
+      "official": true,
+      "impact": "High"
+    },
+    {
+      "company": "Navin Fluorine",
+      "headline": "Navin Fluorine shares surge 8% after Q1 profit more than doubles",
+      "summary": "Navin Fluorine's shares rose 8% after reporting over a doubling of Q1 profit.",
+      "source": "Economic Times",
+      "url": "https://economictimes.indiatimes.com/markets/stocks/news/navin-fluorine-shares-surge-8-after-q1-profit-more-than-doubles-should-you-buy-sell-or-hold/articleshow/132982625.cms",
+      "official": true,
+      "impact": "High"
+    },
+    {
+      "company": "Neuland Labs",
+      "headline": "Neuland Laboratories shares jump over 6% after 975% YoY surge in Q1 profit",
+      "summary": "Neuland Labs' shares surged over 6% following a staggering 975% year-on-year increase in Q1 profit.",
+      "source": "Economic Times",
+      "url": "https://economictimes.indiatimes.com/markets/stocks/news/neuland-laboratories-shares-jump-over-6-after-975-yoy-surge-in-q1-profit/articleshow/132982715.cms",
+      "official": true,
+      "impact": "High"
+    },
+    {
+      "company": "LIC",
+      "headline": "LIC shares fall after India’s largest OFS closes with oversubscription on both days",
+      "summary": "LIC shares declined following the conclusion of a major Offer for Sale (OFS) that saw oversubscription.",
+      "source": "Economic Times",
+      "url": "https://economictimes.indiatimes.com/markets/stocks/news/lic-shares-fall-after-indias-largest-ofs-closes-with-oversubscription-on-both-days/articleshow/132984775.cms",
+      "official": true,
+      "impact": "Medium"
+    },
+    {
+      "company": "Swan Defence",
+      "headline": "Swan Defence rises 3% on order from Denmark’s Svitzer",
+      "summary": "Swan Defence's shares increased by 3% after securing an order from Denmark’s Svitzer.",
+      "source": "Economic Times",
+      "url": "https://economictimes.indiatimes.com/markets/stocks/news/swan-defence-shares-rise-3-after-securing-order-from-denmarks-svitzer/articleshow/132985320.cms",
+      "official": true,
+      "impact": "Medium"
+    },
+    {
+      "company": "Indo MIM",
+      "headline": "Indo MIM shares surge 10%, extend gains to 82% over issue price",
+      "summary": "Indo MIM shares rose 10% extending total gains to 82% over the issue price.",
+      "source": "Economic Times",
+      "url": "https://economictimes.indiatimes.com/markets/stocks/news/indo-mim-shares-surge-10-extend-gains-to-82-over-issue-price-should-investors-book-profits/articleshow/132997743.cms",
+      "official": true,
+      "impact": "High"
+    },
+    {
+      "company": "PB Fintech",
+      "headline": "PB Fintech shares gain 2% after Q1 results",
+      "summary": "PB Fintech saw a 2% increase in shares following positive Q1 results.",
+      "source": "Economic Times",
+      "url": "https://economictimes.indiatimes.com/markets/stocks/news/pb-fintech-shares-gain-2-after-q1-results-why-morgan-stanley-nomura-see-up-to-25-downside/articleshow/132982565.cms",
+      "official": true,
+      "impact": "Medium"
+    },
+    {
+      "company": "Sebi",
+      "headline": "Sebi eyes SLB revamp, single-window clearance for intermediaries in FY27",
+      "summary": "The Securities and Exchange Board of India plans to revamp securities lending and borrowing mechanisms and introduce a single-window clearance system for intermediaries.",
+      "source": "Business Standard",
+      "url": "https://www.business-standard.com/markets/news/sebi-eyes-slb-revamp-single-window-clearance-for-intermediaries-in-fy27-126080602034_1.html",
+      "official": true,
+      "impact": "Medium"
+    },
+    {
+      "company": "Sebi",
+      "headline": "Sebi flags ₹87,124 crore as difficult-to-recover dues in FY26, up 12%",
+      "summary": "Sebi has reported that ₹87,124 crore in dues from FY26 are now categorized as difficult to recover, marking a 12% increase from the previous year.",
+      "source": "Business Standard",
+      "url": "https://www.business-standard.com/markets/news/sebi-flags-87-124-crore-as-difficult-to-recover-dues-in-fy26-up-12-126080602209_1.html",
+      "official": true,
+      "impact": "Medium"
+    },
+    {
+      "company": "Standard Engineering",
+      "headline": "Small-cap stock close to life-time high after Q1 results 2026, jumps 3% in opening bell",
+      "summary": "Standard Engineering's share price surged 3% following Q1 results, reaching an intraday high of ₹288.35.",
+      "source": "Livemint",
+      "url": "https://www.livemint.com/market/stock-market-news/smallcap-stock-standard-engineering-close-to-life-time-high-after-q1-results-2026-jumps-3-in-opening-bell-11786078442371.html",
+      "official": true,
+      "impact": "High"
+    },
+    {
+      "company": "SBI",
+      "headline": "SBI raises ₹4,691 crore via AT1 bonds at 7.75% rate",
+      "summary": "State Bank of India successfully raised ₹4,691 crore, marking its first AT-1 bond issue this fiscal year.",
+      "source": "Livemint",
+      "url": "https://www.livemint.com/market/bonds/sbi-state-bank-of-india-at-1-bonds-additional-tier-1-bonds-basel-iii-bond-issue-debt-fundraising-regulatory-capital-11785327079958.html",
+      "official": true,
+      "impact": "Medium"
+    },
+    {
+      "company": "SpaceX",
+      "headline": "SpaceX shares plunge 13% as AI spending overshadows earnings beat",
+      "summary": "SpaceX shares dropped by 13% due to concerns over AI spending, despite reporting earnings above expectations.",
+      "source": "Livemint",
+      "url": "https://www.livemint.com/market/stock-market-news/spacex-shares-plunge-13-as-ai-spending-overshadows-earnings-beat-down-over-50-from-post-listing-peak-11785931427001.html",
+      "official": true,
+      "impact": "High"
+    },
+    {
+      "company": "Reliance",
+      "headline": "Reliance Secures Major Contract",
+      "summary": "Reliance has secured a significant new contract which is expected to boost earnings significantly.",
+      "source": "NSE",
+      "url": "https://www.nseindia.com/get-quotes/equity?symbol=RELIANCE",
+      "official": true,
+      "impact": "High"
+    },
+    {
+      "company": "Shanthala FMCG Products Limited",
+      "headline": "Shanthala Announces Board Meeting Outcome",
+      "summary": "Shanthala FMCG Products Limited announced key decisions during their board meeting which could affect stock prices.",
+      "source": "NSE",
+      "url": "https://www.nseindia.com/corporate/corporate-announcements/SHANTHALA/Shanthala%20FMCG%20Products%20Limited?segtype=SME&seqid=106728409&ann_dt=06082026135743",
+      "official": true,
+      "impact": "Medium"
+    },
+    {
+      "company": "Edelweiss Financial Services Limited",
+      "headline": "Edelweiss Updates Market on Financial Plans",
+      "summary": "Edelweiss has published updates regarding its financial strategies that may influence investor sentiments.",
+      "source": "NSE",
+      "url": "https://www.nseindia.com/corporate/corporate-announcements/EDELWEISS/Edelweiss%20Financial%20Services%20Limited?segtype=EOD&seqid=106728407&ann_dt=06082026135641",
+      "official": true,
+      "impact": "Medium"
+    },
+    {
+      "company": "Monte Carlo Fashions Limited",
+      "headline": "Monte Carlo Reports Analyst Call Outcomes",
+      "summary": "Monte Carlo Fashions held an analyst call to discuss future projections, impacting stock predictions.",
+      "source": "NSE",
+      "url": "https://www.nseindia.com/corporate/corporate-announcements/MONTECARLO/Monte%20Carlo%20Fashions%20Limited?segtype=EOD&seqid=106728406&ann_dt=06082026135636",
+      "official": true,
+      "impact": "Medium"
+    },
+    {
+      "company": "Zim Laboratories Limited",
+      "headline": "Zim Laboratories Announces Board Meeting Outcome",
+      "summary": "Zim Laboratories has announced crucial decisions from its recent board meeting that might affect investments.",
+      "source": "NSE",
+      "url": "https://www.nseindia.com/corporate/corporate-announcements/ZIMLAB/Zim%20Laboratories%20Limited?segtype=EOD&seqid=106728404&ann_dt=06082026135622",
+      "official": true,
+      "impact": "Medium"
+    },
+    {
+      "company": "Trent Limited",
+      "headline": "Trent Limited Releases New Press Information",
+      "summary": "Trent Limited publishes a press release detailing new corporate strategies that might shake the market.",
+      "source": "NSE",
+      "url": "https://www.nseindia.com/corporate/corporate-announcements/TRENT/Trent%20Limited?segtype=EOD&seqid=106728399&ann_dt=06082026135137",
+      "official": true,
+      "impact": "Medium"
+    },
+    {
+      "company": "BSE",
+      "headline": "BSE Honored with Wealth Creator of the Year Award",
+      "summary": "BSE was awarded the Wealth Creator of the Year accolade at the NDTV Profit Business Leadership Awards, enhancing its reputation in capital markets.",
+      "source": "BSE India",
+      "url": "https://www.bseindia.com/static/about/bseindiasapp",
+      "official": true,
+      "impact": "Medium"
+    },
+    {
+      "company": "SEBI",
+      "headline": "Shri Prasanta Mahapatra takes charge as Executive Director, SEBI",
+      "summary": "Prasanta Mahapatra has been appointed as the new Executive Director of SEBI, effective immediately.",
+      "source": "SEBI Press Release",
+      "url": "https://www.sebi.gov.in/media-and-notifications/press-releases/aug-2026/shri-prasanta-mahapatra-takes-charge-as-executive-director-sebi_103316.html",
+      "official": true,
+      "impact": "Medium"
+    },
+    {
+      "company": "India Power Corporation Limited",
+      "headline": "Settlement Order in respect of Mr. Raghav Raj Kanoria in the matter of India Power Corporation Limited",
+      "summary": "A settlement order was issued regarding violations by Mr. Raghav Raj Kanoria involving India Power Corporation.",
+      "source": "SEBI Enforcement Order",
+      "url": "https://www.sebi.gov.in/enforcement/orders/aug-2026/settlement-order-in-respect-of-mr-raghav-raj-kanoria-in-the-matter-of-india-power-corporation-limited_103379.html",
+      "official": true,
+      "impact": "Medium"
+    },
+    {
+      "company": "CAT Technologies Ltd.",
+      "headline": "Release order for Recovery Certificate No. 4396 of 2021-Dhaduvai Venkatram in the matter of CAT Technologies Ltd.",
+      "summary": "A release order was issued pertaining to CAT Technologies affecting financial transactions.",
+      "source": "SEBI Enforcement",
+      "url": "https://www.sebi.gov.in/enforcement/recovery-proceedings/aug-2026/release-order-for-rc-no-4396-of-2021-dhaduvai-venkatram-in-the-matter-of-cat-technologies-ltd-_103420.html",
+      "official": true,
+      "impact": "Medium"
+    },
+    {
+      "company": "Dhoot Transmission Limited",
+      "headline": "Dhoot Transmission Limited - RHP",
+      "summary": "Dhoot Transmission Limited has filed the Red Herring Prospectus to raise funds through a public issue.",
+      "source": "SEBI Filing",
+      "url": "https://www.sebi.gov.in/filings/public-issues/aug-2026/dhoot-transmission-limited-rhp_103333.html",
+      "official": true,
+      "impact": "Medium"
+    },
+    {
+      "company": "Securekloud Technologies Ltd",
+      "headline": "Prohibitory Order-RC No. 8709 of 2025 issued against R S Ramani in the matter of Securekloud Technologies Ltd",
+      "summary": "A prohibitory order has been issued against R S Ramani involving Securekloud Technologies.",
+      "source": "SEBI Enforcement",
+      "url": "https://www.sebi.gov.in/enforcement/recovery-proceedings/aug-2026/prohibitory-order-rc-no-8709-of-2025-issued-against-r-s-ramani-in-the-matter-of-securekloud-technologies-ltd_103318.html",
+      "official": true,
+      "impact": "High"
+    },
+    {
+      "company": "Manipal Health Enterprises Limited",
+      "headline": "Manipal Health Enterprises Limited – Prospectus",
+      "summary": "Manipal Health Enterprises Limited has filed a prospectus for an upcoming public offering.",
+      "source": "SEBI Filing",
+      "url": "https://www.sebi.gov.in/filings/public-issues/aug-2026/manipal-health-enterprises-limited-prospectus_103300.html",
+      "official": true,
+      "impact": "Medium"
+    }
+  ],
+  "twitter_news": [
+    {
+      "company": "",
+      "headline": "Indian Stock Market — 52-Week High & Low Highlights ...",
+      "summary": "Bosch reached a fresh 52-week high following a strong quarterly earnings performance with consolidated net profits surging 140%.",
+      "source": "Twitter/X",
+      "url": "https://x.com/marketsday/status/2085334921594495439",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Indian stock market earnings results today"
+    },
+    {
+      "company": "",
+      "headline": "NSE & BSE Closing Market #Breadth Summary",
+      "summary": "On the National Stock Exchange (NSE), advancing issues maintained a slight edge over declines, closing with an Advance-Decline ratio near 1.05:1. Broader ...",
+      "source": "Twitter/X",
+      "url": "https://x.com/marketsday/status/2085335336956404050",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Indian stock market earnings results today"
+    },
+    {
+      "company": "",
+      "headline": "🚨 MSCI India Rejig Could Trigger $2.3 Billion in Passive ...",
+      "summary": "Jefferies expects MSCI India companies' earnings to grow 14% in FY27, following an estimated 10% growth in FY26, with growth accelerating further to 17% in FY ...",
+      "source": "Twitter/X",
+      "url": "https://x.com/marketsday/status/2085557289969230257",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Indian stock market earnings results today"
+    },
+    {
+      "company": "",
+      "headline": "📡 Data Patterns Q1 FY27 Results",
+      "summary": "delivering strong growth in profit and revenue, Profit: ₹26 Cr (+18.2% YoY) 📈 Revenue: ₹116 Cr (+17.2% YoY) ➡️ EBITDA: ₹31.5. Revenue: ₹116 Cr (+17.2% YoY)",
+      "source": "Twitter/X",
+      "url": "https://x.com/MySoctr/status/2085410574985199809",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Indian stock market earnings results today"
+    },
+    {
+      "company": "",
+      "headline": "BlackRock (@BlackRock) / Posts / X",
+      "summary": "AI investment is driving sharp moves in stocks. Oil prices remain volatile. Government bond yields are moving higher. Our take: These developments all reinforce ...",
+      "source": "Twitter/X",
+      "url": "https://x.com/BlackRock",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Indian stock market earnings results today"
+    },
+    {
+      "company": "",
+      "headline": "0.97%) • Copper: $6.7440 (+0.016, +0.25%) • WTI Crude: ...",
+      "summary": "Indian Indices • NIFTY 50: 24,636.00 (+11.35, +0.05%) • SENSEX: 78,954.76 (+373.76, +0.48%) • BANK NIFTY: 58,063.65 (+323.70, +0.56%) NIFTY 50: 24,636.00. ...",
+      "source": "Twitter/X",
+      "url": "https://x.com/mystockedge/status/2085390200814068089",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Indian stock market earnings results today"
+    },
+    {
+      "company": "",
+      "headline": "🚘 JBM Auto Q1 FY27 Results | Healthy Growth Across Key ...",
+      "summary": "JBM Auto reported a strong Q1 FY27 performance, ... Profit: ₹42 Cr (+13.5% YoY) 📈 Revenue: ₹1,442 Cr (+15.0% YoY) 📈 EBITDA: ₹163 Cr (+16.4% YoY) Revenue: ₹1 ...",
+      "source": "Twitter/X",
+      "url": "https://x.com/MySoctr/status/2085295940361920516/photo/1",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Indian stock market earnings results today"
+    },
+    {
+      "company": "",
+      "headline": "Bajaj Finance Q1 FY27 Results",
+      "summary": "✅ PAT: ₹5,986 Cr (+27% YoY) 📈 Interest Income: ₹20,513 Cr (+20% YoY) 📈 Net Interest Income (NII): ₹12,571 Cr (+23% YoY) (NII): ₹12,571 Cr (+23% YoY)",
+      "source": "Twitter/X",
+      "url": "https://x.com/MySoctr/status/2085365277072797935/photo/1",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Indian stock market earnings results today"
+    },
+    {
+      "company": "",
+      "headline": "Loxoprofen Sodium Dihydrate Ketoprofen Dexketoprofen ...",
+      "summary": "Acquired 67.48% stake. Acquired 56.67% stake. 2024 Listed on NSE & BSE. 2026 Acquired: Apiqo Organics Bizotic Lifescience Remember India",
+      "source": "Twitter/X",
+      "url": "https://x.com/Tvaasu1/status/2085252078436512183",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "NSE BSE listed company acquisition OR merger"
+    },
+    {
+      "company": "",
+      "headline": "Nimesh Shah (@nimeshscnbc) / Posts / X",
+      "summary": "GS on Cohance Buy, TP Rs 500. Weak Q1, broadly in line with GSe. Revenue declined 23.1% yoy, while adjusted EBITDA fell 93.2% yoy to Rs12mn, implying a 2.2% ...",
+      "source": "Twitter/X",
+      "url": "https://x.com/nimeshscnbc",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "NSE BSE listed company acquisition OR merger"
+    },
+    {
+      "company": "",
+      "headline": "Sagar Defence Engineering Ltd has Filed DRHP with SEBI ...",
+      "summary": "Sagar Defence Engineering Ltd has Filed DRHP with SEBI via Confidential Route Expected IPO Size: 2,000-3,000 Cr The Company Designs, develops, ...",
+      "source": "Twitter/X",
+      "url": "https://x.com/Paryan_Sharma/status/2085254655152627930",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "SEBI order OR action against company"
+    },
+    {
+      "company": "",
+      "headline": "chart bursters",
+      "summary": "CHART BURSTERS. Declaration : I am not SEBI registered and none of the studies shared to be considered as an investing or trading advisory. Whole ...",
+      "source": "Twitter/X",
+      "url": "https://x.com/Milind4profits/status/2085296125851107483",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "SEBI order OR action against company"
+    },
+    {
+      "company": "",
+      "headline": "Sandeep Jain Tradeswift (@SandeepKrJainTS) / Posts / X",
+      "summary": "SEBI Reg No : Indian markets are expected to witness a phase of bullish consolidation ・ has slipped below 100 ・ keep stock-specific action in focus.",
+      "source": "Twitter/X",
+      "url": "https://x.com/SandeepKrJainTS",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "SEBI order OR action against company"
+    },
+    {
+      "company": "",
+      "headline": "Realty+",
+      "summary": "Realty+ Market Pulse: Real Estate Stays a Top Long-Term Investment. SEBI Eyes Global Push for REITs & InvITs. Climate-Resilient Cities … for REITs & InvITs",
+      "source": "Twitter/X",
+      "url": "https://x.com/RPRealtyPlus/status/2085360941856907343/photo/3",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "SEBI order OR action against company"
+    },
+    {
+      "company": "",
+      "headline": "Arpan Sengupta (@Blu_Dragon_YT) / Posts / X",
+      "summary": "SEBI STANDS FIRM ON CLOSING AUCTION SESSION, PUSHES FOR HIGHER PARTICIPATION : CNBC AWAAZ •SEBI is closely monitoring the rollout of the Closing Auction ...",
+      "source": "Twitter/X",
+      "url": "https://x.com/blu_dragon_yt",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "SEBI order OR action against company"
+    },
+    {
+      "company": "",
+      "headline": "TaxTMI | Tax Management India",
+      "summary": "Reasoned GST registration cancellation orders and a hearing are mandatory; unreasoned ex parte action requires fresh adjudication.",
+      "source": "Twitter/X",
+      "url": "https://x.com/taxtmi/status/2085369983337627648",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "SEBI order OR action against company"
+    },
+    {
+      "company": "",
+      "headline": "When people ask why indian gap numbers and videos ...",
+      "summary": "SEBI alleges that Rajesh Exports, faked $158 billion in revenue, 99.8% of everything. The company has denied all charges and plans to contest the order.",
+      "source": "Twitter/X",
+      "url": "https://x.com/DThucydides/status/2085460510238024065",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "SEBI order OR action against company"
+    },
+    {
+      "company": "",
+      "headline": "Nilesh Kurhade",
+      "summary": "The order is valued at approximately ₹1.07 Crore and is to be executed from 5th Sept 2026 to 10th Sept 2026.",
+      "source": "Twitter/X",
+      "url": "https://x.com/nileshkurhade/status/2085274734426739073",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "SEBI order OR action against company"
+    },
+    {
+      "company": "",
+      "headline": "Block Deal of 5815590 shares at ...",
+      "summary": "Mahindra & Mahindra – Block Deal of 142,237 shares at Rs 3,430.00 worth Rs 48.79 crore (11:10 AM). Bandhan Bank – Block Deal of 2,502,724 shares at Rs ...",
+      "source": "Twitter/X",
+      "url": "https://x.com/BigBreakingWire/status/2085255419401064743",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Indian stock block deal OR bulk deal today"
+    },
+    {
+      "company": "",
+      "headline": "IMP Block Deals Indegene QUANT MF buys 95.2L shares ...",
+      "summary": "IMP Block Deals Indegene QUANT MF buys 95.2L shares at Rs 525. ICICI PRUDENTIAL MF BUYs 67.67L shares at Rs 525. AADI Fin (Akash Bhanshali) buys 7.5L shares ...",
+      "source": "Twitter/X",
+      "url": "https://x.com/nimeshscnbc/status/2085560887050674271",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Indian stock block deal OR bulk deal today"
+    },
+    {
+      "company": "",
+      "headline": "Business Today",
+      "summary": "Indian benchmark indices continued to trade in positive territory during afternoon deals on Thursday, with the Sensex rising more than 250 points",
+      "source": "Twitter/X",
+      "url": "https://x.com/business_today/status/2085299101076443159",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Indian stock block deal OR bulk deal today"
+    },
+    {
+      "company": "",
+      "headline": "the risk on QQQ is lower than Small/Mid-caps in India. ...",
+      "summary": "India is in a raging bull market, All you needed to do was watch what FIIs were buying, look at block deals, etc. Even today, the bull market continues.",
+      "source": "Twitter/X",
+      "url": "https://x.com/Akshat_World/status/2085289174899576916",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Indian stock block deal OR bulk deal today"
+    },
+    {
+      "company": "",
+      "headline": "Business Today",
+      "summary": "Stocks like LIC of India, Britannia, TVS Motor, Premier Energies, Dabur, Apollo Tyres, Siemens Energy, Alkem Labs, J Kumar Infra and more will be in the ...",
+      "source": "Twitter/X",
+      "url": "https://x.com/business_today/status/2085571878954111451/photo/1",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Indian stock block deal OR bulk deal today"
+    },
+    {
+      "company": "",
+      "headline": "India's government pulled off an unusually fast $3.3 billion ...",
+      "summary": "The deal ultimately raised about $3.3 billion, making it India's largest secondary offering through a stock exchange, and more than doubled the initial plan.",
+      "source": "Twitter/X",
+      "url": "https://x.com/AfricaisHOME2/status/2085428106484138393",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Indian stock block deal OR bulk deal today"
+    },
+    {
+      "company": "",
+      "headline": "Nithin has diagnosed this correctly, but rolling back CAS ...",
+      "summary": "From August 3, NSE and BSE switched to a Closing Auction Session for stocks with derivatives. Regular trading now stops at 3:15. Then for about 20 minutes, ...",
+      "source": "Twitter/X",
+      "url": "https://x.com/Malay4Product/status/2085542137517822250",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Indian stock block deal OR bulk deal today"
+    },
+    {
+      "company": "",
+      "headline": "Mumbai Cyber Fraud: Company Duped Of ₹2.30 Crore ...",
+      "summary": "Mumbai Cyber Fraud: Company Duped Of ₹2.30 Crore In Microsoft Teams Impersonation Scam; FIR Registered",
+      "source": "Twitter/X",
+      "url": "https://x.com/fpjindia/status/2085382129966559465",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "listed company fraud OR scam OR deepfake India"
+    },
+    {
+      "company": "",
+      "headline": "Entrepreneur Asia Pacific",
+      "summary": "The company stated that it has evaluated more than 100 million transactions, used over 500 AI/ML models to identify fraud exceeding INR 10 billion,",
+      "source": "Twitter/X",
+      "url": "https://x.com/EntrepreneurAPJ/status/2085339368550805886",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "listed company fraud OR scam OR deepfake India"
+    },
+    {
+      "company": "",
+      "headline": "Meta Joins The AI Hacker Club Instagram's parent ...",
+      "summary": "Hacker Club Instagram's parent company says one of its AI models managed to hack into another organisation's systems during a security evaluation, 2025 Reuters ...",
+      "source": "Twitter/X",
+      "url": "https://x.com/RTarabic/status/2085323930710266078",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "listed company fraud OR scam OR deepfake India"
+    },
+    {
+      "company": "",
+      "headline": "Beware of Call Forwarding Scams! Never dial codes ...",
+      "summary": "Never dial codes suggested by unknown callers claiming to be courier company representatives. Doing so may forward your calls and OTPs to fraudsters.",
+      "source": "Twitter/X",
+      "url": "https://x.com/PunjabPoliceInd/status/2085302992496935079",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "listed company fraud OR scam OR deepfake India"
+    },
+    {
+      "company": "",
+      "headline": "CyberDost I4C",
+      "summary": "If you are a victim of cyber fraud, immediately call 1930 or report it at cybercrime.gov.in · #CyberDost #CyberSafety #LoanScam #OnlineSafety #StayAlert @ ...",
+      "source": "Twitter/X",
+      "url": "https://x.com/Cyberdost/status/2085331116547022949",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "listed company fraud OR scam OR deepfake India"
+    },
+    {
+      "company": "",
+      "headline": "Selling Petrol in India is a SCAM 👇👇👇",
+      "summary": "Selling Petrol in India is a SCAM. Petroleum companies sell petrol in Bhutan at ₹67 but charge Indians ₹115.",
+      "source": "Twitter/X",
+      "url": "https://x.com/HULK821017/status/2085280178478215439",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "listed company fraud OR scam OR deepfake India"
+    },
+    {
+      "company": "",
+      "headline": "\"When one of the world's biggest tech giants says 'Sorry' to ...",
+      "summary": "Meta CEO Mark Zuckerberg has reportedly apologised to the Indian government following a series of controversies involving the company's platforms.",
+      "source": "Twitter/X",
+      "url": "https://x.com/AdhirSinha/status/2085336838013940192/photo/1",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "listed company fraud OR scam OR deepfake India"
+    },
+    {
+      "company": "",
+      "headline": "m rajshekhar",
+      "summary": "Indian Express investigation on how these guys made Rs 28 crore from a firm charged in the coal scam. being convicted in the 2013 rape case, High Court ...",
+      "source": "Twitter/X",
+      "url": "https://x.com/mrajshekhar/status/2085384968709324843",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "listed company fraud OR scam OR deepfake India"
+    },
+    {
+      "company": "",
+      "headline": "Sensex surges 373 pts, Nifty near 24650; RIL up over 3.5%",
+      "summary": "Stock Market Closing Today: Sensex surges 373 pts, Nifty near 24650; RIL up over 3.5% - Check top losers and gainers.",
+      "source": "Twitter/X",
+      "url": "https://x.com/ETNOWlive/status/2085362879424008205",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Nifty Sensex breaking news today"
+    },
+    {
+      "company": "",
+      "headline": "Nifty Technical View",
+      "summary": "Nifty 50 closed marginally higher at 24,636.00, forming a neutral spinning top/doji candle on the daily timeframe that signifies ongoing range consolidation.",
+      "source": "Twitter/X",
+      "url": "https://x.com/marketsday/status/2085335996460331378",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Nifty Sensex breaking news today"
+    },
+    {
+      "company": "",
+      "headline": "NSE - National Stock Exchange of India Ltd",
+      "summary": "Market Closure Report: Final Daily Status 1/5: Sensex : 78,954.76 | +373.76 | +0.48% Advancing Nifty 50 : 24,641.90 | +17.25 | +0.07% Closure Report: Final ...",
+      "source": "Twitter/X",
+      "url": "https://x.com/ivyasaa/status/2085319006672896351",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Nifty Sensex breaking news today"
+    },
+    {
+      "company": "",
+      "headline": "6th August 2026 🔹 Nifty PSU Bank outperformed ...",
+      "summary": "Nifty PSU Bank outperformed the market as State Bank of India surged over 3% ahead of its Q1 FY27 earnings announcement, supported by gains in Indian Bank.",
+      "source": "Twitter/X",
+      "url": "https://x.com/marketsday/status/2085334708121133528",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Nifty Sensex breaking news today"
+    },
+    {
+      "company": "",
+      "headline": "Business Today",
+      "summary": "#GIFTNifty Futures on the NSE International Exchange were 92.40 points, or 0.37 per cent, down at 25,6474, hinting at a negative start for the domestic market ...",
+      "source": "Twitter/X",
+      "url": "https://x.com/business_today/status/2085571878954111451",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Nifty Sensex breaking news today"
+    },
+    {
+      "company": "",
+      "headline": "Sensex - Teji Mandi",
+      "summary": "Daily Market Wrap | Aug 6 Markets ended higher today: Sensex: +0.48% to 78,954.76. Nifty: +0.05% to 24,636.00 Institutional Flows",
+      "source": "Twitter/X",
+      "url": "https://x.com/TejiMandiApp/status/2085357140546580891",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Nifty Sensex breaking news today"
+    },
+    {
+      "company": "",
+      "headline": "NSE - National Stock Exchange of India Ltd",
+      "summary": "Sensex : 78,954.76 | +373.76 | +0.48% LIVE Share/Stock Market Updates Today. Get all latest share market news, live charts, analysis, IPO, stock/share tips, ...",
+      "source": "Twitter/X",
+      "url": "https://x.com/ivyasaa/status/2085319326178189688",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Nifty Sensex breaking news today"
+    },
+    {
+      "company": "",
+      "headline": "Sensex During Closing Auction Last 4 days",
+      "summary": "Sensex During Closing Auction Last 4 days: Avg % diff b/w 3.30 & 3.15 PM = +0.10% CAS turnover today (weekly expiry) = Rs.127 crore #Nifty #BankNifty #CAS # ...",
+      "source": "Twitter/X",
+      "url": "https://x.com/_prashantnair/status/2085326078655225885",
+      "official": false,
+      "impact": "Medium",
+      "matched_query": "Nifty Sensex breaking news today"
+    }
+  ],
+  "counts": {
+    "official": 30,
+    "twitter": 41,
+    "total": 71
+  },
+  "errors": []
+}
