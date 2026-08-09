@@ -1,0 +1,81 @@
+{
+  "generated_by": "eval/corpus_audit.py",
+  "corpus": "PhiUSIIL (UCI id 967), URL column only",
+  "n_rows_audited": 235795,
+  "artefacts": {
+    "n_total": 235795,
+    "n_legit": 134850,
+    "n_phish": 100945,
+    "https_legit": 1.0,
+    "https_phish": 0.48735449997523406,
+    "www_legit": 1.0,
+    "www_phish": 0.41353212145227597,
+    "barepath_legit": 1.0,
+    "barepath_phish": 0.7280598345633761,
+    "query_legit": 0.0,
+    "query_phish": 0.06022091237802764,
+    "digits_legit": 0.050596959584723766,
+    "digits_phish": 4.338273317152905,
+    "subdomains_legit_2label": 0.8517686318131257,
+    "subdomains_phish_2label": 0.4266085492099658,
+    "subdomains_legit_deep": 0.012984797923618835,
+    "subdomains_phish_deep": 0.14239437317351034,
+    "hostlen_legit": 15.22860956618465,
+    "hostlen_phish": 22.807518945960673,
+    "mcc_is_http": 0.6128735215842935,
+    "mcc_no_www": 0.6692056803255128,
+    "mcc_has_subdomain": 0.44731126367062474
+  },
+  "experiment_a": {
+    "label": "A: shipped lexical, random split",
+    "mcc": 0.4198948177456211,
+    "pr_auc": 0.763147313827051,
+    "recall_at_fpr1": 0.36250165103685117,
+    "n_test": 70739,
+    "n_features": 7
+  },
+  "experiment_b": {
+    "label": "B: artefact-bearing, random split",
+    "mcc": 0.9948410216258894,
+    "pr_auc": 0.9988569403060843,
+    "recall_at_fpr1": 0.9964007396645093,
+    "n_test": 70739,
+    "n_features": 34
+  },
+  "legitimate_deep_links": [
+    {
+      "url": "https://www.sebi.gov.in/sebiweb/other/OtherAction.do?doRecognisedFpi=yes&intmId=14",
+      "p_phishing": 0.9999999999999298
+    },
+    {
+      "url": "https://www.sebi.gov.in/sebiweb/other/OtherAction.do?doRecognised=yes",
+      "p_phishing": 0.9999999999983291
+    },
+    {
+      "url": "https://zerodha.com/products/kite",
+      "p_phishing": 0.9999999999909917
+    },
+    {
+      "url": "https://www.nseindia.com/market-data/live-equity-market?symbol=NIFTY%2050",
+      "p_phishing": 0.9999999993892048
+    },
+    {
+      "url": "https://www.bseindia.com/corporates/List_Scrips.html?expandable=1",
+      "p_phishing": 0.9999999929597365
+    },
+    {
+      "url": "https://investor.sebi.gov.in/sebicheck",
+      "p_phishing": 0.9999999985983505
+    },
+    {
+      "url": "https://www.rbi.org.in/Scripts/BS_ViewMasCirculardetails.aspx?id=12345",
+      "p_phishing": 0.9999999865599909
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Securities_and_Exchange_Board_of_India",
+      "p_phishing": 0.9999999999983691
+    }
+  ],
+  "n_deep_links_flagged": 8,
+  "markdown_block": "```text\nPhiUSIIL (UCI id 967) \u2014 235,795 rows, URL column only.\n  legitimate class : 134,850\n  phishing class   : 100,945\n\nCOLLECTION ARTEFACTS IN THE LEGITIMATE CLASS\n                                    legitimate      phishing\n  scheme is https                   100.0%         48.7%\n  host starts 'www.'                100.0%         41.4%\n  bare homepage, no path            100.0%         72.8%\n  has a query string                  0.0%          6.0%\n  mean digits in URL                  0.05          4.34\n\nA FOURTH ARTEFACT \u2014 SUBDOMAIN DEPTH (stripping 'www.' does not remove it)\nThe legitimate class was harvested as canonicalised homepages, so it has\nalmost no subdomains; the phishing class does. Any host-level feature\ntherefore still carries the collection artefact.\n                                    legitimate      phishing\n  exactly 2 labels                   85.2%         42.7%\n  4 or more labels                    1.3%         14.2%\n  mean host length                   15.23         22.81\n\nSINGLE-FEATURE MCC (one artefact used alone as the entire classifier)\n  is_http        0.6129\n  no_www         0.6692\n  has_subdomain  0.4473   <- as strong as Experiment A's\n                           whole 7-feature model\n\nWHAT THAT DOES TO A MODEL   (same LogisticRegression, same random split)\n  A   7 shipped lexical features   MCC 0.4199  PR-AUC 0.7631  R@FPR1% 0.3625\n  B  34 artefact-bearing features  MCC 0.9948  PR-AUC 0.9989  R@FPR1% 0.9964\n\nEXPERIMENT B SCORED ON REAL LEGITIMATE DEEP LINKS\n  (every URL below is genuine; p is Experiment B's P(phishing))\n  FLAGGED  p=1.000  https://www.sebi.gov.in/sebiweb/other/OtherAction.do?doRecognisedF\n  FLAGGED  p=1.000  https://www.sebi.gov.in/sebiweb/other/OtherAction.do?doRecognised=\n  FLAGGED  p=1.000  https://zerodha.com/products/kite\n  FLAGGED  p=1.000  https://www.nseindia.com/market-data/live-equity-market?symbol=NIF\n  FLAGGED  p=1.000  https://www.bseindia.com/corporates/List_Scrips.html?expandable=1\n  FLAGGED  p=1.000  https://investor.sebi.gov.in/sebicheck\n  FLAGGED  p=1.000  https://www.rbi.org.in/Scripts/BS_ViewMasCirculardetails.aspx?id=1\n  FLAGGED  p=1.000  https://en.wikipedia.org/wiki/Securities_and_Exchange_Board_of_Ind\n\n  8/8 legitimate deep links flagged as phishing by the MCC 0.99 model.\n```"
+}

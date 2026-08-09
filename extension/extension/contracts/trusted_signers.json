@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "signers": [
+    {
+      "key_id": "phisherman-sandbox-dev",
+      "name": "Phisherman AI Sandbox Dev Signer",
+      "algorithm": "ecdsa-p256-sha256",
+      "public_key_path": "keys/sandbox_dev_signer_pub.pem",
+      "fingerprint_sha256": "2a1d99583bca3513590e97cccd1960b5acc86c3d1b1b688aebe5a14c14ed4f87",
+      "status": "revoked",
+      "scope": [
+        "agent_registry",
+        "extension_policy",
+        "module_registry"
+      ],
+      "environment": "sandbox",
+      "last_rotated": "2026-03-09T07:12:03.142702+00:00",
+      "notes": "Dev-only signer for sandbox contract validation. Do not use for production distribution."
+    },
+    {
+      "key_id": "phisherman-sandbox-dev-2026-08",
+      "name": "Phisherman AI Sandbox Dev Signer (rotated 2026-08)",
+      "algorithm": "ecdsa-p256-sha256",
+      "public_key_path": "keys/sandbox_dev_signer_pub.pem",
+      "fingerprint_sha256": "3227b46e5504abc5f53ef2df56904f6ed6777b741f7d4dffcf06ac1bf912a141",
+      "status": "active",
+      "scope": [
+        "agent_registry",
+        "extension_policy",
+        "module_registry"
+      ],
+      "environment": "sandbox",
+      "last_rotated": "2026-08-03T19:22:09.000294+00:00",
+      "notes": "Dev-only signer for sandbox contract validation. Do not use for production distribution."
+    }
+  ],
+  "last_reviewed": "2026-08-03T20:06:40.412344+00:00"
+}

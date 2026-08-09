@@ -1,0 +1,105 @@
+{
+  "id": "ip_literal_ipv4",
+  "note": "Plain IPv4 host, public address.",
+  "input": {
+    "url": "http://203.0.113.45/secure/login.php",
+    "anchor_text": "Secure login",
+    "page_host": "mail.example.com"
+  },
+  "expected_verdict": "L2_INFRASTRUCTURE_RISK",
+  "verdict": {
+    "verdict": "L2_INFRASTRUCTURE_RISK",
+    "codes_fired": [
+      "L2_INFRASTRUCTURE_RISK"
+    ],
+    "codes": [
+      {
+        "code": "L2_INFRASTRUCTURE_RISK",
+        "summary": "Address-level signals: the host is a raw IP address.",
+        "evidence": {
+          "details": [
+            "the host is a raw IP address"
+          ],
+          "host": "203.0.113.45",
+          "decoded": "203.0.113.45"
+        },
+        "truth": "channel"
+      }
+    ],
+    "truths": {
+      "channel": {
+        "state": "signals",
+        "summary": "Address-level signals: the host is a raw IP address.",
+        "codes": [
+          "L2_INFRASTRUCTURE_RISK"
+        ],
+        "disclaimers": [],
+        "assessed": true
+      },
+      "identity": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      },
+      "content": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      },
+      "interaction": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      }
+    },
+    "layer": "preflight",
+    "confidence": "high",
+    "confidence_is_label": true,
+    "action": "warn",
+    "dismissible": true,
+    "continue_allowed": true,
+    "stages_run": [
+      "offline"
+    ],
+    "stages_note": "Checked offline only.",
+    "url": "http://203.0.113.45/secure/login.php",
+    "host": "203.0.113.45"
+  },
+  "parsed_summary": {
+    "scheme": "http:",
+    "host": "203.0.113.45",
+    "host_decoded": "203.0.113.45",
+    "registrable_domain": "",
+    "public_suffix": "",
+    "psl_matched": false,
+    "is_payment_link": false,
+    "payment": null,
+    "is_ip_host": true,
+    "ip_form": "ipv4",
+    "is_private_target": false,
+    "is_punycode": false,
+    "userinfo_looks_like_host": false,
+    "subdomain_stuffing": null,
+    "anchor_mismatch": null,
+    "is_shortener": false,
+    "expansion_required": false,
+    "skip_prefetch": false,
+    "obfuscation": null,
+    "signals": [
+      "ip_literal_host:ipv4"
+    ]
+  },
+  "identity_summary": {
+    "domain_status": "unknown",
+    "official_entity": null,
+    "lookalike_of": null,
+    "registration_state": "not_applicable",
+    "upi": []
+  },
+  "elapsed_ms": 0.285,
+  "matches_expected": true,
+  "blocked_claim_hits": []
+}

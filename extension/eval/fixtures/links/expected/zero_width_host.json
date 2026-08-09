@@ -1,0 +1,96 @@
+{
+  "id": "zero_width_host",
+  "note": "A zero-width space hides inside the hostname to defeat string comparison.",
+  "input": {
+    "url": "https://nseindi​a.com/login",
+    "anchor_text": "NSE India",
+    "page_host": "mail.example.com"
+  },
+  "expected_verdict": "L2_INFRASTRUCTURE_RISK",
+  "verdict": {
+    "verdict": "L0_NO_SIGNALS",
+    "codes_fired": [
+      "L0_NO_SIGNALS"
+    ],
+    "codes": [
+      {
+        "code": "L0_NO_SIGNALS",
+        "summary": "No signals found. This is not a safety guarantee.",
+        "evidence": {},
+        "truth": "none"
+      }
+    ],
+    "truths": {
+      "channel": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      },
+      "identity": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      },
+      "content": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      },
+      "interaction": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      }
+    },
+    "layer": "preflight",
+    "confidence": "low",
+    "confidence_is_label": true,
+    "action": "inform",
+    "dismissible": true,
+    "continue_allowed": true,
+    "stages_run": [
+      "offline"
+    ],
+    "stages_note": "Checked offline only.",
+    "url": "https://nseindi​a.com/login",
+    "host": "nseindia.com"
+  },
+  "parsed_summary": {
+    "scheme": "https:",
+    "host": "nseindia.com",
+    "host_decoded": "nseindia.com",
+    "registrable_domain": "nseindia.com",
+    "public_suffix": "com",
+    "psl_matched": true,
+    "is_payment_link": false,
+    "payment": null,
+    "is_ip_host": false,
+    "ip_form": null,
+    "is_private_target": false,
+    "is_punycode": false,
+    "userinfo_looks_like_host": false,
+    "subdomain_stuffing": null,
+    "anchor_mismatch": null,
+    "is_shortener": false,
+    "expansion_required": false,
+    "skip_prefetch": false,
+    "obfuscation": null,
+    "signals": [
+      "official_domain:nseindia.com"
+    ]
+  },
+  "identity_summary": {
+    "domain_status": "official",
+    "official_entity": "NSE",
+    "lookalike_of": null,
+    "registration_state": "not_applicable",
+    "upi": []
+  },
+  "elapsed_ms": 0.219,
+  "matches_expected": false,
+  "blocked_claim_hits": []
+}

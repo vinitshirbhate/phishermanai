@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alpha Wealth Circle — VIP Trading Group</title>
+  <meta name="date" content="2026-07-01">
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; max-width: 780px; margin: 3rem auto; padding: 0 1.5rem; color: #1e293b; line-height: 1.6; }
+    .banner { background: #fef3c7; border: 1px solid #f59e0b; border-radius: 10px; padding: 0.9rem 1.1rem; font-size: 0.9rem; margin-bottom: 2rem; }
+    .card { border: 1px solid #e2e8f0; border-radius: 16px; padding: 1.8rem; margin: 1.4rem 0; box-shadow: 0 4px 16px rgba(15,23,42,.06); }
+    h1 { margin-bottom: .3rem; }
+    .reg { font-family: ui-monospace, monospace; background: #f1f5f9; padding: .15rem .45rem; border-radius: 5px; }
+    .cta { display: inline-block; padding: .85rem 1.3rem; background: #16a34a; color: #fff; border-radius: 999px; text-decoration: none; font-weight: 600; }
+    input { width: 100%; padding: .75rem; margin: .5rem 0; border: 1px solid #cbd5e1; border-radius: 8px; }
+    .muted { color: #64748b; font-size: .85rem; }
+  </style>
+</head>
+<body>
+
+  <div class="banner">
+    <strong>DEMO PAGE — synthetic test fixture.</strong> This page is fabricated to exercise Phisherman AI's
+    securities-authentication layer. It is not a real company, not a real offer, and the registration number
+    below belongs to a fictional entity in the bundled demonstration register. Nothing here is a real
+    investment product.
+  </div>
+
+  <h1>Alpha Wealth Circle</h1>
+  <p class="muted">Premium equity research &amp; managed trading &middot; Page dated 2026-07-01</p>
+
+  <!-- TEST 1: registration_collision.
+       INA000000383 is a REAL registration in SEBI's public register, held by
+       "V R WEALTH ADVISORS PRIVATE LIMITED" — not by "Alpha Wealth Circle".
+       Expected verdict: collision.
+
+       This previously used INZ000031633 against a 17-entry fictional register.
+       That register was replaced with the real one (3,179 registrants, IA + RA
+       categories only), where INZ is a BROKER prefix and is out of scope — so
+       the demo silently degraded to "unverified" and the flagship detection
+       stopped firing. An IA number is used now because IA is a covered category. -->
+  <div class="card">
+    <h2>Who we are</h2>
+    <p>Alpha Wealth Circle is a SEBI registered investment advisory entity. Our registration number is
+       <span class="reg">INA000000383</span>. We have served over 12,000 investors since 2019.</p>
+  </div>
+
+  <!-- TEST 2: typology matches — guaranteed_return_claim + vip_group_funnel + withdrawal_trap -->
+  <div class="card">
+    <h2>Join the VIP premium trading group</h2>
+    <p>You have been added to our exclusive members-only circle. We offer
+       <strong>assured returns of 30% monthly</strong>, completely risk-free investment in our
+       managed trading scheme. Download our private app link for exclusive profit tips.</p>
+    <p>Note: withdrawal is blocked until you pay a processing fee and margin top-up to release your funds.</p>
+  </div>
+
+  <!-- TEST 3: payment outside the @valid namespace.
+       A genuine SEBI-registered intermediary would collect at a *.@valid handle. -->
+  <div class="card">
+    <h2>Fund your account</h2>
+    <p>Send your opening capital to UPI ID <span class="reg">investprofit99@ybl</span> or call
+       <span class="reg">9812345670</span> to speak with your dedicated relationship manager.</p>
+    <p class="muted">Minimum capital 50,000. Profit share 30%. Our professional fund manager offers
+       account handling with risk-free profit.</p>
+  </div>
+
+  <!-- TEST 4: form guard — sensitive fields + external form action -->
+  <div class="card">
+    <h2>Open your account</h2>
+    <form action="https://collect.alpha-wealth-circle.xyz/onboard" method="post">
+      <input type="email" placeholder="Email address">
+      <input type="text" placeholder="PAN number">
+      <input type="password" placeholder="Create trading password">
+      <button class="cta" type="submit">Open account &amp; pay</button>
+    </form>
+  </div>
+
+  <p class="muted">
+    Expected Phisherman AI result: <strong>registration_collision</strong> (the number resolves to a
+    different entity), UPI <strong>outside the @valid namespace</strong>, and typology matches for
+    <em>guaranteed_return_claim</em>, <em>vip_group_funnel</em> and <em>withdrawal_trap</em>.
+  </p>
+
+</body>
+</html>

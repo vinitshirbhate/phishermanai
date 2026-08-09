@@ -1,0 +1,10 @@
+{
+  "contract_label": "module_registry",
+  "contract_path": "module_registry.json",
+  "algorithm": "ecdsa-p256-sha256",
+  "key_id": "phisherman-sandbox-dev-2026-08",
+  "key_fingerprint_sha256": "3227b46e5504abc5f53ef2df56904f6ed6777b741f7d4dffcf06ac1bf912a141",
+  "payload_sha256": "53b6260830465223cc6e97934325133b5adbb42197916fc5bba6e453b0e8945d",
+  "signature_b64": "MEUCIQC9Xe9M6+ElOcGbrRkuIgkdUT6zqF72Fp9b0Gl9LAk/3AIgaanQ2Wi7TgUAPvzyXKRPDwk8hFoLDsxQGJHtWTZaLgI=",
+  "signed_at": "2026-08-03T20:06:40.497302+00:00"
+}
