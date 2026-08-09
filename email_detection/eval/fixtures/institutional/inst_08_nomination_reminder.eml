@@ -1,0 +1,32 @@
+Message-ID: <178610589257.39512.4325365690245511519@linkintime.co.in>
+Date: Sat, 01 Aug 2026 09:30:00 -0000
+From: MUFG Intime India <rnt.helpdesk@linkintime.co.in>
+To: investor@example.com
+Subject: Nomination update required for your folio
+Return-Path: <bounce@linkintime.co.in>
+Authentication-Results: mx.google.com; dkim=pass header.i=@linkintime.co.in
+ header.s=s1; spf=pass smtp.mailfrom=noreply@linkintime.co.in; dmarc=pass
+ (p=REJECT sp=REJECT dis=NONE) header.from=linkintime.co.in
+Received: from mail.linkintime.co.in (mail.linkintime.co.in [203.0.113.20]) by
+ mx.google.com with ESMTPS id inst7; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Shareholder,
+
+As per SEBI circular, all holders of physical securities are required to furn=
+ish
+nomination details or submit a declaration to opt out of nomination.
+
+Folios which do not comply are liable to be frozen for payment of dividend, i=
+nterest or
+redemption, and for lodging any service request.
+
+Please submit Form SH-13 (nomination) or Form ISR-3 (opt out) to the Registra=
+r. Forms are
+available at https://in.mpms.mufg.com/Downloads.html
+
+There is no charge for updating nomination details.
+
+MUFG Intime India Private Limited

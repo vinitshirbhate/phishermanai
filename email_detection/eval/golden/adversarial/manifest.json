@@ -1,0 +1,282 @@
+[
+  {
+    "file": "adversarial/adv_exchange_awareness_000.eml",
+    "set": "exchange_awareness",
+    "sender": "msm@nse.co.in",
+    "subject": "Beware of assured return schemes",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_exchange_awareness_001.eml",
+    "set": "exchange_awareness",
+    "sender": "investorservices@bse.co.in",
+    "subject": "Beware of assured return schemes",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_exchange_awareness_002.eml",
+    "set": "exchange_awareness",
+    "sender": "international@nse.co.in",
+    "subject": "Beware of assured return schemes",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_exchange_awareness_003.eml",
+    "set": "exchange_awareness",
+    "sender": "msm@nse.co.in",
+    "subject": "Do not share your trading credentials",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_exchange_awareness_004.eml",
+    "set": "exchange_awareness",
+    "sender": "investorservices@bse.co.in",
+    "subject": "Do not share your trading credentials",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_exchange_awareness_005.eml",
+    "set": "exchange_awareness",
+    "sender": "international@nse.co.in",
+    "subject": "Do not share your trading credentials",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_exchange_awareness_006.eml",
+    "set": "exchange_awareness",
+    "sender": "msm@nse.co.in",
+    "subject": "Caution against unsolicited investment tips",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_exchange_awareness_007.eml",
+    "set": "exchange_awareness",
+    "sender": "investorservices@bse.co.in",
+    "subject": "Caution against unsolicited investment tips",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_exchange_awareness_008.eml",
+    "set": "exchange_awareness",
+    "sender": "international@nse.co.in",
+    "subject": "Caution against unsolicited investment tips",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_exchange_awareness_009.eml",
+    "set": "exchange_awareness",
+    "sender": "msm@nse.co.in",
+    "subject": "Beware of fake trading applications",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_exchange_awareness_010.eml",
+    "set": "exchange_awareness",
+    "sender": "investorservices@bse.co.in",
+    "subject": "Beware of fake trading applications",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_exchange_awareness_011.eml",
+    "set": "exchange_awareness",
+    "sender": "international@nse.co.in",
+    "subject": "Beware of fake trading applications",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_exchange_awareness_012.eml",
+    "set": "exchange_awareness",
+    "sender": "msm@nse.co.in",
+    "subject": "Caution: pre-IPO and unlisted share offers",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_exchange_awareness_013.eml",
+    "set": "exchange_awareness",
+    "sender": "investorservices@bse.co.in",
+    "subject": "Caution: pre-IPO and unlisted share offers",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_exchange_awareness_014.eml",
+    "set": "exchange_awareness",
+    "sender": "international@nse.co.in",
+    "subject": "Caution: pre-IPO and unlisted share offers",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_sebi_education_015.eml",
+    "set": "sebi_education",
+    "sender": "investorassistance@sebi.gov.in",
+    "subject": "Investor education: recognising Ponzi schemes",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_sebi_education_fwd_016.eml",
+    "set": "sebi_education",
+    "sender": "investorassistance@sebi.gov.in",
+    "subject": "Investor education: recognising Ponzi schemes",
+    "variant": "FORWARDED",
+    "forward_type": "INLINE"
+  },
+  {
+    "file": "adversarial/adv_sebi_education_017.eml",
+    "set": "sebi_education",
+    "sender": "investorassistance@sebi.gov.in",
+    "subject": "Investor education: digital arrest and impersonation",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_sebi_education_fwd_018.eml",
+    "set": "sebi_education",
+    "sender": "investorassistance@sebi.gov.in",
+    "subject": "Investor education: digital arrest and impersonation",
+    "variant": "FORWARDED",
+    "forward_type": "INLINE"
+  },
+  {
+    "file": "adversarial/adv_sebi_education_019.eml",
+    "set": "sebi_education",
+    "sender": "investorassistance@sebi.gov.in",
+    "subject": "Investor education: unclaimed dividend and IEPF",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_sebi_education_fwd_020.eml",
+    "set": "sebi_education",
+    "sender": "investorassistance@sebi.gov.in",
+    "subject": "Investor education: unclaimed dividend and IEPF",
+    "variant": "FORWARDED",
+    "forward_type": "INLINE"
+  },
+  {
+    "file": "adversarial/adv_sebi_education_021.eml",
+    "set": "sebi_education",
+    "sender": "investorassistance@sebi.gov.in",
+    "subject": "Investor education: verify before you invest",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_sebi_education_fwd_022.eml",
+    "set": "sebi_education",
+    "sender": "investorassistance@sebi.gov.in",
+    "subject": "Investor education: verify before you invest",
+    "variant": "FORWARDED",
+    "forward_type": "INLINE"
+  },
+  {
+    "file": "adversarial/adv_sebi_education_023.eml",
+    "set": "sebi_education",
+    "sender": "investorassistance@sebi.gov.in",
+    "subject": "Investor education: KYC and account freezing",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_sebi_education_fwd_024.eml",
+    "set": "sebi_education",
+    "sender": "investorassistance@sebi.gov.in",
+    "subject": "Investor education: KYC and account freezing",
+    "variant": "FORWARDED",
+    "forward_type": "INLINE"
+  },
+  {
+    "file": "adversarial/adv_broker_advisory_025.eml",
+    "set": "broker_advisory",
+    "sender": "support@zerodha.com",
+    "subject": "Security advisory: we will never ask for your OTP",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_broker_advisory_026.eml",
+    "set": "broker_advisory",
+    "sender": "support@angelone.in",
+    "subject": "Security advisory: we will never ask for your OTP",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_broker_advisory_027.eml",
+    "set": "broker_advisory",
+    "sender": "support@zerodha.com",
+    "subject": "Advisory: beware of guaranteed return offers in our name",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_broker_advisory_028.eml",
+    "set": "broker_advisory",
+    "sender": "support@angelone.in",
+    "subject": "Advisory: beware of guaranteed return offers in our name",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_broker_advisory_029.eml",
+    "set": "broker_advisory",
+    "sender": "support@zerodha.com",
+    "subject": "Advisory: fake withdrawal fee demands",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_broker_advisory_030.eml",
+    "set": "broker_advisory",
+    "sender": "support@angelone.in",
+    "subject": "Advisory: fake withdrawal fee demands",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_broker_advisory_031.eml",
+    "set": "broker_advisory",
+    "sender": "support@zerodha.com",
+    "subject": "Advisory: mule accounts and commission offers",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_broker_advisory_032.eml",
+    "set": "broker_advisory",
+    "sender": "support@angelone.in",
+    "subject": "Advisory: mule accounts and commission offers",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_broker_advisory_033.eml",
+    "set": "broker_advisory",
+    "sender": "support@zerodha.com",
+    "subject": "Advisory: verify our official communication channels",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "adversarial/adv_broker_advisory_034.eml",
+    "set": "broker_advisory",
+    "sender": "support@angelone.in",
+    "subject": "Advisory: verify our official communication channels",
+    "variant": "DIRECT",
+    "forward_type": "DIRECT"
+  }
+]

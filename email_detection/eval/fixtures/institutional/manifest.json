@@ -1,0 +1,142 @@
+[
+  {
+    "file": "institutional/inst_01_cdsl_evoting.eml",
+    "label": "GENUINE_INSTITUTIONAL",
+    "sender": "helpdesk.evoting@cdslindia.com",
+    "domain": "cdslindia.com",
+    "subject": "Remote e-Voting instructions for shareholders holding shares in demat mode"
+  },
+  {
+    "file": "institutional/inst_02_nsdl_evoting.eml",
+    "label": "GENUINE_INSTITUTIONAL",
+    "sender": "evoting@nsdl.com",
+    "domain": "nsdl.com",
+    "subject": "Login instructions for NSDL e-Voting system - AGM 2026"
+  },
+  {
+    "file": "institutional/inst_03_kfin_agm.eml",
+    "label": "GENUINE_INSTITUTIONAL",
+    "sender": "einward.ris@kfintech.com",
+    "domain": "kfintech.com",
+    "subject": "Notice of 42nd Annual General Meeting and e-Voting information"
+  },
+  {
+    "file": "institutional/inst_04_mufg_dividend.eml",
+    "label": "GENUINE_INSTITUTIONAL",
+    "sender": "investor.helpdesk@linkintime.co.in",
+    "domain": "linkintime.co.in",
+    "subject": "Intimation of record date for payment of final dividend"
+  },
+  {
+    "file": "institutional/inst_05_iepf_unclaimed.eml",
+    "label": "GENUINE_INSTITUTIONAL",
+    "sender": "iepf.ris@kfintech.com",
+    "domain": "kfintech.com",
+    "subject": "Unclaimed dividend liable to be transferred to IEPF - action required"
+  },
+  {
+    "file": "institutional/inst_06_rekyc_reminder.eml",
+    "label": "GENUINE_INSTITUTIONAL",
+    "sender": "support@zerodha.com",
+    "domain": "zerodha.com",
+    "subject": "Re-KYC required for your trading and demat account"
+  },
+  {
+    "file": "institutional/inst_07_cams_cas.eml",
+    "label": "GENUINE_INSTITUTIONAL",
+    "sender": "camsCAS@camsonline.com",
+    "domain": "camsonline.com",
+    "subject": "Consolidated Account Statement for July 2026"
+  },
+  {
+    "file": "institutional/inst_08_nomination_reminder.eml",
+    "label": "GENUINE_INSTITUTIONAL",
+    "sender": "rnt.helpdesk@linkintime.co.in",
+    "domain": "linkintime.co.in",
+    "subject": "Nomination update required for your folio"
+  },
+  {
+    "file": "institutional/inst_09_broker_contract_note.eml",
+    "label": "GENUINE_INSTITUTIONAL",
+    "sender": "contractnotes@angelone.in",
+    "domain": "angelone.in",
+    "subject": "Contract note for trades dated 03 August 2026"
+  },
+  {
+    "file": "institutional/inst_10_postal_ballot.eml",
+    "label": "GENUINE_INSTITUTIONAL",
+    "sender": "investor.relations@ril.com",
+    "domain": "ril.com",
+    "subject": "Postal ballot notice and remote e-voting instructions"
+  },
+  {
+    "file": "institutional/inst_11_rights_issue.eml",
+    "label": "GENUINE_INSTITUTIONAL",
+    "sender": "rightsissue.ris@kfintech.com",
+    "domain": "kfintech.com",
+    "subject": "Rights issue - application form and ASBA instructions"
+  },
+  {
+    "file": "institutional/inst_12_sebi_investor_charter.eml",
+    "label": "GENUINE_INSTITUTIONAL",
+    "sender": "service.securities@kotak.com",
+    "domain": "kotak.com",
+    "subject": "Investor Charter and grievance redressal mechanism"
+  },
+  {
+    "file": "institutional/inst_13_buyback.eml",
+    "label": "GENUINE_INSTITUTIONAL",
+    "sender": "secretarial@infosys.com",
+    "domain": "infosys.com",
+    "subject": "Buyback of equity shares - letter of offer"
+  },
+  {
+    "file": "institutional/inst_14_dp_charges.eml",
+    "label": "GENUINE_INSTITUTIONAL",
+    "sender": "customercare@hdfcsec.com",
+    "domain": "hdfcsec.com",
+    "subject": "Annual maintenance charges for your demat account"
+  },
+  {
+    "file": "institutional/inst_15_mf_nfo.eml",
+    "label": "GENUINE_INSTITUTIONAL",
+    "sender": "customer.delight@sbimf.com",
+    "domain": "sbimf.com",
+    "subject": "New Fund Offer - scheme information document"
+  },
+  {
+    "file": "institutional/inst_16_account_frozen_kyc.eml",
+    "label": "GENUINE_INSTITUTIONAL",
+    "sender": "isr.helpdesk@linkintime.co.in",
+    "domain": "linkintime.co.in",
+    "subject": "Folio frozen - KYC documents pending"
+  },
+  {
+    "file": "institutional/inst_17_upi_mandate.eml",
+    "label": "GENUINE_INSTITUTIONAL",
+    "sender": "support@groww.in",
+    "domain": "groww.in",
+    "subject": "SIP mandate registration confirmation"
+  },
+  {
+    "file": "institutional/inst_18_password_reset.eml",
+    "label": "GENUINE_INSTITUTIONAL",
+    "sender": "no-reply@upstox.com",
+    "domain": "upstox.com",
+    "subject": "Password reset request for your account"
+  },
+  {
+    "file": "institutional/inst_19_bse_corporate_action.eml",
+    "label": "GENUINE_INSTITUTIONAL",
+    "sender": "investors@titancompany.in",
+    "domain": "titancompany.in",
+    "subject": "Intimation of book closure for AGM and dividend"
+  },
+  {
+    "file": "institutional/inst_20_demat_statement.eml",
+    "label": "GENUINE_INSTITUTIONAL",
+    "sender": "statements@nsdl.com",
+    "domain": "nsdl.com",
+    "subject": "Transaction statement for your demat account - July 2026"
+  }
+]

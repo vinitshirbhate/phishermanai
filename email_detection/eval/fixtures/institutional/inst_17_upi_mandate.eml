@@ -1,0 +1,32 @@
+Message-ID: <178610589258.39512.7395879954456925604@groww.in>
+Date: Wed, 29 Jul 2026 18:30:00 -0000
+From: Groww <support@groww.in>
+To: investor@example.com
+Subject: SIP mandate registration confirmation
+Return-Path: <bounce@groww.in>
+Authentication-Results: mx.google.com; dkim=pass header.i=@groww.in
+ header.s=s1; spf=pass smtp.mailfrom=noreply@groww.in; dmarc=pass (p=REJECT
+ sp=REJECT dis=NONE) header.from=groww.in
+Received: from mail.groww.in (mail.groww.in [203.0.113.20]) by mx.google.com
+ with ESMTPS id inst16; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+Your SIP mandate has been registered successfully. The first instalment will =
+be debited
+on 10 August 2026.
+
+Please approve the UPI mandate request in your UPI application. The collect r=
+equest will
+appear from our validated intermediary handle groww.mf@valid.
+
+You can view or cancel the mandate anytime from the Groww app under SIPs.
+
+Mutual fund investments are subject to market risks. Read all scheme related =
+documents
+carefully.
+
+Groww Invest Tech Private Limited

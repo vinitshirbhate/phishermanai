@@ -1,0 +1,45 @@
+Message-ID: <178610589255.39512.17550926598634775102@cdslindia.com>
+Date: Mon, 03 Aug 2026 10:30:00 -0000
+From: CDSL e-Voting <helpdesk.evoting@cdslindia.com>
+To: investor@example.com
+Subject:
+ Remote e-Voting instructions for shareholders holding shares in demat mode
+Return-Path: <bounce@cdslindia.com>
+Authentication-Results: mx.google.com; dkim=pass header.i=@cdslindia.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@cdslindia.com; dmarc=pass
+ (p=REJECT sp=REJECT dis=NONE) header.from=cdslindia.com
+Received: from mail.cdslindia.com (mail.cdslindia.com [203.0.113.20]) by
+ mx.google.com with ESMTPS id inst0; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Demat Account Holder,
+
+As per SEBI circular no. SEBI/HO/CFD/CMD/CIR/P/2020/242 dated December 9, 202=
+0, listed
+entities are required to provide remote e-Voting facility to their shareholde=
+rs.
+
+Individual Shareholders holding securities in Demat mode with CDSL:
+
+1. Users who have opted for CDSL Easi / Easiest facility can login through th=
+eir existing
+   user id and password. Click here to login: https://web.cdslindia.com/myeas=
+i/home/login
+2. If the user is not registered for Easi/Easiest, the option to register is =
+available at
+   https://web.cdslindia.com/myeasi/Registration/EasiRegistration
+3. Alternatively, the user can directly access the e-Voting page by providing=
+ Demat
+   Account Number and PAN from the e-Voting link available on www.cdslindia.c=
+om home page.
+   The system will authenticate the user by sending OTP on registered Mobile =
+& Email as
+   recorded in the Demat Account.
+
+The last date to cast your vote is 11 August 2026 at 5:00 P.M.
+
+For any technical assistance please contact our toll free no. 1800 22 55 33.
+
+Central Depository Services (India) Limited

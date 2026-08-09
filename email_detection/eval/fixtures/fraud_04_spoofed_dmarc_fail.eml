@@ -1,0 +1,21 @@
+Message-ID: <178604627236.32808.2336998888891963986@zerodha.com>
+Date: Fri, 07 Aug 2026 01:27:52 -0000
+From: Zerodha Support <support@zerodha.com>
+To: investor@example.com
+Subject: Zerodha: verify your account to avoid suspension
+Reply-To: recovery.desk@gmail.com
+Return-Path: <bounce@zerodha.com>
+Authentication-Results: mx.google.com; dkim=fail header.i=@zerodha.com
+ header.s=selector1; spf=fail (google.com: domain of noreply@zerodha.com
+ designates 203.0.113.10 as permitted sender)
+ smtp.mailfrom=noreply@zerodha.com; dmarc=fail (p=REJECT sp=REJECT dis=NONE)
+ header.from=zerodha.com
+Received: from mail.zerodha.com (mail.zerodha.com [203.0.113.10]) by
+ mx.google.com with ESMTPS id abc123; Fri, 07 Aug 2026 01:27:52 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Your Zerodha account will be suspended.
+Verify now: http://zerodha-verify.top/login
+Share the OTP sent to your mobile with our executive to complete verification.

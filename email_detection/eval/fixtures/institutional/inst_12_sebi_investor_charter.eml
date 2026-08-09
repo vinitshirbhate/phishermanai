@@ -1,0 +1,33 @@
+Message-ID: <178610589257.39512.2278772479124581764@kotak.com>
+Date: Fri, 31 Jul 2026 05:30:00 -0000
+From: Kotak Securities <service.securities@kotak.com>
+To: investor@example.com
+Subject: Investor Charter and grievance redressal mechanism
+Return-Path: <bounce@kotak.com>
+Authentication-Results: mx.google.com; dkim=pass header.i=@kotak.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@kotak.com; dmarc=pass (p=REJECT
+ sp=REJECT dis=NONE) header.from=kotak.com
+Received: from mail.kotak.com (mail.kotak.com [203.0.113.20]) by mx.google.com
+ with ESMTPS id inst11; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Client,
+
+In accordance with SEBI circular, we are sharing the Investor Charter setting=
+ out the
+services provided to investors and their rights.
+
+If you have a grievance, please write to service.securities@kotak.com. If you=
+r complaint
+is not resolved within 30 days, you may lodge a complaint on the SEBI SCORES =
+portal at
+https://scores.sebi.gov.in or through the SMART ODR portal at https://smartod=
+r.in
+
+Beware of fraudsters. Do not share your login credentials, OTP or PIN with an=
+yone,
+including persons claiming to be from our support team.
+
+Kotak Securities Limited

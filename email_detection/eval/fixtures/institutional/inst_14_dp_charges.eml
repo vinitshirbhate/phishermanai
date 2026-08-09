@@ -1,0 +1,30 @@
+Message-ID: <178610589258.39512.4318497241886890565@hdfcsec.com>
+Date: Thu, 30 Jul 2026 15:30:00 -0000
+From: HDFC Securities <customercare@hdfcsec.com>
+To: investor@example.com
+Subject: Annual maintenance charges for your demat account
+Return-Path: <bounce@hdfcsec.com>
+Authentication-Results: mx.google.com; dkim=pass header.i=@hdfcsec.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@hdfcsec.com; dmarc=pass (p=REJECT
+ sp=REJECT dis=NONE) header.from=hdfcsec.com
+Received: from mail.hdfcsec.com (mail.hdfcsec.com [203.0.113.20]) by
+ mx.google.com with ESMTPS id inst13; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Customer,
+
+The annual maintenance charge for your demat account for FY 2026-27 will be d=
+ebited from
+your linked trading account on 15 August 2026 as per the tariff you accepted =
+at account
+opening.
+
+Please ensure sufficient balance in your trading account. If the AMC remains =
+unpaid, the
+demat account may be suspended for debit as per depository rules.
+
+You can view the tariff sheet after logging in at https://www.hdfcsec.com
+
+HDFC Securities Limited

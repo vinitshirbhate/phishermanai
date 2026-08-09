@@ -1,0 +1,30 @@
+Message-ID: <178616722326.33868.14528145713896270336@upstox.com>
+Date: Mon, 27 Jul 2026 22:30:00 -0000
+From: Upstox <support@upstox.com>
+To: investor@example.com
+Subject: Margin shortfall in your trading account
+Return-Path: <bounce@upstox.com>
+Authentication-Results: mx.google.com; dkim=pass header.i=@upstox.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@upstox.com; dmarc=pass (p=REJECT
+ sp=REJECT dis=NONE) header.from=upstox.com
+Received: from mail.upstox.com (mail.upstox.com [203.0.113.20]) by
+ mx.google.com with ESMTPS id g52; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Client,
+
+Your account has a margin shortfall of Rs 12,450. Please add funds or reduce =
+positions before the market opens to avoid square-off as per exchange rules.
+
+We will never ask you for your password, OTP or PIN over a call or message. D=
+o not share
+your login credentials with anyone, including persons claiming to be from our=
+ support team.
+
+For any grievance write to us, or escalate to SEBI SCORES at https://scores.s=
+ebi.gov.in
+
+Upstox
+SEBI Registration: INZ000315837

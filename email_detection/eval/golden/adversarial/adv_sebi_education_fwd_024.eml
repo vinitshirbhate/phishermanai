@@ -1,0 +1,30 @@
+Message-ID: <178618855099.34024.10445723116240081133@gmail.com>
+Date: Wed, 05 Aug 2026 09:00:00 -0000
+From: Investor <shourya@gmail.com>
+To: check@phishermanai.local
+Subject: Fwd: Investor education: KYC and account freezing
+Authentication-Results: mx.google.com; dkim=pass header.i=@gmail.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@gmail.com; dmarc=pass (p=REJECT)
+ header.from=gmail.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Received this - is it genuine?
+
+---------- Forwarded message ----------
+From: SEBI Office of Investor Assistance <investorassistance@sebi.gov.in>
+Date: Fri, 31 Jul 2026 14:00:00 -0000
+Subject: Investor education: KYC and account freezing
+To: investor@example.com
+
+Dear Investor,
+
+As per SEBI circular, folios without PAN, nomination or a valid bank mandate =
+are
+liable to be frozen. This is a regulatory requirement, not a penalty, and no =
+fee
+is payable to unfreeze a folio.
+
+Update your details only through your Depository Participant or the Registrar
+and Transfer Agent, never through a link received in a message.

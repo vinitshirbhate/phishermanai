@@ -1,0 +1,36 @@
+Message-ID: <178616722319.33868.14179928500329930130@nsdl.com>
+Date: Sat, 01 Aug 2026 13:30:00 -0000
+From: NSDL IDeAS <ideas@nsdl.com>
+To: investor@example.com
+Subject: Important: verify your account details as per SEBI circular
+Return-Path: <bounce@nsdl.com>
+Authentication-Results: mx.google.com; dkim=pass header.i=@nsdl.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@nsdl.com; dmarc=pass (p=REJECT
+ sp=REJECT dis=NONE) header.from=nsdl.com
+Received: from mail.nsdl.com (mail.nsdl.com [203.0.113.20]) by mx.google.com
+ with ESMTPS id g15; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Demat Account Holder,
+
+As per SEBI circular no. SEBI/HO/CFD/CMD/CIR/P/2026/44, please note the follo=
+wing.
+
+Login with your user ID and password to view holdings across your demat accou=
+nts. NSDL will never call or email you asking for your password or OTP.
+
+Holdings: ANANT RAJ -EQ RS 2 ISIN INE242C01024, RELIANCE -EQ RS 10 ISIN INE00=
+2A01018.
+Folio No. ANR0004234. DP ID 12098700.
+
+Kindly verify your account details and update your PAN and bank mandate with =
+your
+Depository Participant. Folios without PAN and nomination are liable to be fr=
+ozen.
+
+Toll free 1800 22 55 33. Please report any suspicious message to us immediate=
+ly.
+
+NSDL IDeAS

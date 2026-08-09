@@ -1,0 +1,24 @@
+Message-ID: <178618855096.34024.9023713192482667600@nse.co.in>
+Date: Tue, 04 Aug 2026 08:00:00 -0000
+From: NSE Member Services <international@nse.co.in>
+To: investor@example.com
+Subject: Do not share your trading credentials
+Return-Path: <bounce@nse.co.in>
+Authentication-Results: mx.google.com; dkim=pass header.i=@nse.co.in
+ header.s=s1; spf=pass smtp.mailfrom=noreply@nse.co.in; dmarc=pass (p=REJECT)
+ header.from=nse.co.in
+Received: from mail.nse.co.in (mail.nse.co.in [203.0.113.30]) by mx.google.com
+ with ESMTPS id adv5; Wed, 05 Aug 2026 09:00:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Investor,
+
+Fraudsters may call you claiming to be from the exchange and ask you to share
+your OTP, PIN or trading password. Never share these with anyone. The exchange
+will never ask you for your OTP or password.
+
+Do not install any screen-sharing application such as AnyDesk at the request =
+of
+a caller. Report such calls on our toll free number 1800 266 0050.

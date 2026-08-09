@@ -1,0 +1,35 @@
+Message-ID: <178610589256.39512.13770332753821547243@zerodha.com>
+Date: Sat, 01 Aug 2026 23:30:00 -0000
+From: Zerodha Support <support@zerodha.com>
+To: investor@example.com
+Subject: Re-KYC required for your trading and demat account
+Return-Path: <bounce@zerodha.com>
+Authentication-Results: mx.google.com; dkim=pass header.i=@zerodha.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@zerodha.com; dmarc=pass (p=REJECT
+ sp=REJECT dis=NONE) header.from=zerodha.com
+Received: from mail.zerodha.com (mail.zerodha.com [203.0.113.20]) by
+ mx.google.com with ESMTPS id inst5; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hello,
+
+As per SEBI regulations, your KYC details need to be periodically updated. Ou=
+r records
+show that your KYC is due for revalidation.
+
+Please complete your re-KYC at your convenience by logging in to Console at
+https://console.zerodha.com/profile/kyc
+
+If the re-KYC is not completed, your trading account may be restricted for new
+positions until the update is done. Your existing holdings remain safe and ar=
+e held
+with the depository.
+
+We will never ask you for your password, OTP or PIN over a call or message. I=
+f anyone
+asks you to share these, please report it to us immediately.
+
+Zerodha Broking Limited
+SEBI Registration: INZ000031633

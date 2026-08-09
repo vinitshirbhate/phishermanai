@@ -1,0 +1,842 @@
+[
+  {
+    "file": "g_depository_000.eml",
+    "set": "depository",
+    "sender": "helpdesk.evoting@cdslindia.com",
+    "subject": "Remote e-Voting instructions for shareholders",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_depository_001.eml",
+    "set": "depository",
+    "sender": "helpdesk.evoting@cdslindia.com",
+    "subject": "Notice: e-Voting for AGM 2026 - last date to cast your vote is 11 August 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_depository_002.eml",
+    "set": "depository",
+    "sender": "helpdesk.evoting@cdslindia.com",
+    "subject": "Your demat account statement for July 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_depository_003.eml",
+    "set": "depository",
+    "sender": "helpdesk.evoting@cdslindia.com",
+    "subject": "Important: verify your account details as per SEBI circular",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_depository_004.eml",
+    "set": "depository",
+    "sender": "evoting@nsdl.com",
+    "subject": "Remote e-Voting instructions for shareholders",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_depository_005.eml",
+    "set": "depository",
+    "sender": "evoting@nsdl.com",
+    "subject": "Notice: e-Voting for AGM 2026 - last date to cast your vote is 11 August 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_depository_006.eml",
+    "set": "depository",
+    "sender": "evoting@nsdl.com",
+    "subject": "Your demat account statement for July 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_depository_007.eml",
+    "set": "depository",
+    "sender": "evoting@nsdl.com",
+    "subject": "Important: verify your account details as per SEBI circular",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_depository_008.eml",
+    "set": "depository",
+    "sender": "easi@cdslindia.com",
+    "subject": "Remote e-Voting instructions for shareholders",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_depository_009.eml",
+    "set": "depository",
+    "sender": "easi@cdslindia.com",
+    "subject": "Notice: e-Voting for AGM 2026 - last date to cast your vote is 11 August 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_depository_010.eml",
+    "set": "depository",
+    "sender": "easi@cdslindia.com",
+    "subject": "Your demat account statement for July 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_depository_011.eml",
+    "set": "depository",
+    "sender": "easi@cdslindia.com",
+    "subject": "Important: verify your account details as per SEBI circular",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_depository_012.eml",
+    "set": "depository",
+    "sender": "ideas@nsdl.com",
+    "subject": "Remote e-Voting instructions for shareholders",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_depository_013.eml",
+    "set": "depository",
+    "sender": "ideas@nsdl.com",
+    "subject": "Notice: e-Voting for AGM 2026 - last date to cast your vote is 11 August 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_depository_014.eml",
+    "set": "depository",
+    "sender": "ideas@nsdl.com",
+    "subject": "Your demat account statement for July 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_depository_015.eml",
+    "set": "depository",
+    "sender": "ideas@nsdl.com",
+    "subject": "Important: verify your account details as per SEBI circular",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_depository_016.eml",
+    "set": "depository",
+    "sender": "statements@cdslindia.com",
+    "subject": "Remote e-Voting instructions for shareholders",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_depository_017.eml",
+    "set": "depository",
+    "sender": "statements@cdslindia.com",
+    "subject": "Notice: e-Voting for AGM 2026 - last date to cast your vote is 11 August 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_depository_018.eml",
+    "set": "depository",
+    "sender": "statements@cdslindia.com",
+    "subject": "Your demat account statement for July 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_depository_019.eml",
+    "set": "depository",
+    "sender": "statements@cdslindia.com",
+    "subject": "Important: verify your account details as per SEBI circular",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_bank_020.eml",
+    "set": "bank",
+    "sender": "alerts@sbi.co.in",
+    "subject": "Your account statement for July 2026 - State Bank of India",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_bank_021.eml",
+    "set": "bank",
+    "sender": "alerts@hdfcbank.com",
+    "subject": "Your account statement for July 2026 - HDFC Bank",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_bank_022.eml",
+    "set": "bank",
+    "sender": "statements@icicibank.com",
+    "subject": "Your account statement for July 2026 - ICICI Bank",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_bank_023.eml",
+    "set": "bank",
+    "sender": "alerts@axisbank.com",
+    "subject": "Your account statement for July 2026 - Axis Bank",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_bank_024.eml",
+    "set": "bank",
+    "sender": "alerts@canarabank.com",
+    "subject": "Your account statement for July 2026 - Canara Bank",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_bank_025.eml",
+    "set": "bank",
+    "sender": "alerts@sbi.co.in",
+    "subject": "Your account statement for July 2026 - State Bank of India",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_bank_026.eml",
+    "set": "bank",
+    "sender": "alerts@hdfcbank.com",
+    "subject": "Your account statement for July 2026 - HDFC Bank",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_bank_027.eml",
+    "set": "bank",
+    "sender": "statements@icicibank.com",
+    "subject": "Your account statement for July 2026 - ICICI Bank",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_bank_028.eml",
+    "set": "bank",
+    "sender": "alerts@axisbank.com",
+    "subject": "Your account statement for July 2026 - Axis Bank",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_bank_029.eml",
+    "set": "bank",
+    "sender": "alerts@canarabank.com",
+    "subject": "Your account statement for July 2026 - Canara Bank",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_bank_030.eml",
+    "set": "bank",
+    "sender": "alerts@sbi.co.in",
+    "subject": "Your account statement for July 2026 - State Bank of India",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_bank_031.eml",
+    "set": "bank",
+    "sender": "alerts@hdfcbank.com",
+    "subject": "Your account statement for July 2026 - HDFC Bank",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_bank_032.eml",
+    "set": "bank",
+    "sender": "statements@icicibank.com",
+    "subject": "Your account statement for July 2026 - ICICI Bank",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_bank_033.eml",
+    "set": "bank",
+    "sender": "alerts@axisbank.com",
+    "subject": "Your account statement for July 2026 - Axis Bank",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_bank_034.eml",
+    "set": "bank",
+    "sender": "alerts@canarabank.com",
+    "subject": "Your account statement for July 2026 - Canara Bank",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_broker_035.eml",
+    "set": "broker",
+    "sender": "support@zerodha.com",
+    "subject": "Contract note for trades dated 03 August 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_broker_036.eml",
+    "set": "broker",
+    "sender": "support@angelone.in",
+    "subject": "Margin shortfall in your trading account",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_broker_037.eml",
+    "set": "broker",
+    "sender": "support@upstox.com",
+    "subject": "Re-KYC required for your trading and demat account",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_broker_038.eml",
+    "set": "broker",
+    "sender": "service.securities@kotak.com",
+    "subject": "Your ledger and holdings statement for July 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_broker_039.eml",
+    "set": "broker",
+    "sender": "customercare@hdfcsec.com",
+    "subject": "Contract note for trades dated 03 August 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_broker_040.eml",
+    "set": "broker",
+    "sender": "support@zerodha.com",
+    "subject": "Margin shortfall in your trading account",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_broker_041.eml",
+    "set": "broker",
+    "sender": "support@angelone.in",
+    "subject": "Re-KYC required for your trading and demat account",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_broker_042.eml",
+    "set": "broker",
+    "sender": "support@upstox.com",
+    "subject": "Your ledger and holdings statement for July 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_broker_043.eml",
+    "set": "broker",
+    "sender": "service.securities@kotak.com",
+    "subject": "Contract note for trades dated 03 August 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_broker_044.eml",
+    "set": "broker",
+    "sender": "customercare@hdfcsec.com",
+    "subject": "Margin shortfall in your trading account",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_broker_045.eml",
+    "set": "broker",
+    "sender": "support@zerodha.com",
+    "subject": "Re-KYC required for your trading and demat account",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_broker_046.eml",
+    "set": "broker",
+    "sender": "support@angelone.in",
+    "subject": "Your ledger and holdings statement for July 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_broker_047.eml",
+    "set": "broker",
+    "sender": "support@upstox.com",
+    "subject": "Contract note for trades dated 03 August 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_broker_048.eml",
+    "set": "broker",
+    "sender": "service.securities@kotak.com",
+    "subject": "Margin shortfall in your trading account",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_broker_049.eml",
+    "set": "broker",
+    "sender": "customercare@hdfcsec.com",
+    "subject": "Re-KYC required for your trading and demat account",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_broker_050.eml",
+    "set": "broker",
+    "sender": "support@zerodha.com",
+    "subject": "Your ledger and holdings statement for July 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_broker_051.eml",
+    "set": "broker",
+    "sender": "support@angelone.in",
+    "subject": "Contract note for trades dated 03 August 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_broker_052.eml",
+    "set": "broker",
+    "sender": "support@upstox.com",
+    "subject": "Margin shortfall in your trading account",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_broker_053.eml",
+    "set": "broker",
+    "sender": "service.securities@kotak.com",
+    "subject": "Re-KYC required for your trading and demat account",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_broker_054.eml",
+    "set": "broker",
+    "sender": "customercare@hdfcsec.com",
+    "subject": "Your ledger and holdings statement for July 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_rta_055.eml",
+    "set": "rta",
+    "sender": "einward.ris@kfintech.com",
+    "subject": "Intimation of record date for payment of final dividend",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_rta_056.eml",
+    "set": "rta",
+    "sender": "investor.helpdesk@linkintime.co.in",
+    "subject": "Notice of 42nd Annual General Meeting and e-Voting information",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_rta_057.eml",
+    "set": "rta",
+    "sender": "camsCAS@camsonline.com",
+    "subject": "Unclaimed dividend liable to be transferred to IEPF",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_rta_058.eml",
+    "set": "rta",
+    "sender": "investor@bigshareonline.com",
+    "subject": "Nomination and PAN update required for your folio",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_rta_059.eml",
+    "set": "rta",
+    "sender": "einward.ris@kfintech.com",
+    "subject": "Rights issue - application form and ASBA instructions",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_rta_060.eml",
+    "set": "rta",
+    "sender": "investor.helpdesk@linkintime.co.in",
+    "subject": "Intimation of record date for payment of final dividend",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_rta_061.eml",
+    "set": "rta",
+    "sender": "camsCAS@camsonline.com",
+    "subject": "Notice of 42nd Annual General Meeting and e-Voting information",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_rta_062.eml",
+    "set": "rta",
+    "sender": "investor@bigshareonline.com",
+    "subject": "Unclaimed dividend liable to be transferred to IEPF",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_rta_063.eml",
+    "set": "rta",
+    "sender": "einward.ris@kfintech.com",
+    "subject": "Nomination and PAN update required for your folio",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_rta_064.eml",
+    "set": "rta",
+    "sender": "investor.helpdesk@linkintime.co.in",
+    "subject": "Rights issue - application form and ASBA instructions",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_rta_065.eml",
+    "set": "rta",
+    "sender": "camsCAS@camsonline.com",
+    "subject": "Intimation of record date for payment of final dividend",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_rta_066.eml",
+    "set": "rta",
+    "sender": "investor@bigshareonline.com",
+    "subject": "Notice of 42nd Annual General Meeting and e-Voting information",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_rta_067.eml",
+    "set": "rta",
+    "sender": "einward.ris@kfintech.com",
+    "subject": "Unclaimed dividend liable to be transferred to IEPF",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_rta_068.eml",
+    "set": "rta",
+    "sender": "investor.helpdesk@linkintime.co.in",
+    "subject": "Nomination and PAN update required for your folio",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_rta_069.eml",
+    "set": "rta",
+    "sender": "camsCAS@camsonline.com",
+    "subject": "Rights issue - application form and ASBA instructions",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_rta_070.eml",
+    "set": "rta",
+    "sender": "investor@bigshareonline.com",
+    "subject": "Intimation of record date for payment of final dividend",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_rta_071.eml",
+    "set": "rta",
+    "sender": "einward.ris@kfintech.com",
+    "subject": "Notice of 42nd Annual General Meeting and e-Voting information",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_rta_072.eml",
+    "set": "rta",
+    "sender": "investor.helpdesk@linkintime.co.in",
+    "subject": "Unclaimed dividend liable to be transferred to IEPF",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_rta_073.eml",
+    "set": "rta",
+    "sender": "camsCAS@camsonline.com",
+    "subject": "Nomination and PAN update required for your folio",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_rta_074.eml",
+    "set": "rta",
+    "sender": "investor@bigshareonline.com",
+    "subject": "Rights issue - application form and ASBA instructions",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_mutual_fund_075.eml",
+    "set": "mutual_fund",
+    "sender": "customer.delight@sbimf.com",
+    "subject": "Your SIP instalment is due on 10 August 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_mutual_fund_076.eml",
+    "set": "mutual_fund",
+    "sender": "service@hdfcfund.com",
+    "subject": "Redemption request processed",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_mutual_fund_077.eml",
+    "set": "mutual_fund",
+    "sender": "enquiry@icicipruamc.com",
+    "subject": "Consolidated Account Statement for July 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_mutual_fund_078.eml",
+    "set": "mutual_fund",
+    "sender": "customercare@nipponindiamf.com",
+    "subject": "Your SIP instalment is due on 10 August 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_mutual_fund_079.eml",
+    "set": "mutual_fund",
+    "sender": "service@axismf.com",
+    "subject": "Redemption request processed",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_mutual_fund_080.eml",
+    "set": "mutual_fund",
+    "sender": "customer.delight@sbimf.com",
+    "subject": "Consolidated Account Statement for July 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_mutual_fund_081.eml",
+    "set": "mutual_fund",
+    "sender": "service@hdfcfund.com",
+    "subject": "Your SIP instalment is due on 10 August 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_mutual_fund_082.eml",
+    "set": "mutual_fund",
+    "sender": "enquiry@icicipruamc.com",
+    "subject": "Redemption request processed",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_mutual_fund_083.eml",
+    "set": "mutual_fund",
+    "sender": "customercare@nipponindiamf.com",
+    "subject": "Consolidated Account Statement for July 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_mutual_fund_084.eml",
+    "set": "mutual_fund",
+    "sender": "service@axismf.com",
+    "subject": "Your SIP instalment is due on 10 August 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_mutual_fund_085.eml",
+    "set": "mutual_fund",
+    "sender": "customer.delight@sbimf.com",
+    "subject": "Redemption request processed",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_mutual_fund_086.eml",
+    "set": "mutual_fund",
+    "sender": "service@hdfcfund.com",
+    "subject": "Consolidated Account Statement for July 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_mutual_fund_087.eml",
+    "set": "mutual_fund",
+    "sender": "enquiry@icicipruamc.com",
+    "subject": "Your SIP instalment is due on 10 August 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_mutual_fund_088.eml",
+    "set": "mutual_fund",
+    "sender": "customercare@nipponindiamf.com",
+    "subject": "Redemption request processed",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_mutual_fund_089.eml",
+    "set": "mutual_fund",
+    "sender": "service@axismf.com",
+    "subject": "Consolidated Account Statement for July 2026",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_regulatory_090.eml",
+    "set": "regulatory",
+    "sender": "investorassistance@sebi.gov.in",
+    "subject": "Investor Charter and grievance redressal - notice 1",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_regulatory_091.eml",
+    "set": "regulatory",
+    "sender": "investorassistance@sebi.gov.in",
+    "subject": "Investor Charter and grievance redressal - notice 2",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_regulatory_092.eml",
+    "set": "regulatory",
+    "sender": "investorassistance@sebi.gov.in",
+    "subject": "Investor Charter and grievance redressal - notice 3",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_regulatory_093.eml",
+    "set": "regulatory",
+    "sender": "investorassistance@sebi.gov.in",
+    "subject": "Investor Charter and grievance redressal - notice 4",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_regulatory_094.eml",
+    "set": "regulatory",
+    "sender": "investorassistance@sebi.gov.in",
+    "subject": "Investor Charter and grievance redressal - notice 5",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_regulatory_095.eml",
+    "set": "regulatory",
+    "sender": "investorassistance@sebi.gov.in",
+    "subject": "Investor Charter and grievance redressal - notice 6",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_regulatory_096.eml",
+    "set": "regulatory",
+    "sender": "investorassistance@sebi.gov.in",
+    "subject": "Investor Charter and grievance redressal - notice 7",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_regulatory_097.eml",
+    "set": "regulatory",
+    "sender": "investorassistance@sebi.gov.in",
+    "subject": "Investor Charter and grievance redressal - notice 8",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_regulatory_098.eml",
+    "set": "regulatory",
+    "sender": "investorassistance@sebi.gov.in",
+    "subject": "Investor Charter and grievance redressal - notice 9",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_regulatory_099.eml",
+    "set": "regulatory",
+    "sender": "investorassistance@sebi.gov.in",
+    "subject": "Investor Charter and grievance redressal - notice 10",
+    "forward_type": "DIRECT"
+  },
+  {
+    "file": "g_fwd_inline_000.eml",
+    "set": "forwarded_inline",
+    "sender": "CDSL e-Voting <helpdesk.evoting@cdslindia.com>",
+    "subject": "Fwd: Remote e-Voting instructions for shareholders",
+    "forward_type": "INLINE"
+  },
+  {
+    "file": "g_fwd_inline_001.eml",
+    "set": "forwarded_inline",
+    "sender": "CDSL Easi <easi@cdslindia.com>",
+    "subject": "Fwd: Your demat account statement for July 2026",
+    "forward_type": "INLINE"
+  },
+  {
+    "file": "g_fwd_inline_002.eml",
+    "set": "forwarded_inline",
+    "sender": "State Bank of India <alerts@sbi.co.in>",
+    "subject": "Fwd: Your account statement for July 2026 - State Bank of India",
+    "forward_type": "INLINE"
+  },
+  {
+    "file": "g_fwd_inline_003.eml",
+    "set": "forwarded_inline",
+    "sender": "State Bank of India <alerts@sbi.co.in>",
+    "subject": "Fwd: Your account statement for July 2026 - State Bank of India",
+    "forward_type": "INLINE"
+  },
+  {
+    "file": "g_fwd_inline_004.eml",
+    "set": "forwarded_inline",
+    "sender": "Zerodha <support@zerodha.com>",
+    "subject": "Fwd: Margin shortfall in your trading account",
+    "forward_type": "INLINE"
+  },
+  {
+    "file": "g_fwd_inline_005.eml",
+    "set": "forwarded_inline",
+    "sender": "Zerodha <support@zerodha.com>",
+    "subject": "Fwd: Your ledger and holdings statement for July 2026",
+    "forward_type": "INLINE"
+  },
+  {
+    "file": "g_fwd_inline_006.eml",
+    "set": "forwarded_inline",
+    "sender": "MUFG Intime India <investor.helpdesk@linkintime.co.in>",
+    "subject": "Fwd: Intimation of record date for payment of final dividend",
+    "forward_type": "INLINE"
+  },
+  {
+    "file": "g_fwd_inline_007.eml",
+    "set": "forwarded_inline",
+    "sender": "Bigshare Services <investor@bigshareonline.com>",
+    "subject": "Fwd: Intimation of record date for payment of final dividend",
+    "forward_type": "INLINE"
+  },
+  {
+    "file": "g_fwd_inline_008.eml",
+    "set": "forwarded_inline",
+    "sender": "SBI Mutual Fund <customer.delight@sbimf.com>",
+    "subject": "Fwd: Consolidated Account Statement for July 2026",
+    "forward_type": "INLINE"
+  },
+  {
+    "file": "g_fwd_inline_009.eml",
+    "set": "forwarded_inline",
+    "sender": "SEBI Investor Assistance <investorassistance@sebi.gov.in>",
+    "subject": "Fwd: Investor Charter and grievance redressal - notice 1",
+    "forward_type": "INLINE"
+  },
+  {
+    "file": "g_fwd_attached_000.eml",
+    "set": "forwarded_attached",
+    "sender": "CDSL e-Voting <helpdesk.evoting@cdslindia.com>",
+    "subject": "Fwd: Notice: e-Voting for AGM 2026 - last date to cast your vote is 11 August 2026",
+    "forward_type": "ATTACHED"
+  },
+  {
+    "file": "g_fwd_attached_001.eml",
+    "set": "forwarded_attached",
+    "sender": "CDSL Easi <easi@cdslindia.com>",
+    "subject": "Fwd: Important: verify your account details as per SEBI circular",
+    "forward_type": "ATTACHED"
+  },
+  {
+    "file": "g_fwd_attached_002.eml",
+    "set": "forwarded_attached",
+    "sender": "HDFC Bank <alerts@hdfcbank.com>",
+    "subject": "Fwd: Your account statement for July 2026 - HDFC Bank",
+    "forward_type": "ATTACHED"
+  },
+  {
+    "file": "g_fwd_attached_003.eml",
+    "set": "forwarded_attached",
+    "sender": "HDFC Bank <alerts@hdfcbank.com>",
+    "subject": "Fwd: Your account statement for July 2026 - HDFC Bank",
+    "forward_type": "ATTACHED"
+  },
+  {
+    "file": "g_fwd_attached_004.eml",
+    "set": "forwarded_attached",
+    "sender": "Angel One <support@angelone.in>",
+    "subject": "Fwd: Re-KYC required for your trading and demat account",
+    "forward_type": "ATTACHED"
+  },
+  {
+    "file": "g_fwd_attached_005.eml",
+    "set": "forwarded_attached",
+    "sender": "Angel One <support@angelone.in>",
+    "subject": "Fwd: Contract note for trades dated 03 August 2026",
+    "forward_type": "ATTACHED"
+  },
+  {
+    "file": "g_fwd_attached_006.eml",
+    "set": "forwarded_attached",
+    "sender": "CAMS <camsCAS@camsonline.com>",
+    "subject": "Fwd: Notice of 42nd Annual General Meeting and e-Voting information",
+    "forward_type": "ATTACHED"
+  },
+  {
+    "file": "g_fwd_attached_007.eml",
+    "set": "forwarded_attached",
+    "sender": "KFin Technologies <einward.ris@kfintech.com>",
+    "subject": "Fwd: Notice of 42nd Annual General Meeting and e-Voting information",
+    "forward_type": "ATTACHED"
+  },
+  {
+    "file": "g_fwd_attached_008.eml",
+    "set": "forwarded_attached",
+    "sender": "HDFC Mutual Fund <service@hdfcfund.com>",
+    "subject": "Fwd: Your SIP instalment is due on 10 August 2026",
+    "forward_type": "ATTACHED"
+  },
+  {
+    "file": "g_fwd_attached_009.eml",
+    "set": "forwarded_attached",
+    "sender": "SEBI Investor Assistance <investorassistance@sebi.gov.in>",
+    "subject": "Fwd: Investor Charter and grievance redressal - notice 2",
+    "forward_type": "ATTACHED"
+  }
+]

@@ -1,0 +1,37 @@
+Message-ID: <178616722315.33868.17460308818777401907@cdslindia.com>
+Date: Mon, 03 Aug 2026 07:30:00 -0000
+From: CDSL e-Voting <helpdesk.evoting@cdslindia.com>
+To: investor@example.com
+Subject:
+ Notice: e-Voting for AGM 2026 - last date to cast your vote is 11 August 2026
+Return-Path: <bounce@cdslindia.com>
+Authentication-Results: mx.google.com; dkim=pass header.i=@cdslindia.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@cdslindia.com; dmarc=pass
+ (p=REJECT sp=REJECT dis=NONE) header.from=cdslindia.com
+Received: from mail.cdslindia.com (mail.cdslindia.com [203.0.113.20]) by
+ mx.google.com with ESMTPS id g1; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Demat Account Holder,
+
+As per SEBI circular no. SEBI/HO/CFD/CMD/CIR/P/2026/41, please note the follo=
+wing.
+
+The system will authenticate the user by sending OTP on registered Mobile & E=
+mail as recorded in the Demat Account. BO ID 1209870000018454.
+
+Holdings: ANANT RAJ -EQ RS 2 ISIN INE242C01024, RELIANCE -EQ RS 10 ISIN INE00=
+2A01018.
+Folio No. ANR0001234. DP ID 12098700.
+
+Kindly verify your account details and update your PAN and bank mandate with =
+your
+Depository Participant. Folios without PAN and nomination are liable to be fr=
+ozen.
+
+Toll free 1800 22 55 33. Please report any suspicious message to us immediate=
+ly.
+
+CDSL e-Voting

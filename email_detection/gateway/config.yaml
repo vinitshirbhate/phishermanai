@@ -1,0 +1,51 @@
+# PhishermanAI SMTP gateway configuration.
+#
+# Every value here is overridable by an environment variable named
+# PHAI_GW_<UPPERCASE_KEY>, e.g. PHAI_GW_PORT=2025.
+#
+# The defaults are chosen so the demo cannot fail: loopback binding, a local
+# Maildir, and no network dependency beyond the verification engine on the same
+# machine. Read SECURITY.md before changing host, port or recipient_allowlist.
+
+# --- Listener ---------------------------------------------------------------
+# 127.0.0.1 only. Binding publicly turns this into an internet-facing mail
+# server, which this build is NOT hardened for. See SECURITY.md.
+host: "127.0.0.1"
+# 1025, never 25. Port 25 needs root and signals a production MTA.
+port: 1025
+hostname: "phishermanai.gateway.local"
+
+# --- Verification engine ----------------------------------------------------
+engine_url: "http://127.0.0.1:8000"
+# Seconds. On timeout the message is DELIVERED, marked UNVERIFIED -- never held.
+engine_timeout: 8.0
+
+# --- Relay ------------------------------------------------------------------
+# maildir | smtp | discard
+relay_mode: "maildir"
+maildir_path: "gateway/maildir"
+relay_host: "127.0.0.1"
+relay_port: 25
+
+# --- Verdict presentation ---------------------------------------------------
+# Header prefix. NOTE: the Phase 7 brief specified "X-SatyaCheck"; this build
+# uses the project's current name. Set to "X-SatyaCheck" to match the brief
+# exactly -- it is a single value and every header, filter and doc follows it.
+# Both prefixes are always STRIPPED from inbound mail regardless of this
+# setting, so switching it cannot open a spoofing gap.
+header_prefix: "X-PhishermanAI"
+# Prepend a visible tag to the Subject when the verdict is not GENUINE.
+subject_tagging: true
+
+# --- Limits -----------------------------------------------------------------
+max_size_mb: 25
+rate_limit_per_min: 100
+
+# --- Recipient allowlist ----------------------------------------------------
+# RCPT TO for anything not listed is rejected with 550. This is what stops the
+# gateway becoming an open relay. An empty list rejects everything.
+# Entries may be a full address (a@b.com) or a domain (@b.com).
+recipient_allowlist:
+  - "demo@local"
+  - "investor@example.com"
+  - "@phishermanai.local"

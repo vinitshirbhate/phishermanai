@@ -1,0 +1,20 @@
+# Node
+node_modules/
+.next/
+out/
+npm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+.venv/
+
+# Build artefacts — regenerate with `python -m data.load_all`
+*.db
+*.db-wal
+*.db-shm
+
+# Gateway runtime
+gateway/maildir/

@@ -1,0 +1,33 @@
+Message-ID: <178610589259.39512.12074350617751483292@nsdl.com>
+Date: Tue, 28 Jul 2026 21:30:00 -0000
+From: NSDL <statements@nsdl.com>
+To: investor@example.com
+Subject: Transaction statement for your demat account - July 2026
+Return-Path: <bounce@nsdl.com>
+Authentication-Results: mx.google.com; dkim=pass header.i=@nsdl.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@nsdl.com; dmarc=pass (p=REJECT
+ sp=REJECT dis=NONE) header.from=nsdl.com
+Received: from mail.nsdl.com (mail.nsdl.com [203.0.113.20]) by mx.google.com
+ with ESMTPS id inst19; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Client,
+
+The transaction statement for your demat account for the period 1 July 2026 to
+31 July 2026 is attached.
+
+To view your holdings online, register for the IDeAS facility at
+https://eservices.nsdl.com. After registration you can login with your user I=
+D and
+password to view holdings across your demat accounts.
+
+Please verify the transactions in the statement. If you notice any discrepanc=
+y, contact
+your Depository Participant immediately.
+
+NSDL will never call or email you asking for your password, OTP or IDeAS cred=
+entials.
+
+National Securities Depository Limited

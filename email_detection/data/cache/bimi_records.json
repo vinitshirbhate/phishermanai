@@ -1,0 +1,38 @@
+{
+ "sbi.co.in": {
+  "domain": "sbi.co.in",
+  "found": true,
+  "has_vmc": true,
+  "logo_url": "https://vmc.globalsign.com/CEVMC250925896886/logo.svg",
+  "vmc_url": "https://vmc.globalsign.com/CEVMC250925896886/vmc.pem",
+  "checked_at": "2026-08-08T16:10:57",
+  "error": null
+ },
+ "nse.co.in": {
+  "domain": "nse.co.in",
+  "found": true,
+  "has_vmc": true,
+  "logo_url": "https://vmc.digicert.com/8e5da1f9-caca-4575-b04a-4efceaf01db4.svg",
+  "vmc_url": "https://vmc.digicert.com/8e5da1f9-caca-4575-b04a-4efceaf01db4.pem",
+  "checked_at": "2026-08-08T16:10:58",
+  "error": null
+ },
+ "paypal.com": {
+  "domain": "paypal.com",
+  "found": true,
+  "has_vmc": true,
+  "logo_url": "https://www.paypalobjects.com/marketing/web/logos/paypal_ppe.svg",
+  "vmc_url": "https://www.paypalobjects.com/marketing/web/logos/PPE_UK_DE_paypal_inc.pem",
+  "checked_at": "2026-08-08T16:10:58",
+  "error": null
+ },
+ "canarabank-dividends.co.in": {
+  "domain": "canarabank-dividends.co.in",
+  "found": false,
+  "has_vmc": false,
+  "logo_url": null,
+  "vmc_url": null,
+  "checked_at": "2026-08-08T16:10:58",
+  "error": "NXDOMAIN"
+ }
+}

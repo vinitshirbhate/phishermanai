@@ -1,0 +1,22 @@
+Message-ID: <178618855100.34024.15653738860894275646@zerodha.com>
+Date: Wed, 29 Jul 2026 22:00:00 -0000
+From: Zerodha Support <support@zerodha.com>
+To: investor@example.com
+Subject: Advisory: mule accounts and commission offers
+Return-Path: <bounce@zerodha.com>
+Authentication-Results: mx.google.com; dkim=pass header.i=@zerodha.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@zerodha.com; dmarc=pass
+ (p=REJECT) header.from=zerodha.com
+Received: from mail.zerodha.com (mail.zerodha.com [203.0.113.30]) by
+ mx.google.com with ESMTPS id adv31; Wed, 05 Aug 2026 09:00:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Dear Client,
+
+Do not allow anyone to route money through your bank account in exchange for a
+commission. Doing so makes you a mule account holder, which is a criminal
+offence under the PMLA, and your account will be frozen.
+
+Report such offers to us and to the cybercrime helpline 1930.

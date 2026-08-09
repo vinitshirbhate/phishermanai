@@ -1,0 +1,31 @@
+Message-ID: <178616722323.33868.4072196076845804364@upstox.com>
+Date: Wed, 29 Jul 2026 19:30:00 -0000
+From: Upstox <support@upstox.com>
+To: investor@example.com
+Subject: Re-KYC required for your trading and demat account
+Return-Path: <bounce@upstox.com>
+Authentication-Results: mx.google.com; dkim=pass header.i=@upstox.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@upstox.com; dmarc=pass (p=REJECT
+ sp=REJECT dis=NONE) header.from=upstox.com
+Received: from mail.upstox.com (mail.upstox.com [203.0.113.20]) by
+ mx.google.com with ESMTPS id g37; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Client,
+
+As per SEBI regulations your KYC is due for revalidation. Please complete re-=
+KYC at your convenience by logging in to your account. If not completed, your=
+ account may be restricted for new positions.
+
+We will never ask you for your password, OTP or PIN over a call or message. D=
+o not share
+your login credentials with anyone, including persons claiming to be from our=
+ support team.
+
+For any grievance write to us, or escalate to SEBI SCORES at https://scores.s=
+ebi.gov.in
+
+Upstox
+SEBI Registration: INZ000315837

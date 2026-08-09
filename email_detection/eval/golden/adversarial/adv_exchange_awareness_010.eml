@@ -1,0 +1,25 @@
+Message-ID: <178618855097.34024.14503169806816135454@bse.co.in>
+Date: Mon, 03 Aug 2026 07:00:00 -0000
+From: BSE Investor Services <investorservices@bse.co.in>
+To: investor@example.com
+Subject: Beware of fake trading applications
+Return-Path: <bounce@bse.co.in>
+Authentication-Results: mx.google.com; dkim=pass header.i=@bse.co.in
+ header.s=s1; spf=pass smtp.mailfrom=noreply@bse.co.in; dmarc=pass (p=REJECT)
+ header.from=bse.co.in
+Received: from mail.bse.co.in (mail.bse.co.in [203.0.113.30]) by mx.google.com
+ with ESMTPS id adv10; Wed, 05 Aug 2026 09:00:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Investor,
+
+Fraudulent trading applications are being distributed outside the Play Store =
+as
+APK files. These applications display fabricated profits and then demand a tax
+or processing fee before allowing withdrawal. No genuine broker asks you to p=
+ay
+a fee to withdraw your own money.
+
+Download applications only from official app stores.

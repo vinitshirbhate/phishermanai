@@ -1,0 +1,34 @@
+Message-ID: <178616722320.33868.10426148820801174858@sbi.co.in>
+Date: Fri, 31 Jul 2026 22:30:00 -0000
+From: State Bank of India <alerts@sbi.co.in>
+To: investor@example.com
+Subject: Your account statement for July 2026 - State Bank of India
+Return-Path: <bounce@sbi.co.in>
+Authentication-Results: mx.google.com; dkim=pass header.i=@sbi.co.in
+ header.s=s1; spf=pass smtp.mailfrom=noreply@sbi.co.in; dmarc=pass (p=REJECT
+ sp=REJECT dis=NONE) header.from=sbi.co.in
+Received: from mail.sbi.co.in (mail.sbi.co.in [203.0.113.20]) by mx.google.com
+ with ESMTPS id g20; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Customer,
+
+Your account statement is attached. The password to open this statement is yo=
+ur PAN in
+upper case followed by your date of birth in DDMM format.
+
+An OTP will be sent to your registered mobile number when you log in to net b=
+anking.
+State Bank of India will never ask you for your OTP, PIN, CVV or password. If=
+ anyone asks you to
+share these, please report it to us immediately on 1800 11 2211.
+
+To update your KYC, please visit your nearest branch or log in to net banking=
+. Accounts
+with incomplete KYC may be restricted as per RBI guidelines.
+
+This is a system generated email. Please do not reply to this message.
+
+State Bank of India

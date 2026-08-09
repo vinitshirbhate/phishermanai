@@ -1,0 +1,22 @@
+Message-ID: <178618855100.34024.2278170261237799172@angelone.in>
+Date: Wed, 29 Jul 2026 17:00:00 -0000
+From: Angel One Security <support@angelone.in>
+To: investor@example.com
+Subject: Advisory: mule accounts and commission offers
+Return-Path: <bounce@angelone.in>
+Authentication-Results: mx.google.com; dkim=pass header.i=@angelone.in
+ header.s=s1; spf=pass smtp.mailfrom=noreply@angelone.in; dmarc=pass
+ (p=REJECT) header.from=angelone.in
+Received: from mail.angelone.in (mail.angelone.in [203.0.113.30]) by
+ mx.google.com with ESMTPS id adv32; Wed, 05 Aug 2026 09:00:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Dear Client,
+
+Do not allow anyone to route money through your bank account in exchange for a
+commission. Doing so makes you a mule account holder, which is a criminal
+offence under the PMLA, and your account will be frozen.
+
+Report such offers to us and to the cybercrime helpline 1930.

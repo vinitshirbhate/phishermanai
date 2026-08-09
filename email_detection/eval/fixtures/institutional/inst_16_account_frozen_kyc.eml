@@ -1,0 +1,31 @@
+Message-ID: <178610589258.39512.11421340737515759272@linkintime.co.in>
+Date: Thu, 30 Jul 2026 01:30:00 -0000
+From: MUFG Intime India <isr.helpdesk@linkintime.co.in>
+To: investor@example.com
+Subject: Folio frozen - KYC documents pending
+Return-Path: <bounce@linkintime.co.in>
+Authentication-Results: mx.google.com; dkim=pass header.i=@linkintime.co.in
+ header.s=s1; spf=pass smtp.mailfrom=noreply@linkintime.co.in; dmarc=pass
+ (p=REJECT sp=REJECT dis=NONE) header.from=linkintime.co.in
+Received: from mail.linkintime.co.in (mail.linkintime.co.in [203.0.113.20]) by
+ mx.google.com with ESMTPS id inst15; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Shareholder,
+
+As per SEBI circular, folios in which any of PAN, KYC details, nomination or =
+bank mandate
+are not available are liable to be frozen.
+
+Our records show your folio has been frozen for want of the above documents.
+
+To unfreeze the folio, please submit Form ISR-1 along with self-attested copi=
+es of PAN and
+address proof to the Registrar and Transfer Agent. There is no fee for this s=
+ervice.
+
+You may download the forms from https://in.mpms.mufg.com/Downloads.html
+
+MUFG Intime India Private Limited

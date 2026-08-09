@@ -1,0 +1,29 @@
+Message-ID: <178604627236.32808.14386942418359070920@sebi-verification.online>
+Date: Fri, 07 Aug 2026 01:27:52 -0000
+From: SEBI Enforcement Department <enforcement@sebi-verification.online>
+To: investor@example.com
+Subject: URGENT: SEBI notice - your demat account is frozen
+Return-Path: <bounce@sebi-verification.online>
+Authentication-Results: mx.google.com; dkim=pass
+ header.i=@sebi-verification.online header.s=selector1; spf=pass (google.com:
+ domain of noreply@sebi-verification.online designates 203.0.113.10 as
+ permitted sender) smtp.mailfrom=noreply@sebi-verification.online; dmarc=pass
+ (p=REJECT sp=REJECT dis=NONE) header.from=sebi-verification.online
+Received: from mail.sebi-verification.online (mail.sebi-verification.online
+ [203.0.113.10]) by mx.google.com with ESMTPS id abc123; Fri, 07 Aug 2026
+ 01:27:52 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+OFFICIAL NOTICE FROM SEBI
+
+Your demat account has been frozen due to suspicious transactions flagged und=
+er money laundering investigation.
+
+To avoid a non-bailable arrest warrant, pay the penalty of Rs 45,000 immediat=
+ely to account 123456789012, IFSC HDFC0001234.
+
+Failure to comply within 24 hours will result in legal action.
+
+SEBI Enforcement Department

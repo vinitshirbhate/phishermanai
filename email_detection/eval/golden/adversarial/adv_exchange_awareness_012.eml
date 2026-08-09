@@ -1,0 +1,23 @@
+Message-ID: <178618855097.34024.13624047643274596140@nse.co.in>
+Date: Sun, 02 Aug 2026 21:00:00 -0000
+From: NSE Investor Awareness <msm@nse.co.in>
+To: investor@example.com
+Subject: Caution: pre-IPO and unlisted share offers
+Return-Path: <bounce@nse.co.in>
+Authentication-Results: mx.google.com; dkim=pass header.i=@nse.co.in
+ header.s=s1; spf=pass smtp.mailfrom=noreply@nse.co.in; dmarc=pass (p=REJECT)
+ header.from=nse.co.in
+Received: from mail.nse.co.in (mail.nse.co.in [203.0.113.30]) by mx.google.com
+ with ESMTPS id adv12; Wed, 05 Aug 2026 09:00:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Dear Investor,
+
+Investors are cautioned against offers of guaranteed pre-IPO allotment or
+exclusive unlisted shares. IPO allotment in an oversubscribed issue is decided
+by a computerised lottery run by the registrar. Nobody can guarantee you an
+allotment.
+
+Application money under ASBA is blocked in your own bank account.

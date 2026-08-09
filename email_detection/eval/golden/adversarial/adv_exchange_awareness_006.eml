@@ -1,0 +1,23 @@
+Message-ID: <178618855096.34024.6572752092268259714@nse.co.in>
+Date: Tue, 04 Aug 2026 03:00:00 -0000
+From: NSE Investor Awareness <msm@nse.co.in>
+To: investor@example.com
+Subject: Caution against unsolicited investment tips
+Return-Path: <bounce@nse.co.in>
+Authentication-Results: mx.google.com; dkim=pass header.i=@nse.co.in
+ header.s=s1; spf=pass smtp.mailfrom=noreply@nse.co.in; dmarc=pass (p=REJECT)
+ header.from=nse.co.in
+Received: from mail.nse.co.in (mail.nse.co.in [203.0.113.30]) by mx.google.com
+ with ESMTPS id adv6; Wed, 05 Aug 2026 09:00:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Dear Investor,
+
+Investors are cautioned against unsolicited stock tips circulated through
+WhatsApp and Telegram groups promising multibagger returns. Such groups often
+claim to have insider information. Acting on insider information is a criminal
+offence under the SEBI (Prohibition of Insider Trading) Regulations, 2015.
+
+Deal only with SEBI registered intermediaries.

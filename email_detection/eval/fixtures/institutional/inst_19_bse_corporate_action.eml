@@ -1,0 +1,33 @@
+Message-ID: <178610589259.39512.13872086669665933859@titancompany.in>
+Date: Wed, 29 Jul 2026 04:30:00 -0000
+From: Company Secretary <investors@titancompany.in>
+To: investor@example.com
+Subject: Intimation of book closure for AGM and dividend
+Return-Path: <bounce@titancompany.in>
+Authentication-Results: mx.google.com; dkim=pass header.i=@titancompany.in
+ header.s=s1; spf=pass smtp.mailfrom=noreply@titancompany.in; dmarc=pass
+ (p=REJECT sp=REJECT dis=NONE) header.from=titancompany.in
+Received: from mail.titancompany.in (mail.titancompany.in [203.0.113.20]) by
+ mx.google.com with ESMTPS id inst18; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Shareholder,
+
+Pursuant to Regulation 42 of the SEBI (Listing Obligations and Disclosure Req=
+uirements)
+Regulations, 2015, notice is hereby given that the Register of Members will r=
+emain closed
+from Monday, 17 August 2026 to Friday, 21 August 2026 (both days inclusive) f=
+or the
+purpose of the Annual General Meeting and payment of dividend.
+
+The dividend, if declared, will be paid on or after 1 September 2026 to those=
+ members
+whose names appear on the register as on the book closure date.
+
+This communication is for information only. No action or payment is required =
+from you.
+
+Titan Company Limited

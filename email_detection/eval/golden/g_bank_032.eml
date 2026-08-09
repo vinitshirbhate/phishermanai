@@ -1,0 +1,34 @@
+Message-ID: <178616722323.33868.12658955046859869430@icicibank.com>
+Date: Thu, 30 Jul 2026 10:30:00 -0000
+From: ICICI Bank <statements@icicibank.com>
+To: investor@example.com
+Subject: Your account statement for July 2026 - ICICI Bank
+Return-Path: <bounce@icicibank.com>
+Authentication-Results: mx.google.com; dkim=pass header.i=@icicibank.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@icicibank.com; dmarc=pass
+ (p=REJECT sp=REJECT dis=NONE) header.from=icicibank.com
+Received: from mail.icicibank.com (mail.icicibank.com [203.0.113.20]) by
+ mx.google.com with ESMTPS id g32; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Customer,
+
+Your account statement is attached. The password to open this statement is yo=
+ur PAN in
+upper case followed by your date of birth in DDMM format.
+
+An OTP will be sent to your registered mobile number when you log in to net b=
+anking.
+ICICI Bank will never ask you for your OTP, PIN, CVV or password. If anyone a=
+sks you to
+share these, please report it to us immediately on 1800 11 2211.
+
+To update your KYC, please visit your nearest branch or log in to net banking=
+. Accounts
+with incomplete KYC may be restricted as per RBI guidelines.
+
+This is a system generated email. Please do not reply to this message.
+
+ICICI Bank

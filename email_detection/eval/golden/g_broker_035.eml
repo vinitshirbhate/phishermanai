@@ -1,0 +1,30 @@
+Message-ID: <178616722323.33868.15804174116788832246@zerodha.com>
+Date: Thu, 30 Jul 2026 01:30:00 -0000
+From: Zerodha <support@zerodha.com>
+To: investor@example.com
+Subject: Contract note for trades dated 03 August 2026
+Return-Path: <bounce@zerodha.com>
+Authentication-Results: mx.google.com; dkim=pass header.i=@zerodha.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@zerodha.com; dmarc=pass (p=REJECT
+ sp=REJECT dis=NONE) header.from=zerodha.com
+Received: from mail.zerodha.com (mail.zerodha.com [203.0.113.20]) by
+ mx.google.com with ESMTPS id g35; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Client,
+
+Please find attached the digitally signed contract note. The attachment is pa=
+ssword protected; the password is your PAN in upper case.
+
+We will never ask you for your password, OTP or PIN over a call or message. D=
+o not share
+your login credentials with anyone, including persons claiming to be from our=
+ support team.
+
+For any grievance write to us, or escalate to SEBI SCORES at https://scores.s=
+ebi.gov.in
+
+Zerodha
+SEBI Registration: INZ000031633

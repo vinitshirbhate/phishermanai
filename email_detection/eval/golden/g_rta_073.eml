@@ -1,0 +1,26 @@
+Message-ID: <178616722331.33868.2594023767159058181@camsonline.com>
+Date: Sat, 25 Jul 2026 07:30:00 -0000
+From: CAMS <camsCAS@camsonline.com>
+To: investor@example.com
+Subject: Nomination and PAN update required for your folio
+Return-Path: <bounce@camsonline.com>
+Authentication-Results: mx.google.com; dkim=pass header.i=@camsonline.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@camsonline.com; dmarc=pass
+ (p=REJECT sp=REJECT dis=NONE) header.from=camsonline.com
+Received: from mail.camsonline.com (mail.camsonline.com [203.0.113.20]) by
+ mx.google.com with ESMTPS id g73; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Shareholder,
+
+As per SEBI circular, folios without PAN, nomination or bank mandate are liab=
+le to be frozen. Please submit Form ISR-1 with self-attested PAN. There is no=
+ fee for this service.
+
+Folio No. ANR001845. DP ID 12098700. Client ID 00018454.
+
+For queries please contact the Registrar and Share Transfer Agent.
+
+CAMS

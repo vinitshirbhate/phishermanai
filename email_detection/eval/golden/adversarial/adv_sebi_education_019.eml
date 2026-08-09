@@ -1,0 +1,24 @@
+Message-ID: <178618855098.34024.729925569871652242@sebi.gov.in>
+Date: Sat, 01 Aug 2026 10:00:00 -0000
+From: SEBI Office of Investor Assistance <investorassistance@sebi.gov.in>
+To: investor@example.com
+Subject: Investor education: unclaimed dividend and IEPF
+Return-Path: <bounce@sebi.gov.in>
+Authentication-Results: mx.google.com; dkim=pass header.i=@sebi.gov.in
+ header.s=s1; spf=pass smtp.mailfrom=noreply@sebi.gov.in; dmarc=pass
+ (p=REJECT) header.from=sebi.gov.in
+Received: from mail.sebi.gov.in (mail.sebi.gov.in [203.0.113.30]) by
+ mx.google.com with ESMTPS id adv19; Wed, 05 Aug 2026 09:00:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Investor,
+
+Dividends unclaimed for seven consecutive years are transferred to the Invest=
+or
+Education and Protection Fund under Sections 124 and 125 of the Companies Act,
+2013. Claims are made by filing Form IEPF-5 through the MCA portal.
+
+No fee is payable to any agent. Beware of messages asking you to click a link
+and pay a verification charge to release an unclaimed dividend.

@@ -1,0 +1,115 @@
+domain,entity_name,entity_type,relationship,authority,source
+sebi.gov.in,Securities and Exchange Board of India,REGULATOR,OFFICIAL,REGULATOR,manual_curation_2026-08
+scores.sebi.gov.in,Securities and Exchange Board of India,REGULATOR,INVESTOR_SERVICES,REGULATOR,manual_curation_2026-08
+investor.sebi.gov.in,Securities and Exchange Board of India,REGULATOR,INVESTOR_SERVICES,REGULATOR,manual_curation_2026-08
+smartodr.in,SEBI SMART ODR Portal,REGULATOR,INVESTOR_SERVICES,REGULATOR,manual_curation_2026-08
+cybercrime.gov.in,National Cyber Crime Reporting Portal,REGULATOR,INVESTOR_SERVICES,REGULATOR,manual_curation_2026-08
+nseindia.com,National Stock Exchange of India,EXCHANGE,OFFICIAL,EXCHANGE,manual_curation_2026-08
+bseindia.com,BSE Limited,EXCHANGE,OFFICIAL,EXCHANGE,manual_curation_2026-08
+bsestarmf.in,BSE Limited,EXCHANGE,TRADING_PLATFORM,EXCHANGE,manual_curation_2026-08
+nsdl.co.in,National Securities Depository Limited,DEPOSITORY,OFFICIAL,DEPOSITORY,manual_curation_2026-08
+evoting.nsdl.com,National Securities Depository Limited,DEPOSITORY,EVOTING,DEPOSITORY,manual_curation_2026-08
+nsdl.com,National Securities Depository Limited,DEPOSITORY,OFFICIAL,DEPOSITORY,manual_curation_2026-08
+cdslindia.com,Central Depository Services India Limited,DEPOSITORY,OFFICIAL,DEPOSITORY,manual_curation_2026-08
+evotingindia.com,Central Depository Services India Limited,DEPOSITORY,EVOTING,DEPOSITORY,manual_curation_2026-08
+evoting.cdslindia.com,Central Depository Services India Limited,DEPOSITORY,EVOTING,DEPOSITORY,manual_curation_2026-08
+web.cdslindia.com,Central Depository Services India Limited,DEPOSITORY,INVESTOR_SERVICES,DEPOSITORY,manual_curation_2026-08
+kfintech.com,KFin Technologies Limited,RTA,OFFICIAL,RTA,manual_curation_2026-08
+ris.kfintech.com,KFin Technologies Limited,RTA,INVESTOR_SERVICES,RTA,manual_curation_2026-08
+evoting.kfintech.com,KFin Technologies Limited,RTA,EVOTING,RTA,manual_curation_2026-08
+karisma.kfintech.com,KFin Technologies Limited,RTA,INVESTOR_SERVICES,RTA,manual_curation_2026-08
+linkintime.co.in,MUFG Intime India Private Limited,RTA,OFFICIAL,RTA,manual_curation_2026-08
+instavote.linkintime.co.in,MUFG Intime India Private Limited,RTA,EVOTING,RTA,manual_curation_2026-08
+in.mpms.mufg.com,MUFG Intime India Private Limited,RTA,OFFICIAL,RTA,manual_curation_2026-08
+camsonline.com,Computer Age Management Services Limited,RTA,OFFICIAL,RTA,manual_curation_2026-08
+bigshareonline.com,Bigshare Services Private Limited,RTA,OFFICIAL,RTA,manual_curation_2026-08
+ivote.bigshareonline.com,Bigshare Services Private Limited,RTA,EVOTING,RTA,manual_curation_2026-08
+integratedregistry.in,Integrated Registry Management Services,RTA,OFFICIAL,RTA,manual_curation_2026-08
+skylinerta.com,Skyline Financial Services Private Limited,RTA,OFFICIAL,RTA,manual_curation_2026-08
+masserv.com,MAS Services Limited,RTA,OFFICIAL,RTA,manual_curation_2026-08
+purvashare.com,Purva Sharegistry India Private Limited,RTA,OFFICIAL,RTA,manual_curation_2026-08
+mfcentral.com,MF Central,RTA,INVESTOR_SERVICES,RTA,manual_curation_2026-08
+mfuindia.com,MF Utilities India Private Limited,RTA,INVESTOR_SERVICES,RTA,manual_curation_2026-08
+amfiindia.com,Association of Mutual Funds in India,REGULATOR,OFFICIAL,REGULATOR,manual_curation_2026-08
+zerodha.com,Zerodha Broking Limited,BROKER,OFFICIAL,BROKER,manual_curation_2026-08
+kite.zerodha.com,Zerodha Broking Limited,BROKER,TRADING_PLATFORM,BROKER,manual_curation_2026-08
+console.zerodha.com,Zerodha Broking Limited,BROKER,INVESTOR_SERVICES,BROKER,manual_curation_2026-08
+coin.zerodha.com,Zerodha Broking Limited,BROKER,TRADING_PLATFORM,BROKER,manual_curation_2026-08
+groww.in,Groww Invest Tech Private Limited,BROKER,OFFICIAL,BROKER,manual_curation_2026-08
+angelone.in,Angel One Limited,BROKER,OFFICIAL,BROKER,manual_curation_2026-08
+upstox.com,Upstox Securities Private Limited,BROKER,OFFICIAL,BROKER,manual_curation_2026-08
+icicidirect.com,ICICI Securities Limited,BROKER,OFFICIAL,BROKER,manual_curation_2026-08
+hdfcsec.com,HDFC Securities Limited,BROKER,OFFICIAL,BROKER,manual_curation_2026-08
+kotaksecurities.com,Kotak Securities Limited,BROKER,OFFICIAL,BROKER,manual_curation_2026-08
+5paisa.com,5paisa Capital Limited,BROKER,OFFICIAL,BROKER,manual_curation_2026-08
+motilaloswal.com,Motilal Oswal Financial Services Limited,BROKER,OFFICIAL,BROKER,manual_curation_2026-08
+sharekhan.com,Sharekhan Limited,BROKER,OFFICIAL,BROKER,manual_curation_2026-08
+dhan.co,Dhan,BROKER,OFFICIAL,BROKER,manual_curation_2026-08
+fyers.in,Fyers Securities Private Limited,BROKER,OFFICIAL,BROKER,manual_curation_2026-08
+paytmmoney.com,Paytm Money Limited,BROKER,OFFICIAL,BROKER,manual_curation_2026-08
+iiflcapital.com,IIFL Capital Services Limited,BROKER,OFFICIAL,BROKER,manual_curation_2026-08
+axisdirect.in,Axis Securities Limited,BROKER,OFFICIAL,BROKER,manual_curation_2026-08
+nuvama.com,Nuvama Wealth and Investment Limited,BROKER,OFFICIAL,BROKER,manual_curation_2026-08
+sbisecurities.in,SBICAP Securities Limited,BROKER,OFFICIAL,BROKER,manual_curation_2026-08
+edelweissfin.com,Edelweiss Financial Services Limited,BROKER,OFFICIAL,BROKER,manual_curation_2026-08
+ril.com,Reliance Industries Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+tcs.com,Tata Consultancy Services Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+hdfcbank.com,HDFC Bank Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+airtel.in,Bharti Airtel Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+icicibank.com,ICICI Bank Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+infosys.com,Infosys Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+sbi.co.in,State Bank of India,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+onlinesbi.sbi,State Bank of India,LISTED_COMPANY,INVESTOR_SERVICES,CORPORATE_ACTION,manual_curation_2026-08
+licindia.in,Life Insurance Corporation of India,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+itcportal.com,ITC Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+hul.co.in,Hindustan Unilever Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+larsentoubro.com,Larsen and Toubro Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+bajajfinserv.in,Bajaj Finserv Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+integratedindia.in,Integrated Registry Management Services,RTA,INVESTOR_SERVICES,RTA,manual_curation_2026-08
+marutisuzuki.com,Maruti Suzuki India Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+sunpharma.com,Sun Pharmaceutical Industries Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+kotak.com,Kotak Mahindra Bank Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+hcltech.com,HCL Technologies Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+axisbank.com,Axis Bank Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+ntpc.co.in,NTPC Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+adanienterprises.com,Adani Enterprises Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+adaniports.com,Adani Ports and Special Economic Zone Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+titancompany.in,Titan Company Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+ultratechcement.com,UltraTech Cement Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+ongcindia.com,Oil and Natural Gas Corporation Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+wipro.com,Wipro Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+tatamotors.com,Tata Motors Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+asianpaints.com,Asian Paints Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+coalindia.in,Coal India Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+powergrid.in,Power Grid Corporation of India Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+nestle.in,Nestle India Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+canarabank.com,Canara Bank,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+bankofbaroda.in,Bank of Baroda,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+pnbindia.in,Punjab National Bank,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+unionbankofindia.co.in,Union Bank of India,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+indianbank.in,Indian Bank,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+jswsteel.in,JSW Steel Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+tatasteel.com,Tata Steel Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+mahindra.com,Mahindra and Mahindra Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+techmahindra.com,Tech Mahindra Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+drreddys.com,Dr Reddys Laboratories Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+cipla.com,Cipla Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+grasim.com,Grasim Industries Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+hindalco.com,Hindalco Industries Limited,LISTED_COMPANY,OFFICIAL,CORPORATE_ACTION,manual_curation_2026-08
+sbimf.com,SBI Funds Management Limited,MUTUAL_FUND,OFFICIAL,MUTUAL_FUND,manual_curation_2026-08
+hdfcfund.com,HDFC Asset Management Company Limited,MUTUAL_FUND,OFFICIAL,MUTUAL_FUND,manual_curation_2026-08
+icicipruamc.com,ICICI Prudential Asset Management Company Limited,MUTUAL_FUND,OFFICIAL,MUTUAL_FUND,manual_curation_2026-08
+nipponindiamf.com,Nippon Life India Asset Management Limited,MUTUAL_FUND,OFFICIAL,MUTUAL_FUND,manual_curation_2026-08
+utimf.com,UTI Asset Management Company Limited,MUTUAL_FUND,OFFICIAL,MUTUAL_FUND,manual_curation_2026-08
+kotakmf.com,Kotak Mahindra Asset Management Company Limited,MUTUAL_FUND,OFFICIAL,MUTUAL_FUND,manual_curation_2026-08
+axismf.com,Axis Asset Management Company Limited,MUTUAL_FUND,OFFICIAL,MUTUAL_FUND,manual_curation_2026-08
+miraeassetmf.co.in,Mirae Asset Investment Managers India,MUTUAL_FUND,OFFICIAL,MUTUAL_FUND,manual_curation_2026-08
+adityabirlacapital.com,Aditya Birla Sun Life AMC Limited,MUTUAL_FUND,OFFICIAL,MUTUAL_FUND,manual_curation_2026-08
+dspim.com,DSP Asset Managers Private Limited,MUTUAL_FUND,OFFICIAL,MUTUAL_FUND,manual_curation_2026-08
+franklintempletonindia.com,Franklin Templeton Asset Management India,MUTUAL_FUND,OFFICIAL,MUTUAL_FUND,manual_curation_2026-08
+nse.co.in,National Stock Exchange of India,EXCHANGE,EMAIL_SENDER,EXCHANGE,manual_curation_2026-08_phase9; verified MX=nse-co-in.mail.protection.outlook.com (2026-08-08)
+nseclearing.in,NSE Clearing Limited,EXCHANGE,OFFICIAL,EXCHANGE,"manual_curation_2026-08_phase9; verified A record resolves (2026-08-08); website only, no MX"
+bse.co.in,BSE Limited,EXCHANGE,EMAIL_SENDER,EXCHANGE,manual_curation_2026-08_phase9; verified MX=mail.bse.co.in (2026-08-08)
+rbi.org.in,Reserve Bank of India,REGULATOR,OFFICIAL,REGULATOR,manual_curation_2026-08_phase9; verified MX=mms5.rbi.org.in (2026-08-08)
+mufgintime.co.in,MUFG Intime India Private Limited,RTA,OFFICIAL,RTA,"manual_curation_2026-08_phase9; verified A record resolves (2026-08-08); website only, no MX"
+cameoindia.com,Cameo Corporate Services Limited,RTA,OFFICIAL,RTA,manual_curation_2026-08_phase9; verified MX=mx01.mailngx.com (2026-08-08)

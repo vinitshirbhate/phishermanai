@@ -1,0 +1,142 @@
+[
+  {
+    "file": "genuine_01.eml",
+    "label": "GENUINE",
+    "filing_id": 2541,
+    "company": "Birla Corporation Ltd",
+    "from_domain": "adityabirlacapital.com",
+    "dividend_per_share": 12.5,
+    "record_date": "2026-07-24",
+    "tampered_field": null
+  },
+  {
+    "file": "tampered_01.eml",
+    "label": "TAMPERED",
+    "filing_id": 2541,
+    "company": "Birla Corporation Ltd",
+    "from_domain": "adityabirlacapital.com",
+    "tampered_field": "dividend_per_share",
+    "original_value": "12.5",
+    "altered_value": "125"
+  },
+  {
+    "file": "genuine_02.eml",
+    "label": "GENUINE",
+    "filing_id": 951,
+    "company": "Titan Company Ltd",
+    "from_domain": "titancompany.in",
+    "dividend_per_share": 15.0,
+    "record_date": "2026-07-27",
+    "tampered_field": null
+  },
+  {
+    "file": "tampered_02.eml",
+    "label": "TAMPERED",
+    "filing_id": 951,
+    "company": "Titan Company Ltd",
+    "from_domain": "titancompany.in",
+    "tampered_field": "dividend_per_share",
+    "original_value": "15",
+    "altered_value": "150"
+  },
+  {
+    "file": "genuine_03.eml",
+    "label": "GENUINE",
+    "filing_id": 4368,
+    "company": "Asian Paints Ltd",
+    "from_domain": "asianpaints.com",
+    "dividend_per_share": 23.0,
+    "record_date": "2026-06-23",
+    "tampered_field": null
+  },
+  {
+    "file": "tampered_03.eml",
+    "label": "TAMPERED",
+    "filing_id": 4368,
+    "company": "Asian Paints Ltd",
+    "from_domain": "asianpaints.com",
+    "tampered_field": "dividend_per_share",
+    "original_value": "23",
+    "altered_value": "230"
+  },
+  {
+    "file": "genuine_04.eml",
+    "label": "GENUINE",
+    "filing_id": 3831,
+    "company": "Tata Motors Passenger Vehicles Ltd",
+    "from_domain": "tatamotors.com",
+    "dividend_per_share": 3.0,
+    "record_date": "2026-05-14",
+    "tampered_field": null
+  },
+  {
+    "file": "tampered_04.eml",
+    "label": "TAMPERED",
+    "filing_id": 3831,
+    "company": "Tata Motors Passenger Vehicles Ltd",
+    "from_domain": "tatamotors.com",
+    "tampered_field": "dividend_per_share",
+    "original_value": "3",
+    "altered_value": "30"
+  },
+  {
+    "file": "genuine_05.eml",
+    "label": "GENUINE",
+    "filing_id": 3833,
+    "company": "Tata Motors Passenger Vehicles Ltd",
+    "from_domain": "tatamotors.com",
+    "dividend_per_share": 3.0,
+    "record_date": "2026-05-28",
+    "tampered_field": null
+  },
+  {
+    "file": "tampered_05.eml",
+    "label": "TAMPERED",
+    "filing_id": 3833,
+    "company": "Tata Motors Passenger Vehicles Ltd",
+    "from_domain": "tatamotors.com",
+    "tampered_field": "dividend_per_share",
+    "original_value": "3",
+    "altered_value": "30"
+  },
+  {
+    "file": "fraud_01_lookalike_dividend.eml",
+    "label": "FRAUDULENT",
+    "from_domain": "canarabank-dividends.co.in",
+    "note": "lookalike domain + personal UPI + urgency",
+    "dmarc": "pass"
+  },
+  {
+    "file": "fraud_02_guaranteed_returns.eml",
+    "label": "FRAUDULENT",
+    "from_domain": "wealthmultiplier.xyz",
+    "note": "guaranteed returns + stolen reg no + personal UPI + APK + urgency",
+    "dmarc": "pass"
+  },
+  {
+    "file": "fraud_03_sebi_impersonation.eml",
+    "label": "FRAUDULENT",
+    "from_domain": "sebi-verification.online",
+    "note": "regulator impersonation + digital arrest + payment demand",
+    "dmarc": "pass"
+  },
+  {
+    "file": "fraud_04_spoofed_dmarc_fail.eml",
+    "label": "FRAUDULENT",
+    "from_domain": "zerodha.com",
+    "dmarc": "fail",
+    "note": "forged sender, DMARC fail, reply-to mismatch, OTP request"
+  },
+  {
+    "file": "edge_01_unregistered_but_real.eml",
+    "label": "EDGE_UNREGISTERED_BUT_REAL",
+    "from_domain": "sundaramtextiles-ltd.co.in",
+    "note": "genuine-looking AGM notice from a company not in our registry"
+  },
+  {
+    "file": "edge_02_small_ria_newsletter.eml",
+    "label": "EDGE_UNREGISTERED_BUT_REAL",
+    "from_domain": "meridianadvisors.co.in",
+    "note": "harmless newsletter with compliance disclaimer; must not trip claim rules"
+  }
+]

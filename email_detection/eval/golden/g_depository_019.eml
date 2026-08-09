@@ -1,0 +1,36 @@
+Message-ID: <178616722320.33868.7061756279605994210@cdslindia.com>
+Date: Sat, 01 Aug 2026 01:30:00 -0000
+From: CDSL Transaction <statements@cdslindia.com>
+To: investor@example.com
+Subject: Important: verify your account details as per SEBI circular
+Return-Path: <bounce@cdslindia.com>
+Authentication-Results: mx.google.com; dkim=pass header.i=@cdslindia.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@cdslindia.com; dmarc=pass
+ (p=REJECT sp=REJECT dis=NONE) header.from=cdslindia.com
+Received: from mail.cdslindia.com (mail.cdslindia.com [203.0.113.20]) by
+ mx.google.com with ESMTPS id g19; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Demat Account Holder,
+
+As per SEBI circular no. SEBI/HO/CFD/CMD/CIR/P/2026/45, please note the follo=
+wing.
+
+Your transaction statement is attached. The password for this statement is yo=
+ur PAN in upper case. PAN ABCDE1234F.
+
+Holdings: ANANT RAJ -EQ RS 2 ISIN INE242C01024, RELIANCE -EQ RS 10 ISIN INE00=
+2A01018.
+Folio No. ANR0005234. DP ID 12098700.
+
+Kindly verify your account details and update your PAN and bank mandate with =
+your
+Depository Participant. Folios without PAN and nomination are liable to be fr=
+ozen.
+
+Toll free 1800 22 55 33. Please report any suspicious message to us immediate=
+ly.
+
+CDSL Transaction

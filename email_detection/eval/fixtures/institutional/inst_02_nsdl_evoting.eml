@@ -1,0 +1,42 @@
+Message-ID: <178610589256.39512.5637826527632795067@nsdl.com>
+Date: Mon, 03 Aug 2026 03:30:00 -0000
+From: NSDL e-Voting <evoting@nsdl.com>
+To: investor@example.com
+Subject: Login instructions for NSDL e-Voting system - AGM 2026
+Return-Path: <bounce@nsdl.com>
+Authentication-Results: mx.google.com; dkim=pass header.i=@nsdl.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@nsdl.com; dmarc=pass (p=REJECT
+ sp=REJECT dis=NONE) header.from=nsdl.com
+Received: from mail.nsdl.com (mail.nsdl.com [203.0.113.20]) by mx.google.com
+ with ESMTPS id inst1; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Shareholder,
+
+Individual Shareholders holding securities in demat mode with NSDL may follow=
+ the steps
+below to cast their vote:
+
+1. Visit the e-Services website of NSDL at https://eservices.nsdl.com and cli=
+ck on
+   "Beneficial Owner" under "IDeAS" section.
+2. Enter your existing User ID and Password. After successful authentication =
+you will be
+   able to see the e-Voting services.
+3. If you have not registered for IDeAS, please register at https://eservices=
+.nsdl.com
+
+A One Time Password will be sent to your registered mobile number for verific=
+ation.
+Please do not share your password with anyone. NSDL will never ask you for yo=
+ur password.
+
+Your User ID is your 8 character DP ID followed by 8 digit Client ID.
+
+In case of any grievances connected with the e-Voting facility, please write =
+to
+evoting@nsdl.com or call our toll free number 1800 1020 990.
+
+National Securities Depository Limited

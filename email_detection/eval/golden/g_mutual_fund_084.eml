@@ -1,0 +1,29 @@
+Message-ID: <178616722333.33868.14532036906892780661@axismf.com>
+Date: Thu, 23 Jul 2026 22:30:00 -0000
+From: Axis Mutual Fund <service@axismf.com>
+To: investor@example.com
+Subject: Your SIP instalment is due on 10 August 2026
+Return-Path: <bounce@axismf.com>
+Authentication-Results: mx.google.com; dkim=pass header.i=@axismf.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@axismf.com; dmarc=pass (p=REJECT
+ sp=REJECT dis=NONE) header.from=axismf.com
+Received: from mail.axismf.com (mail.axismf.com [203.0.113.20]) by
+ mx.google.com with ESMTPS id g84; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Investor,
+
+Your SIP instalment of Rs 5,000 will be debited on 10 August 2026. Please app=
+rove the UPI mandate request in your UPI application when it arrives.
+
+Folio No. 10000009. PAN ABCDE1234F.
+
+Mutual fund investments are subject to market risks. Read all scheme related =
+documents
+carefully before investing. Past performance is not indicative of future resu=
+lts. There is
+no assurance or guarantee of returns.
+
+Axis Mutual Fund

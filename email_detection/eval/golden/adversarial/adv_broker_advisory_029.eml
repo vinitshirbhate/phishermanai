@@ -1,0 +1,22 @@
+Message-ID: <178618855100.34024.9290590788491997253@zerodha.com>
+Date: Thu, 30 Jul 2026 08:00:00 -0000
+From: Zerodha Support <support@zerodha.com>
+To: investor@example.com
+Subject: Advisory: fake withdrawal fee demands
+Return-Path: <bounce@zerodha.com>
+Authentication-Results: mx.google.com; dkim=pass header.i=@zerodha.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@zerodha.com; dmarc=pass
+ (p=REJECT) header.from=zerodha.com
+Received: from mail.zerodha.com (mail.zerodha.com [203.0.113.30]) by
+ mx.google.com with ESMTPS id adv29; Wed, 05 Aug 2026 09:00:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Client,
+
+Clients have reported messages claiming a withdrawal is blocked until a
+clearance fee is paid. This is a fraud. Withdrawals from your trading account
+are credited to your registered bank account as per the settlement cycle, and=
+ no
+fee is ever collected separately to release them.

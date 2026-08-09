@@ -1,0 +1,94 @@
+{
+  "documents": 10,
+  "hash_bits": 256,
+  "per_generation": {
+    "gen_1": {
+      "n": 10,
+      "mean": 2.2,
+      "median": 2.0,
+      "max": 6,
+      "min": 0
+    },
+    "gen_3": {
+      "n": 10,
+      "mean": 3.6,
+      "median": 4.0,
+      "max": 6,
+      "min": 2
+    },
+    "gen_5": {
+      "n": 10,
+      "mean": 4.8,
+      "median": 4.0,
+      "max": 8,
+      "min": 2
+    }
+  },
+  "different_documents": {
+    "n": 45,
+    "mean": 52.93,
+    "min": 22
+  },
+  "rows": [
+    {
+      "file": "genuine_01_whatsapp.png",
+      "gen_1": 2,
+      "gen_3": 4,
+      "gen_5": 4
+    },
+    {
+      "file": "genuine_02_whatsapp.png",
+      "gen_1": 4,
+      "gen_3": 6,
+      "gen_5": 6
+    },
+    {
+      "file": "genuine_03_whatsapp.png",
+      "gen_1": 2,
+      "gen_3": 4,
+      "gen_5": 8
+    },
+    {
+      "file": "genuine_04_whatsapp.png",
+      "gen_1": 0,
+      "gen_3": 2,
+      "gen_5": 6
+    },
+    {
+      "file": "genuine_05_whatsapp.png",
+      "gen_1": 0,
+      "gen_3": 2,
+      "gen_5": 4
+    },
+    {
+      "file": "tampered_01_whatsapp.png",
+      "gen_1": 2,
+      "gen_3": 2,
+      "gen_5": 2
+    },
+    {
+      "file": "tampered_02_whatsapp.png",
+      "gen_1": 6,
+      "gen_3": 6,
+      "gen_5": 8
+    },
+    {
+      "file": "tampered_03_whatsapp.png",
+      "gen_1": 0,
+      "gen_3": 2,
+      "gen_5": 2
+    },
+    {
+      "file": "tampered_04_whatsapp.png",
+      "gen_1": 4,
+      "gen_3": 4,
+      "gen_5": 4
+    },
+    {
+      "file": "tampered_05_whatsapp.png",
+      "gen_1": 2,
+      "gen_3": 4,
+      "gen_5": 4
+    }
+  ]
+}

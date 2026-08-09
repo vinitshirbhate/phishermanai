@@ -1,0 +1,408 @@
+"""Generate contextual_rules.csv.
+
+Rules are authored here rather than hand-edited as CSV, because each one now
+carries four regexes (entity, action, suppressors) and editing those inside
+quoted CSV fields is how mistakes get made.
+
+Every rule must declare an ENTITY (the noun), an ACTION (the verb that must
+co-occur), and a DIRECTION. A rule that cannot express an action is a keyword,
+and the engine caps keywords at severity 1.
+
+    python -m data.reference.build_rules
+"""
+
+from __future__ import annotations
+
+import csv
+from pathlib import Path
+
+OUT = Path(__file__).resolve().parent / "contextual_rules.csv"
+
+# --- Shared fragments -------------------------------------------------------
+
+PAY_ACTION = (r"\b(?:pay|paid|transfer|remit|deposit|send|sending|credit|fund|"
+              r"neft|rtgs|imps|upi|top\s*-?\s*up|recharge|scan|wire)\b")
+ASK_ACTION = (r"\b(?:share|provide|tell|give|forward|reveal|disclose|submit|"
+              r"enter|type|confirm|send\s+(?:me|us))\b")
+CLICK_ACTION = r"\b(?:click|visit|open|download|install|log\s*in|login|register|apply|claim)\b"
+JOIN_ACTION = r"\b(?:join|add|invite|subscribe|enrol|enroll|register)\b"
+# Devanagari alternatives sit OUTSIDE the \b group on purpose. "पक्का" ends in
+# the vowel sign U+093E, a non-spacing mark, which Python's \w does not count as
+# a word character -- so a trailing \b can never match and the rule silently
+# failed on every Hindi message. Words ending in a consonant ("रिटर्न") were
+# unaffected, which is why this hid until a Devanagari test was written.
+PROMISE_ACTION = (r"(?:\b(?:guarante+d?|gaurante+d?|assured|assure|promise|fixed|"
+                  r"certain|confirm(?:ed)?|100\s*%|pakka)\b|पक्का|गारंटी|गारंटीड)")
+
+# Contexts that appear throughout genuine institutional mail.
+SEBI_CONTEXT = (r"as\s+per\s+sebi|sebi\s+circular|regulation\s+\d+|"
+                r"<SEBI_CIRCULAR>|companies\s+act|lodr|depositor(?:y|ies)")
+RTA_CONTEXT = (r"registrar\s+and\s+(?:share\s+)?transfer\s+agent|depository\s+participant|"
+               r"\bRTA\b|<DP_CLIENT_ID>|<CDSL_BOID>|<NSDL_BOID>|<FOLIO>")
+DISCLAIMER = (r"subject\s+to\s+market\s+risk|read\s+all\s+scheme\s+related|"
+              r"past\s+performance|no\s+assurance\s+or\s+guarantee|does\s+not\s+guarantee|"
+              r"not\s+indicative\s+of\s+future")
+NEVER_ASK = (r"(?:will\s+)?never\s+(?:ask|call|email|request|share)|"
+             r"do\s+not\s+share\s+your|beware\s+of\s+fraud|report\s+(?:it|any|this)")
+
+# (id, entity, action, direction, suppressors[], window, requires_ask,
+#  rule_type, severity, explanation, legal_basis)
+RULES = [
+    # ---------------------------------------------------------------- PROMISES
+    ("GUARANTEED_RETURNS",
+     r"(?:\b(?:return|returns|profit|income|payout|gain|munafa)\b"
+     r"|मुनाफ़ा|मुनाफा|रिटर्न|लाभ)",
+     PROMISE_ACTION, "UNSPECIFIED",
+     [DISCLAIMER, r"\b(?:no|not|never|cannot|can't|without)\b[^.!?\n]{0,30}(?:guarante|assur)"],
+     90, False, "ILLEGAL_PROMISE", 5,
+     "No SEBI-registered adviser or broker may promise guaranteed or assured returns on market "
+     "investments. Anyone who does is either unregistered or lying.",
+     "SEBI (Investment Advisers) Regulations 2013; SEBI (PFUTP) Regulations 2003, Reg 3 & 4"),
+
+    ("FIXED_MONTHLY_INCOME",
+     r"\b(?:monthly|weekly|daily|per\s*month|per\s*day|har\s*mahine|मासिक)\b[^.!?\n]{0,24}"
+     r"\b(?:income|return|profit|payout|मुनाफा)\b",
+     PROMISE_ACTION, "UNSPECIFIED",
+     [DISCLAIMER, r"\b(?:no|not|never)\b[^.!?\n]{0,20}(?:guarante|assur|fixed)"],
+     90, False, "ILLEGAL_PROMISE", 5,
+     "A fixed monthly payout from stock market investment is not a legal product in India. "
+     "This is the standard structure of a Ponzi scheme.",
+     "Banning of Unregulated Deposit Schemes Act 2019; SEBI (PFUTP) Regulations 2003"),
+
+    ("ZERO_RISK_EQUITY",
+     r"(?:\b(?:no\s*risk|zero\s*risk|risk\s*free|riskfree|100\s*%\s*safe)\b"
+     r"|बिना\s*जोखिम|जोखिम\s*नहीं)",
+     r"\b(?:equity|share|shares|stock|market|trading|invest\w*|nifty|option|f\s*&\s*o|"
+     r"intraday|शेयर|निवेश)\b",
+     "UNSPECIFIED",
+     [DISCLAIMER, r"\b(?:not|no)\b[^.!?\n]{0,20}risk\s*free"],
+     90, False, "CONTRADICTION", 5,
+     "Equity and derivatives carry market risk by definition. A risk-free equity return is a "
+     "contradiction, not a product.",
+     "SEBI (PFUTP) Regulations 2003, Reg 4(2)(k) - misleading advertisement"),
+
+    ("DOUBLE_YOUR_MONEY",
+     r"\b(?:money|capital|investment|amount|paisa|पैसा|रकम|निवेश)\b",
+     r"\b(?:double|triple|dugna|doguna|दोगुना|तिगुना|2\s*x|3\s*x|5\s*x|10\s*x)\b",
+     "UNSPECIFIED", [DISCLAIMER], 60, False, "IMPLAUSIBLE_RETURN", 5,
+     "Promises of doubling money in a fixed period are the signature of investment fraud. "
+     "No legitimate market product works this way.",
+     "SEBI (PFUTP) Regulations 2003, Reg 3 & 4"),
+
+    ("IPO_GUARANTEED_ALLOTMENT",
+     r"\b(?:ipo|allotment|allotted|alloted)\b",
+     PROMISE_ACTION, "UNSPECIFIED",
+     [r"asba|application\s+supported|blocked\s+in\s+your\s+own|lottery|computeri[sz]ed|"
+      r"basis\s+of\s+allotment|registrar\s+to\s+the\s+issue"],
+     70, False, "UNREGISTERED_OFFER", 5,
+     "IPO allotment in an oversubscribed issue is decided by a computerised lottery run by the "
+     "registrar. Nobody can guarantee you an allotment.",
+     "SEBI (ICDR) Regulations 2018"),
+
+    ("PRE_IPO_EXCLUSIVE",
+     r"\b(?:pre[\s\-]*ipo|pre[\s\-]*listing|unlisted\s*share|grey\s*market|gray\s*market)\b",
+     r"\b(?:exclusive|guarante+d?|limited|confirm(?:ed)?|special\s*quota|book\s*now|assured|"
+     r"buy|invest|allotment)\b",
+     "UNSPECIFIED", [r"asba|registrar\s+to\s+the\s+issue"], 80, True, "UNREGISTERED_OFFER", 4,
+     "Exclusive or guaranteed pre-IPO allotments sold over chat are almost always fake. Genuine "
+     "pre-IPO transfers happen through a demat account with a documented contract.",
+     "SEBI (ICDR) Regulations 2018; Companies Act 2013 s.42"),
+
+    ("FOREX_BINARY_SCHEME",
+     r"\b(?:forex|binary\s*option|crypto\s*arbitrage|commodity\s*jackpot)\b",
+     r"\b(?:guarante+d?|assured|fixed|daily\s*profit|high\s*return|double|invest|join)\b",
+     "UNSPECIFIED", [r"rbi\s+alert\s+list|prohibited|not\s+permitted|beware"],
+     80, False, "UNREGULATED_PRODUCT", 5,
+     "Retail forex and binary options trading on overseas electronic platforms is prohibited for "
+     "Indian residents. There is no recovery route if you lose money there.",
+     "FEMA 1999; RBI Alert List of unauthorised forex platforms"),
+
+    # ---------------------------------------------------------- MONEY MOVEMENT
+    ("PAY_TAX_TO_WITHDRAW",
+     r"\b(?:tax|tds|gst|processing\s*fee|clearance\s*fee|withdrawal\s*fee|service\s*charge|"
+     r"conversion\s*fee|unlock\s*fee|convenience\s*fee)\b",
+     r"\b(?:pay|deposit|submit|clear|jama|remit)\b[^.!?\n]{0,45}"
+     r"\b(?:withdraw|release|unlock|receive|redeem|get\s*your|transfer|credit)\b",
+     "FROM_USER",
+     [r"deducted\s+from|will\s+be\s+debited|as\s+per\s+the\s+tariff|"
+      r"annual\s+maintenance|statutory\s+levy|tds\s+certificate|form\s+16"],
+     100, True, "FAKE_APP_SIGNATURE", 5,
+     "Being asked to pay a fee before you can withdraw your own money is the defining move of a "
+     "fake trading app. Real brokers deduct charges from the payout; they never ask you to send "
+     "money first.",
+     "SEBI (Stock Brokers) Regulations 1992; BNS 2023 s.318"),
+
+    ("WITHDRAWAL_BLOCKED_PAY",
+     r"\b(?:withdrawal|payout|redemption)\b[^.!?\n]{0,30}"
+     r"\b(?:blocked|on\s*hold|pending|frozen|failed|restricted)\b",
+     PAY_ACTION, "FROM_USER",
+     [r"settlement\s+cycle|t\+\d|bank\s+holiday|will\s+be\s+credited|processed\s+within"],
+     100, True, "FAKE_APP_SIGNATURE", 5,
+     "Your withdrawal is blocked until you pay something. This is how fake investment apps "
+     "extract a second round of money from victims.",
+     "BNS 2023 s.318 (cheating)"),
+
+    ("PERSONAL_ACCOUNT_INVESTMENT",
+     r"\b(?:my|his|her|this|below|following)\s+(?:personal\s+)?"
+     r"(?:account|upi|number|a/c|gpay|phonepe|paytm)\b",
+     PAY_ACTION, "FROM_USER",
+     [RTA_CONTEXT, r"registered\s+bank\s+account|your\s+own\s+bank|asba|client\s+bank\s+account"],
+     80, True, "MONEY_ROUTING", 5,
+     "Investment money must go to the intermediary's own designated bank account, never to an "
+     "individual's personal UPI or account. This is the single clearest sign of fraud.",
+     "SEBI circular on UPI mechanism for registered intermediaries (effective 01 Oct 2025)"),
+
+    ("MULE_ACCOUNT_REQUEST",
+     r"\b(?:use\s+your\s+(?:account|bank)|rent\s+your\s+account|"
+     r"receive\s+(?:money|funds|amount)\s+(?:in|on)\s+your\s+account|"
+     r"commission\s+for\s+(?:each|every)\s+transaction)\b",
+     r"\b(?:commission|percentage|share|paid|earn|transfer|withdraw)\b",
+     "FROM_USER", [], 100, True, "MONEY_ROUTING", 5,
+     "Letting someone route money through your bank account makes you a mule account holder. "
+     "That is a criminal offence and your account will be frozen.",
+     "PMLA 2002; BNS 2023 s.317"),
+
+    ("ACCOUNT_REACTIVATION_FEE",
+     # The account noun is NOT required beside the verb. "Pay Rs 2,000
+     # reactivation charge to unblock it" never names the account again, and
+     # demanding the noun within 40 characters missed the whole message.
+     # Genuine RTA unfreeze mail is held off by the suppressors below.
+     r"\b(?:reactivat\w*|reopen|unblock|unfreeze|restor\w*)\b",
+     r"\b(?:pay|fee|charge|amount|rs\.?|inr|₹)\b", "FROM_USER",
+     [r"there\s+is\s+no\s+fee|no\s+charge|free\s+of\s+cost|form\s+isr-?\d|"
+      r"submit\s+(?:form|self-attested)|re-?kyc", RTA_CONTEXT, SEBI_CONTEXT],
+     100, True, "FAKE_APP_SIGNATURE", 5,
+     "A charge to reactivate your own account is not a real product. Brokers reactivate dormant "
+     "accounts through re-KYC, not payment.",
+     "SEBI (Stock Brokers) Regulations 1992"),
+
+    # -------------------------------------------------------------- CREDENTIALS
+    ("OTP_SHARE_REQUEST",
+     r"\b(?:OTP|O\.T\.P|one\s*time\s*password|CVV|MPIN|PIN|password|passcode)\b",
+     r"\b(?:share|provide|tell|give|forward|reveal|disclose|read\s+out|type\s+here|"
+     r"send\s+(?:me|us)|confirm\s+(?:the|your))\b",
+     "FROM_USER",
+     [r"authenticat\w+[^.!?\n]{0,40}by\s+sending\s+(?:an?\s+)?otp",
+      r"(?:send|sent|sending)\s+(?:an?\s+)?otp\s+(?:on|to)\s+(?:your\s+|the\s+)?(?:registered\s+)?(?:mobile|email|phone)",
+      r"otp\s+(?:will\s+be|shall\s+be|is|would\s+be)\s+sent",
+      r"(?:you\s+will\s+)?receive\s+(?:an?\s+)?otp",
+      r"password\s+(?:is|will\s+be|for\s+this\s+(?:file|statement|document|attachment))",
+      r"password\s+(?:is\s+)?your\s+pan|pan\s+in\s+(?:upper|capital)",
+      NEVER_ASK],
+     120, True, "CREDENTIAL_THEFT", 5,
+     "No genuine institution ever asks for an OTP, PIN, CVV or password. Anyone requesting one "
+     "is attempting to take money from your account.",
+     "RBI customer protection circulars; BNS 2023 s.318"),
+
+    ("REMOTE_ACCESS_APP",
+     r"\b(?:anydesk|teamviewer|quicksupport|airdroid|screen\s*shar(?:e|ing)|remote\s*access)\b",
+     r"\b(?:install|download|open|start|allow|share|enable)\b", "FROM_USER",
+     [NEVER_ASK, r"do\s+not\s+install|never\s+install"],
+     100, True, "CREDENTIAL_THEFT", 5,
+     "Installing a screen-sharing app at a stranger's request hands them live control of your "
+     "banking and demat sessions. No legitimate support process requires this.",
+     "RBI customer protection circulars"),
+
+    ("APK_SIDELOAD",
+     r"(?:\.apk\b|apk\s*file|unknown\s*source)",
+     r"\b(?:download|install|update|enable|sideload|get)\b", "FROM_USER",
+     [r"play\s*store|app\s*store|official\s+app"],
+     100, True, "FAKE_APP_SIGNATURE", 5,
+     "Genuine broking and mutual fund apps are distributed only through the Play Store or App "
+     "Store. An APK sent to you is how fake trading apps get installed.",
+     "SEBI investor advisories on unauthorised trading apps"),
+
+    # ------------------------------------------------------------ IMPERSONATION
+    ("REGULATOR_DEMANDS_PAYMENT",
+     r"\b(?:sebi|rbi|nse|bse|nsdl|cdsl|income\s*tax|it\s*department|\bED\b|\bCBI\b|customs|police)\b",
+     r"\b(?:pay|deposit|transfer|remit|send)\b[^.!?\n]{0,30}"
+     r"\b(?:rs\.?|inr|₹|rupees|amount|fine|penalty|fee)\b",
+     "FROM_USER",
+     [SEBI_CONTEXT, r"scores|smartodr|grievance|investor\s+charter|complaint",
+      r"registered\s+with\s+sebi|sebi\s+registration"],
+     120, True, "IMPERSONATION", 5,
+     "Regulators and exchanges never contact individual investors to demand payment. Any message "
+     "that does is an impersonation attempt.",
+     "BNS 2023 s.204, s.319"),
+
+    ("DIGITAL_ARREST",
+     r"\b(?:digital\s*arrest|arrest\s*warrant|non[\s\-]*bailable|money\s*laundering\s*case)\b",
+     r"\b(?:pay|deposit|transfer|remit|verify|cooperate|call|contact|settle)\b",
+     "FROM_USER", [r"beware|awareness|advisory|do\s+not\s+fall|fraudsters?\s+(?:are|may)"],
+     140, True, "COERCION", 5,
+     "There is no such legal procedure as a digital arrest anywhere in Indian law. Police and "
+     "central agencies do not interrogate people over video calls or demand money to close a case.",
+     "BNS 2023 s.204, s.308; MHA cybercrime advisories"),
+
+    ("SEBI_APPROVED_SCHEME",
+     r"\b(?:sebi|securities\s*(?:and|&)\s*exchange\s*board)\b[^.!?\n]{0,25}"
+     r"\b(?:approved|certified|authori[sz]ed|guarante+d?|backed|endorsed)\b",
+     r"\b(?:scheme|plan|product|return|profit|investment|opportunity)\b",
+     "UNSPECIFIED", [r"registered\s+(?:with\s+sebi|intermediary)|sebi\s+registration\s+no"],
+     80, False, "FALSE_AUTHORITY", 4,
+     "SEBI registers intermediaries; it never approves, certifies or guarantees an investment "
+     "scheme or its returns. Any claim that SEBI backs a return is false.",
+     "SEBI Act 1992; SEBI investor caution list"),
+
+    ("INSIDER_TIP",
+     r"\b(?:insider|inside)\s+(?:information|news|tip|info)\b"
+     r"|\b(?:operator|jobber)\s+(?:news|tip|call)\b",
+     r"\b(?:buy|sell|invest|act|trade|position|join|subscribe|pay)\b",
+     "UNSPECIFIED", [r"prohibit|offence|illegal|regulation|pit\s+regulations|beware"],
+     100, True, "MARKET_MANIPULATION", 5,
+     "Acting on genuine insider information is a criminal offence, and claims of having it are "
+     "usually bait. Either way, do not engage.",
+     "SEBI (Prohibition of Insider Trading) Regulations 2015"),
+
+    ("LOTTERY_WINNER",
+     r"\b(?:you\s+have\s+won|lucky\s*(?:winner|draw)|selected\s+(?:as|for)\s+winner|"
+     r"prize\s*money|bumper\s*(?:prize|offer))\b",
+     r"\b(?:claim|pay|deposit|transfer|contact|call|click|share)\b", "FROM_USER",
+     [r"beware|awareness|advisory|fraudsters?"],
+     120, True, "PHISHING_LURE", 4,
+     "You cannot win a lottery you never entered. The prize is bait for the processing fee they "
+     "will ask for next.",
+     "BNS 2023 s.318; Prize Chits and Money Circulation Schemes (Banning) Act 1978"),
+
+    # --------------------------------------------------------- PRESSURE / LURES
+    ("DEMAT_FROZEN_PAY",
+     r"\b(?:demat|trading|broker(?:age)?|dp)\s+(?:account|a/c)\b[^.!?\n]{0,40}"
+     r"\b(?:frozen|freeze|block(?:ed)?|suspend(?:ed)?|deactivat(?:ed)?|closed|lock(?:ed)?)\b",
+     r"\b(?:pay|fee|charge|penalty|rs\.?|inr|₹|click|call\s+(?:this|us\s+on)\s+\d)\b",
+     "FROM_USER",
+     [SEBI_CONTEXT, RTA_CONTEXT,
+      r"re-?kyc|form\s+isr-?\d|nomination|there\s+is\s+no\s+fee|no\s+charge|"
+      r"holdings\s+remain\s+safe|liable\s+to\s+be\s+frozen|as\s+per\s+depository\s+rules|"
+      r"suspended\s+for\s+debit|contact\s+your\s+depository\s+participant"],
+     140, True, "PRESSURE_TACTIC", 4,
+     "Messages claiming your demat account is frozen are designed to panic you into acting. Check "
+     "the status by logging into your broker directly, never through a link in a message.",
+     "SEBI (Depositories and Participants) Regulations 2018"),
+
+    ("KYC_EXPIRY_URGENT",
+     r"\bk\.?y\.?c\b[^.!?\n]{0,30}"
+     r"\b(?:expire|expiry|expired|suspend|block|freeze|deactivat)\w*\b",
+     r"\b(?:click|pay|fee|charge|immediately|within\s+\d+\s*(?:hour|day)|today|urgent)\b",
+     "FROM_USER",
+     [SEBI_CONTEXT, RTA_CONTEXT,
+      r"at\s+your\s+convenience|re-?kyc|periodically|kra|"
+      r"through\s+(?:your|the)\s+(?:broker|app|portal|registrar)|console|log\s*in\s+to"],
+     140, True, "PRESSURE_TACTIC", 4,
+     "Urgent KYC-expiry messages with a deadline and a link are a standard phishing template. "
+     "Regulated entities give notice through your registered contact and their own app.",
+     "SEBI KYC (KRA) Regulations 2011"),
+
+    ("UNCLAIMED_DIVIDEND_CLAIM",
+     r"\b(?:unclaimed|unpaid|pending)\s+(?:dividend|interest|amount|payout)\b",
+     r"\b(?:click|claim\s+now|verify|pay|fee|charge|link|apply\s+here|process\s+now)\b",
+     "FROM_USER",
+     [r"iepf|investor\s+education\s+and\s+protection\s+fund|form\s+iepf-?5|companies\s+act",
+      RTA_CONTEXT, r"no\s+fee\s+is\s+payable|unpaid\s+dividend\s+account|abeyance"],
+     140, True, "PHISHING_LURE", 4,
+     "Unclaimed dividends are genuinely common in India, which is exactly why fraudsters use this "
+     "hook. Real unclaimed amounts are claimed through the registrar or IEPF, never through a link.",
+     "Companies Act 2013 s.124-125; SEBI circulars on unclaimed amounts"),
+
+    ("URGENCY_WITH_DEMAND",
+     r"\b(?:hurry|last\s*chance|final\s*(?:call|notice|reminder)|limited\s*(?:time|seat|slot|offer)|"
+     r"only\s*\d{1,2}\s*(?:seat|slot)s?\s*(?:left|remaining)|act\s+now|जल्दी)\b",
+     r"\b(?:pay|transfer|deposit|invest|join|click|register|book|subscribe)\b",
+     "FROM_USER",
+     [r"e-?voting|record\s+date|book\s+closure|annual\s+general\s+meeting|agm|egm|"
+      r"postal\s+ballot|cut-?off\s+date|tendering\s+period|issue\s+closes", SEBI_CONTEXT],
+     120, True, "PRESSURE_TACTIC", 3,
+     "Artificial time pressure is used to stop you from checking. A genuine investment "
+     "opportunity survives you taking a day to verify it.",
+     "SEBI investor caution advisories"),
+
+    ("VIP_GROUP_INVITE",
+     r"\b(?:vip|premium|exclusive|paid)\s+(?:group|channel|batch|club|community)\b",
+     JOIN_ACTION, "FROM_USER", [], 100, True, "SOCIAL_ENGINEERING", 3,
+     "Paid VIP stock-tip groups are the most common entry point into securities fraud. "
+     "Registered advisers do not run anonymous tip groups.",
+     "SEBI (Investment Advisers) Regulations 2013, Reg 3"),
+
+    ("JOIN_TELEGRAM_WHATSAPP",
+     r"\b(?:telegram|whatsapp|wa\.me|t\.me)\b",
+     r"\b(?:join|add|click)\b[^.!?\n]{0,25}\b(?:group|channel|link|now)\b",
+     "FROM_USER",
+     [r"whatsapp\s+(?:us|support|helpline)|customer\s+care|official\s+whatsapp"],
+     100, True, "SOCIAL_ENGINEERING", 3,
+     "Investment advice delivered through an anonymous chat group has no regulatory "
+     "accountability. You cannot complain to SEBI about someone you cannot identify.",
+     "SEBI (Investment Advisers) Regulations 2013"),
+
+    ("PROFIT_SHARING_COPY_TRADE",
+     r"\b(?:copy\s*trad(?:e|ing)|mirror\s*trad(?:e|ing)|handle\s+your\s+account|"
+     r"manage\s+your\s+(?:trading|demat)\s+account|profit\s*sharing)\b",
+     r"\b(?:\d{1,3}\s*%|profit|return|basis|share|give\s+me|hand\s+over)\b",
+     "FROM_USER", [r"portfolio\s+manager|registered\s+with\s+sebi|inp\d{9}"],
+     100, True, "UNREGISTERED_OFFER", 4,
+     "Handing account control to someone for a share of profits is unregistered portfolio "
+     "management. If they lose your money you have no regulatory recourse.",
+     "SEBI (Portfolio Managers) Regulations 2020, Reg 3"),
+
+    ("NO_KYC_NO_DOCUMENT",
+     r"\b(?:no\s*kyc|without\s*kyc|no\s*document|without\s*pan|no\s*pan\s*(?:required|needed)|"
+     r"kyc\s*not\s*required)\b",
+     r"\b(?:invest|join|start|open|trade|deposit|sign\s*up|register)\b",
+     "FROM_USER", [SEBI_CONTEXT, r"beware|advisory|mandatory"],
+     100, True, "UNREGISTERED_OFFER", 4,
+     "Every regulated investment in India requires KYC and PAN. An offer that skips them is "
+     "outside the regulated system entirely.",
+     "SEBI KYC (KRA) Regulations 2011; PMLA 2002"),
+]
+
+# Rules deleted in the Phase 8 audit, kept here as a record of WHY.
+DELETED = [
+    ("FREE_TRADING_COURSE",
+     "No expressible action: attending a free webinar is not itself a request for anything. "
+     "Fired on genuine broker and AMC investor-education mail, which is regulator-encouraged."),
+    ("PROFIT_SCREENSHOT_PROOF",
+     "Keyword only. 'profit' near 'statement/screenshot' appears in every genuine P&L and "
+     "portfolio mail. No action, no direction, unfixable by suppression."),
+    ("IMPERSONATED_SUPPORT_NUMBER",
+     "Matched any 10-digit number near 'helpline/customer care/toll free'. Every genuine "
+     "institutional footer carries one. The rule cannot distinguish a real helpline from a "
+     "fake without a number registry we do not have."),
+    ("ASSURED_RETURN_REVERSE",
+     "Merged into GUARANTEED_RETURNS, which now matches the return noun as entity and the "
+     "promise verb as action, covering both word orders without a second rule."),
+    ("ZERO_RISK_REVERSE",
+     "Merged into ZERO_RISK_EQUITY for the same reason."),
+    ("PROFIT_SCREENSHOT_PROOF_DUP", "duplicate id guard"),
+]
+
+FIELDS = ["id", "entity", "action", "direction", "suppressors", "window",
+          "requires_ask", "rule_type", "severity", "explanation", "legal_basis"]
+
+
+def build() -> dict:
+    rows = []
+    for (rule_id, entity, action, direction, suppressors, window,
+         requires_ask, rule_type, severity, explanation, legal_basis) in RULES:
+        rows.append({
+            "id": rule_id,
+            "entity": entity,
+            "action": action or "",
+            "direction": direction,
+            "suppressors": "|||".join(suppressors),
+            "window": window,
+            "requires_ask": "true" if requires_ask else "false",
+            "rule_type": rule_type,
+            "severity": severity,
+            "explanation": explanation,
+            "legal_basis": legal_basis or "",
+        })
+
+    with OUT.open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=FIELDS, quoting=csv.QUOTE_ALL)
+        writer.writeheader()
+        writer.writerows(rows)
+
+    return {"written": len(rows), "deleted": len(DELETED) - 1, "path": str(OUT)}
+
+
+if __name__ == "__main__":  # pragma: no cover
+    import json
+    print(json.dumps(build(), indent=2))

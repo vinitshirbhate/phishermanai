@@ -1,0 +1,30 @@
+Message-ID: <178616722331.33868.358861992020504433@icicipruamc.com>
+Date: Fri, 24 Jul 2026 19:30:00 -0000
+From: ICICI Prudential MF <enquiry@icicipruamc.com>
+To: investor@example.com
+Subject: Consolidated Account Statement for July 2026
+Return-Path: <bounce@icicipruamc.com>
+Authentication-Results: mx.google.com; dkim=pass header.i=@icicipruamc.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@icicipruamc.com; dmarc=pass
+ (p=REJECT sp=REJECT dis=NONE) header.from=icicipruamc.com
+Received: from mail.icicipruamc.com (mail.icicipruamc.com [203.0.113.20]) by
+ mx.google.com with ESMTPS id g77; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Investor,
+
+Your CAS is attached. The statement is password protected; your password is y=
+our PAN in upper case. An OTP will be sent to your registered mobile for onli=
+ne access.
+
+Folio No. 10000002. PAN ABCDE1234F.
+
+Mutual fund investments are subject to market risks. Read all scheme related =
+documents
+carefully before investing. Past performance is not indicative of future resu=
+lts. There is
+no assurance or guarantee of returns.
+
+ICICI Prudential MF

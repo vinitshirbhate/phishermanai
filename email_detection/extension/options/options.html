@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>PhishermanAI settings</title>
+  <link rel="stylesheet" href="../popup/popup.css" />
+  <style>
+    body { width: 560px; }
+    label { display: block; margin-bottom: 6px; font-weight: 600; }
+    input[type="url"] {
+      width: 100%;
+      padding: 8px 10px;
+      font-size: 13px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+    }
+    .hint { margin-top: 6px; font-size: 11px; color: #64748b; line-height: 1.5; }
+    .saved { color: #059669; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PhishermanAI settings</h1>
+    <p class="sub">You control where your messages are checked.</p>
+  </header>
+
+  <section>
+    <label for="endpoint">Verifier endpoint</label>
+    <input id="endpoint" type="url" placeholder="http://127.0.0.1:8000" />
+    <p class="hint">
+      Defaults to your own machine. Point this at your own server if you host the
+      verifier elsewhere — the extension will only ever contact this address, and
+      it is not permitted to reach any other host.
+    </p>
+    <p><button id="save" class="btn">Save</button> <span id="status"></span></p>
+  </section>
+
+  <section>
+    <h2>Consent</h2>
+    <p class="hint">
+      Checking stays off until you confirm it in the panel the first time you use
+      it. You can withdraw consent at any time from the toolbar popup; the
+      extension then stops sending anything.
+    </p>
+    <p><button id="revoke" class="btn btn-quiet">Withdraw consent</button></p>
+  </section>
+
+  <section>
+    <h2>What is sent</h2>
+    <p class="hint">
+      Only the text of the single message you click "Check this" on, with phone
+      numbers and email addresses stripped out locally first. UPI payment
+      addresses are kept, because where the money is going is the main thing
+      being checked. Nothing else leaves your browser.
+    </p>
+  </section>
+
+  <script src="options.js"></script>
+</body>
+</html>

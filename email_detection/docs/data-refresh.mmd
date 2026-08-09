@@ -1,0 +1,58 @@
+%% PhishermanAI — how the reference data stays current
+%%
+%% Paste into Excalidraw:  Insert (+) -> "Mermaid to Excalidraw"
+
+flowchart LR
+
+    subgraph SRC["SOURCES"]
+        BSE["BSE announcements<br/><i>stale in hours</i>"]
+        SEBI["SEBI registers<br/><i>stale in weeks</i>"]
+        MASTER["Scrip master<br/><i>stale in months</i>"]
+    end
+
+    subgraph JOBS["SCHEDULED REFRESH"]
+        J1["Twice daily<br/>weekdays 18:00, 22:00<br/><i>incremental</i>"]
+        J2["Weekly<br/>Sunday 03:00"]
+        J3["Monthly<br/>1st, 04:00"]
+    end
+
+    BSE --> J1
+    SEBI --> J2
+    MASTER --> J3
+
+    J1 --> CORPUS
+    J2 --> CORPUS
+    J3 --> CORPUS
+
+    CORPUS[("<b>Local corpus</b><br/>with per-source<br/><b>data_as_of</b> stamp")]
+
+    CORPUS --> VERDICT["<b>Every verdict states it</b><br/>“Verified against BSE filings<br/>as of 8 Aug 2026, 18:30”"]
+    CORPUS --> BANNER{"<b>Older than<br/>3 days?</b>"}
+
+    BANNER -->|"YES"| LOUD["⚠️ Show staleness banner<br/><i>never silently serve stale</i>"]
+    BANNER -->|"NO"| QUIET["Normal operation"]
+
+    subgraph GUARDS["SAFETY — stale data must never accuse"]
+        G1["Document newer than our data<br/>→ <b>UNVERIFIED</b>, never TAMPERED"]
+        G2["Matched filing was amended<br/>→ <b>UNVERIFIED</b>, never TAMPERED"]
+        G3["No matching filing<br/>→ <b>UNVERIFIED</b><br/><i>missing data cannot fake a pass</i>"]
+    end
+
+    CORPUS -.-> GUARDS
+
+    DOMAINS["<b>Domain map</b><br/>candidate → DNS/MX check<br/>→ <b>human review</b> → merge"]
+    DOMAINS -.->|"never auto-inserted"| CORPUS
+
+    classDef src fill:#d0bfff,stroke:#6741d9,stroke-width:2px,color:#33206b
+    classDef job fill:#a5d8ff,stroke:#1971c2,stroke-width:2px,color:#0b3d66
+    classDef store fill:#ffec99,stroke:#f08c00,stroke-width:2px,color:#6b4500
+    classDef guard fill:#b2f2bb,stroke:#2f9e44,stroke-width:2px,color:#12451f
+    classDef alert fill:#ffd8a8,stroke:#e8590c,stroke-width:2px,color:#6b2900
+    classDef human fill:#ffc9c9,stroke:#e03131,stroke-width:2px,color:#6b1414
+
+    class BSE,SEBI,MASTER src
+    class J1,J2,J3 job
+    class CORPUS,BANNER store
+    class VERDICT,QUIET,G1,G2,G3 guard
+    class LOUD alert
+    class DOMAINS human

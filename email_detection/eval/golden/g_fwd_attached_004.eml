@@ -1,0 +1,56 @@
+Message-ID: <178616722338.33868.7052675000015878207@gmail.com>
+Date: Mon, 03 Aug 2026 10:30:00 -0000
+From: Investor <shourya@gmail.com>
+To: check@phishermanai.local
+Subject: Fwd: Re-KYC required for your trading and demat account
+Authentication-Results: mx.google.com; dkim=pass header.i=@gmail.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@gmail.com; dmarc=pass (p=REJECT
+ sp=REJECT dis=NONE) header.from=gmail.com
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============5031834698736455544=="
+
+--===============5031834698736455544==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+
+Attaching the original for you to check.
+
+--===============5031834698736455544==
+Content-Type: message/rfc822
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Content-Disposition: attachment
+
+Message-ID: <178616722324.33868.13508479165676858170@angelone.in>
+Date: Wed, 29 Jul 2026 07:30:00 -0000
+From: Angel One <support@angelone.in>
+To: investor@example.com
+Subject: Re-KYC required for your trading and demat account
+Return-Path: <bounce@angelone.in>
+Authentication-Results: mx.google.com; dkim=pass header.i=@angelone.in
+ header.s=s1; spf=pass smtp.mailfrom=noreply@angelone.in; dmarc=pass (p=REJECT
+ sp=REJECT dis=NONE) header.from=angelone.in
+Received: from mail.angelone.in (mail.angelone.in [203.0.113.20]) by
+ mx.google.com with ESMTPS id g41; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Client,
+
+As per SEBI regulations your KYC is due for revalidation. Please complete re-=
+KYC at your convenience by logging in to your account. If not completed, your=
+ account may be restricted for new positions.
+
+We will never ask you for your password, OTP or PIN over a call or message. D=
+o not share
+your login credentials with anyone, including persons claiming to be from our=
+ support team.
+
+For any grievance write to us, or escalate to SEBI SCORES at https://scores.s=
+ebi.gov.in
+
+Angel One
+SEBI Registration: INZ000161534
+
+--===============5031834698736455544==--

@@ -1,0 +1,102 @@
+[
+  {
+    "file": "screenshots/genuine_01_whatsapp.png",
+    "label": "GENUINE",
+    "source_eml": "genuine_01.eml",
+    "filing_id": 2541,
+    "company": "Birla Corporation Ltd",
+    "tampered_field": null,
+    "original_value": null,
+    "altered_value": null
+  },
+  {
+    "file": "screenshots/tampered_01_whatsapp.png",
+    "label": "TAMPERED",
+    "source_eml": "tampered_01.eml",
+    "filing_id": 2541,
+    "company": "Birla Corporation Ltd",
+    "tampered_field": "dividend_per_share",
+    "original_value": "12.5",
+    "altered_value": "125"
+  },
+  {
+    "file": "screenshots/genuine_02_whatsapp.png",
+    "label": "GENUINE",
+    "source_eml": "genuine_02.eml",
+    "filing_id": 951,
+    "company": "Titan Company Ltd",
+    "tampered_field": null,
+    "original_value": null,
+    "altered_value": null
+  },
+  {
+    "file": "screenshots/tampered_02_whatsapp.png",
+    "label": "TAMPERED",
+    "source_eml": "tampered_02.eml",
+    "filing_id": 951,
+    "company": "Titan Company Ltd",
+    "tampered_field": "dividend_per_share",
+    "original_value": "15",
+    "altered_value": "150"
+  },
+  {
+    "file": "screenshots/genuine_03_whatsapp.png",
+    "label": "GENUINE",
+    "source_eml": "genuine_03.eml",
+    "filing_id": 4368,
+    "company": "Asian Paints Ltd",
+    "tampered_field": null,
+    "original_value": null,
+    "altered_value": null
+  },
+  {
+    "file": "screenshots/tampered_03_whatsapp.png",
+    "label": "TAMPERED",
+    "source_eml": "tampered_03.eml",
+    "filing_id": 4368,
+    "company": "Asian Paints Ltd",
+    "tampered_field": "dividend_per_share",
+    "original_value": "23",
+    "altered_value": "230"
+  },
+  {
+    "file": "screenshots/genuine_04_whatsapp.png",
+    "label": "GENUINE",
+    "source_eml": "genuine_04.eml",
+    "filing_id": 3831,
+    "company": "Tata Motors Passenger Vehicles Ltd",
+    "tampered_field": null,
+    "original_value": null,
+    "altered_value": null
+  },
+  {
+    "file": "screenshots/tampered_04_whatsapp.png",
+    "label": "TAMPERED",
+    "source_eml": "tampered_04.eml",
+    "filing_id": 3831,
+    "company": "Tata Motors Passenger Vehicles Ltd",
+    "tampered_field": "dividend_per_share",
+    "original_value": "3",
+    "altered_value": "30"
+  },
+  {
+    "file": "screenshots/genuine_05_whatsapp.png",
+    "label": "GENUINE",
+    "source_eml": "genuine_05.eml",
+    "filing_id": 3833,
+    "company": "Tata Motors Passenger Vehicles Ltd",
+    "tampered_field": null,
+    "original_value": null,
+    "altered_value": null
+  },
+  {
+    "file": "screenshots/tampered_05_whatsapp.png",
+    "label": "TAMPERED",
+    "source_eml": "tampered_05.eml",
+    "filing_id": 3833,
+    "company": "Tata Motors Passenger Vehicles Ltd",
+    "tampered_field": "dividend_per_share",
+    "original_value": "3",
+    "altered_value": "30"
+  }
+]

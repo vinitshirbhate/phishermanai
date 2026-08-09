@@ -1,0 +1,37 @@
+Message-ID: <178610589257.39512.5297186828562774863@ril.com>
+Date: Fri, 31 Jul 2026 19:30:00 -0000
+From: Company Secretary <investor.relations@ril.com>
+To: investor@example.com
+Subject: Postal ballot notice and remote e-voting instructions
+Return-Path: <bounce@ril.com>
+Authentication-Results: mx.google.com; dkim=pass header.i=@ril.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@ril.com; dmarc=pass (p=REJECT
+ sp=REJECT dis=NONE) header.from=ril.com
+Received: from mail.ril.com (mail.ril.com [203.0.113.20]) by mx.google.com
+ with ESMTPS id inst9; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Member,
+
+Notice of Postal Ballot dated 17 July 2026 is being sent to all members whose=
+ email
+addresses are registered with the Company or the Depository.
+
+Remote e-voting commences on Friday, 24 July 2026 at 9:00 A.M. and ends on Sa=
+turday,
+23 August 2026 at 5:00 P.M. E-voting shall not be allowed beyond the said dat=
+e and time.
+
+Members holding shares in demat mode may cast their vote through the NSDL e-v=
+oting system
+using their existing login credentials. Members who have forgotten their pass=
+word may use
+the "Forgot User Details/Password" option available on the portal.
+
+The Company has appointed a Scrutinizer for conducting the postal ballot proc=
+ess in a
+fair and transparent manner.
+
+Reliance Industries Limited

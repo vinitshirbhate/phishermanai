@@ -1,0 +1,46 @@
+%% PhishermanAI — system architecture
+%%
+%% Excalidraw:  Insert (+)  ->  "Mermaid to Excalidraw"  ->  paste this file
+%% Also renders as-is in GitHub, Notion, Obsidian and the architecture page.
+
+flowchart TD
+
+    IN([" Email · WhatsApp message · Screenshot "])
+
+    IN --> PREP[" Prepare<br/>parse · mask demat/PAN/phone · unwrap forwards "]
+
+    PREP --> GATE{" Signed by an<br/>authorised domain? "}
+
+    GATE -->|" yes — proven sender "| VERIFIED
+    GATE -->|" no "| CHECKS
+
+    CHECKS[" Four chokepoints<br/>Entity · Money · Claim · Delivery "]
+    CHECKS --> FILING[" Cross-check the real filing<br/>compare field by field "]
+    FILING --> DECIDE{" Weigh the findings "}
+
+    DECIDE --> VERIFIED([" VERIFIED "])
+    DECIDE --> NORISK([" NO RISK FOUND "])
+    DECIDE --> TAMPERED([" TAMPERED "])
+    DECIDE --> FRAUD([" FRAUDULENT "])
+
+    DATA[(" Local reference data<br/>8,434 exchange filings<br/>5,442 SEBI registrations ")]
+    DATA -.-> CHECKS
+    DATA -.-> FILING
+
+    classDef prep   fill:#a5d8ff,stroke:#1971c2,stroke-width:2px,color:#0b3d66
+    classDef gate   fill:#ffec99,stroke:#f08c00,stroke-width:2px,color:#6b4500
+    classDef store  fill:#d0bfff,stroke:#6741d9,stroke-width:2px,color:#33206b
+    classDef input  fill:#f1f3f5,stroke:#868e96,stroke-width:2px,color:#212529
+    classDef ok     fill:#b2f2bb,stroke:#2f9e44,stroke-width:3px,color:#12451f
+    classDef quiet  fill:#e9ecef,stroke:#868e96,stroke-width:3px,color:#343a40
+    classDef warn   fill:#ffd8a8,stroke:#e8590c,stroke-width:3px,color:#6b2900
+    classDef bad    fill:#ffc9c9,stroke:#e03131,stroke-width:3px,color:#6b1414
+
+    class IN input
+    class PREP,CHECKS,FILING prep
+    class GATE,DECIDE gate
+    class DATA store
+    class VERIFIED ok
+    class NORISK quiet
+    class TAMPERED warn
+    class FRAUD bad

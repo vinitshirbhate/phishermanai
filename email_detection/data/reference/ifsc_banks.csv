@@ -1,0 +1,52 @@
+ifsc_prefix,bank_name,bank_type,source
+SBIN,State Bank of India,PUBLIC,manual_curation_2026-08
+HDFC,HDFC Bank,PRIVATE,manual_curation_2026-08
+ICIC,ICICI Bank,PRIVATE,manual_curation_2026-08
+UTIB,Axis Bank,PRIVATE,manual_curation_2026-08
+KKBK,Kotak Mahindra Bank,PRIVATE,manual_curation_2026-08
+PUNB,Punjab National Bank,PUBLIC,manual_curation_2026-08
+CNRB,Canara Bank,PUBLIC,manual_curation_2026-08
+BARB,Bank of Baroda,PUBLIC,manual_curation_2026-08
+UBIN,Union Bank of India,PUBLIC,manual_curation_2026-08
+IOBA,Indian Overseas Bank,PUBLIC,manual_curation_2026-08
+CBIN,Central Bank of India,PUBLIC,manual_curation_2026-08
+MAHB,Bank of Maharashtra,PUBLIC,manual_curation_2026-08
+IDIB,Indian Bank,PUBLIC,manual_curation_2026-08
+BKID,Bank of India,PUBLIC,manual_curation_2026-08
+PSIB,Punjab and Sind Bank,PUBLIC,manual_curation_2026-08
+UCBA,UCO Bank,PUBLIC,manual_curation_2026-08
+IDFB,IDFC First Bank,PRIVATE,manual_curation_2026-08
+YESB,Yes Bank,PRIVATE,manual_curation_2026-08
+RATN,RBL Bank,PRIVATE,manual_curation_2026-08
+FDRL,Federal Bank,PRIVATE,manual_curation_2026-08
+INDB,IndusInd Bank,PRIVATE,manual_curation_2026-08
+CIUB,City Union Bank,PRIVATE,manual_curation_2026-08
+KVBL,Karur Vysya Bank,PRIVATE,manual_curation_2026-08
+TMBL,Tamilnad Mercantile Bank,PRIVATE,manual_curation_2026-08
+DCBL,DCB Bank,PRIVATE,manual_curation_2026-08
+KARB,Karnataka Bank,PRIVATE,manual_curation_2026-08
+SIBL,South Indian Bank,PRIVATE,manual_curation_2026-08
+CSBK,CSB Bank,PRIVATE,manual_curation_2026-08
+JAKA,Jammu and Kashmir Bank,PRIVATE,manual_curation_2026-08
+BDBL,Bandhan Bank,PRIVATE,manual_curation_2026-08
+AUBL,AU Small Finance Bank,SMALL_FINANCE,manual_curation_2026-08
+ESFB,Equitas Small Finance Bank,SMALL_FINANCE,manual_curation_2026-08
+UJVN,Ujjivan Small Finance Bank,SMALL_FINANCE,manual_curation_2026-08
+JSFB,Jana Small Finance Bank,SMALL_FINANCE,manual_curation_2026-08
+SURY,Suryoday Small Finance Bank,SMALL_FINANCE,manual_curation_2026-08
+UTKS,Utkarsh Small Finance Bank,SMALL_FINANCE,manual_curation_2026-08
+NSPB,NSDL Payments Bank,PAYMENTS,manual_curation_2026-08
+PYTM,Paytm Payments Bank,PAYMENTS,manual_curation_2026-08
+AIRP,Airtel Payments Bank,PAYMENTS,manual_curation_2026-08
+FINO,Fino Payments Bank,PAYMENTS,manual_curation_2026-08
+IPOS,India Post Payments Bank,PAYMENTS,manual_curation_2026-08
+JIOP,Jio Payments Bank,PAYMENTS,manual_curation_2026-08
+HSBC,HSBC India,FOREIGN,manual_curation_2026-08
+CITI,Citibank India,FOREIGN,manual_curation_2026-08
+SCBL,Standard Chartered Bank,FOREIGN,manual_curation_2026-08
+DEUT,Deutsche Bank,FOREIGN,manual_curation_2026-08
+DBSS,DBS Bank India,FOREIGN,manual_curation_2026-08
+BOFA,Bank of America,FOREIGN,manual_curation_2026-08
+ABHY,Abhyudaya Cooperative Bank,COOPERATIVE,manual_curation_2026-08
+SVCB,SVC Cooperative Bank,COOPERATIVE,manual_curation_2026-08
+COSB,Cosmos Cooperative Bank,COOPERATIVE,manual_curation_2026-08

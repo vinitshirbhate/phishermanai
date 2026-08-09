@@ -1,0 +1,31 @@
+Message-ID:
+ <178604627236.32808.4476258498489469313@canarabank-dividends.co.in>
+Date: Fri, 07 Aug 2026 01:27:52 -0000
+From: Canara Bank Investor Services <dividends@canarabank-dividends.co.in>
+To: investor@example.com
+Subject: Canara Bank: Your unclaimed dividend of Rs 18,450 is pending
+Return-Path: <bounce@canarabank-dividends.co.in>
+Authentication-Results: mx.google.com; dkim=pass
+ header.i=@canarabank-dividends.co.in header.s=selector1; spf=pass
+ (google.com: domain of noreply@canarabank-dividends.co.in designates
+ 203.0.113.10 as permitted sender)
+ smtp.mailfrom=noreply@canarabank-dividends.co.in; dmarc=pass (p=REJECT
+ sp=REJECT dis=NONE) header.from=canarabank-dividends.co.in
+Received: from mail.canarabank-dividends.co.in
+ (mail.canarabank-dividends.co.in [203.0.113.10]) by mx.google.com with ESMTPS
+ id abc123; Fri, 07 Aug 2026 01:27:52 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Investor,
+
+Our records show an unclaimed dividend of Rs 18,450 in your name.
+This amount will be transferred to the IEPF if not claimed within 48 hours.
+
+Click here to claim: https://canarabank-dividends.co.in/claim
+
+A refundable verification charge of Rs 500 is payable to 9876543210@ybl to re=
+lease the amount to your account.
+
+Canara Bank Investor Services

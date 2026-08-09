@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>PhishermanAI</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header>
+    <h1>PhishermanAI</h1>
+    <p class="sub">Verify financial messages on WhatsApp Web</p>
+  </header>
+
+  <section class="status">
+    <div class="row">
+      <span>Verifier</span>
+      <span id="health" class="badge badge-wait">checking…</span>
+    </div>
+    <div class="row">
+      <span>Endpoint</span>
+      <code id="endpoint">—</code>
+    </div>
+    <div class="row">
+      <span>Filings corpus</span>
+      <span id="corpus">—</span>
+    </div>
+    <div class="row">
+      <span>Checking enabled</span>
+      <span id="consent" class="badge badge-wait">—</span>
+    </div>
+  </section>
+
+  <section class="how">
+    <h2>How to use it</h2>
+    <ol>
+      <li>Open <b>web.whatsapp.com</b>.</li>
+      <li>Hover the suspicious message.</li>
+      <li>Click <b>Check this</b>.</li>
+    </ol>
+  </section>
+
+  <section class="privacy">
+    <h2>What this extension does not do</h2>
+    <ul>
+      <li>It never sends, replies to, or forwards messages for you.</li>
+      <li>It reads only the one message you click on — never your chats,
+          contacts, or phone number.</li>
+      <li>Phone numbers and email addresses are removed before anything is sent.</li>
+      <li>It talks only to the endpoint above, which is your own machine by default.</li>
+      <li>No message content is stored, by the extension or the verifier.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <button id="options" class="btn">Settings</button>
+    <button id="revoke" class="btn btn-quiet">Disable checking</button>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

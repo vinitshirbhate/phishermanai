@@ -1,0 +1,59 @@
+Message-ID: <178616722338.33868.3172221198254123020@gmail.com>
+Date: Mon, 03 Aug 2026 10:30:00 -0000
+From: Investor <shourya@gmail.com>
+To: check@phishermanai.local
+Subject: Fwd: Your account statement for July 2026 - HDFC Bank
+Authentication-Results: mx.google.com; dkim=pass header.i=@gmail.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@gmail.com; dmarc=pass (p=REJECT
+ sp=REJECT dis=NONE) header.from=gmail.com
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============6511726528090184827=="
+
+--===============6511726528090184827==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+
+Attaching the original for you to check.
+
+--===============6511726528090184827==
+Content-Type: message/rfc822
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Content-Disposition: attachment
+
+Message-ID: <178616722322.33868.1766902472191275354@hdfcbank.com>
+Date: Thu, 30 Jul 2026 13:30:00 -0000
+From: HDFC Bank <alerts@hdfcbank.com>
+To: investor@example.com
+Subject: Your account statement for July 2026 - HDFC Bank
+Return-Path: <bounce@hdfcbank.com>
+Authentication-Results: mx.google.com; dkim=pass header.i=@hdfcbank.com
+ header.s=s1; spf=pass smtp.mailfrom=noreply@hdfcbank.com; dmarc=pass
+ (p=REJECT sp=REJECT dis=NONE) header.from=hdfcbank.com
+Received: from mail.hdfcbank.com (mail.hdfcbank.com [203.0.113.20]) by
+ mx.google.com with ESMTPS id g31; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Customer,
+
+Your account statement is attached. The password to open this statement is yo=
+ur PAN in
+upper case followed by your date of birth in DDMM format.
+
+An OTP will be sent to your registered mobile number when you log in to net b=
+anking.
+HDFC Bank will never ask you for your OTP, PIN, CVV or password. If anyone as=
+ks you to
+share these, please report it to us immediately on 1800 11 2211.
+
+To update your KYC, please visit your nearest branch or log in to net banking=
+. Accounts
+with incomplete KYC may be restricted as per RBI guidelines.
+
+This is a system generated email. Please do not reply to this message.
+
+HDFC Bank
+
+--===============6511726528090184827==--

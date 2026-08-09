@@ -1,0 +1,25 @@
+Message-ID: <178618855099.34024.6359311364575977513@sebi.gov.in>
+Date: Sat, 01 Aug 2026 00:00:00 -0000
+From: SEBI Office of Investor Assistance <investorassistance@sebi.gov.in>
+To: investor@example.com
+Subject: Investor education: verify before you invest
+Return-Path: <bounce@sebi.gov.in>
+Authentication-Results: mx.google.com; dkim=pass header.i=@sebi.gov.in
+ header.s=s1; spf=pass smtp.mailfrom=noreply@sebi.gov.in; dmarc=pass
+ (p=REJECT) header.from=sebi.gov.in
+Received: from mail.sebi.gov.in (mail.sebi.gov.in [203.0.113.30]) by
+ mx.google.com with ESMTPS id adv21; Wed, 05 Aug 2026 09:00:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Dear Investor,
+
+Before investing, verify the registration of the intermediary. Registered
+intermediaries collecting investor funds must use a validated UPI address end=
+ing
+in .brk@valid for brokers or .mf@valid for mutual funds.
+
+Never transfer investment money to a personal UPI handle or an individual's b=
+ank
+account, however convincing the request appears.

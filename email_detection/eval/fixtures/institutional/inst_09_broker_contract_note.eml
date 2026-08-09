@@ -1,0 +1,30 @@
+Message-ID: <178610589257.39512.2003945045053569486@angelone.in>
+Date: Sat, 01 Aug 2026 02:30:00 -0000
+From: Angel One <contractnotes@angelone.in>
+To: investor@example.com
+Subject: Contract note for trades dated 03 August 2026
+Return-Path: <bounce@angelone.in>
+Authentication-Results: mx.google.com; dkim=pass header.i=@angelone.in
+ header.s=s1; spf=pass smtp.mailfrom=noreply@angelone.in; dmarc=pass (p=REJECT
+ sp=REJECT dis=NONE) header.from=angelone.in
+Received: from mail.angelone.in (mail.angelone.in [203.0.113.20]) by
+ mx.google.com with ESMTPS id inst8; Mon, 03 Aug 2026 10:30:00 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Dear Client,
+
+Please find attached the digitally signed contract note for trades executed on
+03 August 2026.
+
+The attachment is password protected. The password is your PAN in upper case.
+
+You can also view your trades and download reports by logging in to
+https://www.angelone.in with your Client ID and password.
+
+Please verify the details and report any discrepancy within 24 hours to
+support@angelone.in or call our helpline 1800 1020 330.
+
+Angel One Limited
+SEBI Registration: INZ000161534
