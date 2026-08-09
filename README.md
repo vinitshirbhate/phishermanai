@@ -1,4 +1,4 @@
-# APIF — AI Propaganda Intelligence Framework
+# APIF — AI Propaganda Intelligence Framework.
 
 Backend for the SEBI hackathon brief in [fake_propaganda/plan.md](fake_propaganda/plan.md).
 
