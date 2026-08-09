@@ -1,0 +1,283 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-source-serif);
+  --font-display: var(--font-instrument-serif);
+  --font-mono: var(--font-jetbrains-mono);
+  --font-heading: var(--font-inter);
+
+  /* Brand palette — see docs/schema.md */
+  --color-cream: #f6ede4;
+  --color-cream-raised: #fdf8f2;
+  --color-cream-sunk: #ece0d2;
+  --color-navy: #0b1530;
+  --color-navy-raised: #111d3f;
+  --color-navy-sunk: #060d21;
+  --color-ember: #e6500f;
+  --color-ember-soft: #f2854e;
+
+  /*
+   * Verdict colours — one per outcome, never reused. Indirected through
+   * plain custom properties so the navy bands can lift them for contrast.
+   */
+  --color-verdict-verified: var(--verdict-verified);
+  --color-verdict-quiet: var(--verdict-quiet);
+  --color-verdict-tampered: var(--verdict-tampered);
+  --color-verdict-fraud: var(--verdict-fraud);
+
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* Light — the warm cream ground. */
+:root {
+  --background: #f6ede4;
+  --foreground: #0b1530;
+  --card: #fdf8f2;
+  --card-foreground: #0b1530;
+  --popover: #fdf8f2;
+  --popover-foreground: #0b1530;
+  --primary: #e6500f;
+  --primary-foreground: #fff8f3;
+  --secondary: #ece0d2;
+  --secondary-foreground: #0b1530;
+  --muted: #ece0d2;
+  --muted-foreground: #56618099;
+  --accent: #eadfd1;
+  --accent-foreground: #0b1530;
+  --destructive: #c62828;
+  --border: #0b153021;
+  --input: #0b15301f;
+  --ring: #e6500f;
+  --chart-1: #e6500f;
+  --chart-2: #0b1530;
+  --chart-3: #1f7a4d;
+  --chart-4: #c2670a;
+  --chart-5: #6c7a99;
+  --radius: 0.5rem;
+  --sidebar: #fdf8f2;
+  --sidebar-foreground: #0b1530;
+  --sidebar-primary: #e6500f;
+  --sidebar-primary-foreground: #fff8f3;
+  --sidebar-accent: #ece0d2;
+  --sidebar-accent-foreground: #0b1530;
+  --sidebar-border: #0b153021;
+  --sidebar-ring: #e6500f;
+
+  --verdict-verified: #1c7a4a;
+  --verdict-quiet: #5b6a8c;
+  --verdict-tampered: #b45c07;
+  --verdict-fraud: #c02626;
+}
+
+/*
+ * `.dark` is applied per-section, not per-page: the layout alternates
+ * cream → navy → cream, and every shadcn primitive inside a navy band
+ * needs the inverted token set. Custom properties inherit, so the element
+ * carrying `.dark` also picks up the values it defines.
+ */
+.dark {
+  --background: #0b1530;
+  --foreground: #f6ede4;
+  --card: #111d3f;
+  --card-foreground: #f6ede4;
+  --popover: #111d3f;
+  --popover-foreground: #f6ede4;
+  --primary: #e6500f;
+  --primary-foreground: #fff8f3;
+  --secondary: #17244d;
+  --secondary-foreground: #f6ede4;
+  --muted: #17244d;
+  --muted-foreground: #f6ede4a8;
+  --accent: #1b2a58;
+  --accent-foreground: #f6ede4;
+  --destructive: #ef6a6a;
+  --border: #f6ede426;
+  --input: #f6ede41f;
+  --ring: #e6500f;
+  --sidebar: #111d3f;
+  --sidebar-foreground: #f6ede4;
+  --sidebar-primary: #e6500f;
+  --sidebar-primary-foreground: #fff8f3;
+  --sidebar-accent: #17244d;
+  --sidebar-accent-foreground: #f6ede4;
+  --sidebar-border: #f6ede426;
+  --sidebar-ring: #e6500f;
+
+  /* Lifted for legibility on navy — same meanings, readable ground. */
+  --verdict-verified: #5cc98d;
+  --verdict-quiet: #9fb0d4;
+  --verdict-tampered: #f0a44a;
+  --verdict-fraud: #f47070;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans antialiased;
+    scroll-behavior: smooth;
+    /* The sticky header must not cover an anchored heading. */
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-sans font-medium tracking-[-0.02em];
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background-color: #e6500f;
+    color: #fff8f3;
+  }
+}
+
+@layer components {
+  /* Small italic serif tag above a heading. */
+  .eyebrow {
+    @apply font-display text-primary text-sm italic tracking-[0.04em] sm:text-base;
+  }
+
+  /* Editorial body copy: serif, generous leading, softer than headings. */
+  .copy {
+    @apply font-serif text-[1.0625rem] leading-[1.75] text-foreground/70;
+  }
+
+  .copy-lg {
+    @apply font-serif text-lg leading-[1.7] text-foreground/70 sm:text-xl;
+  }
+
+  /* Display headline sizes from the spec: 50–55px at desktop. */
+  .h-display {
+    @apply text-[2.25rem] leading-[1.06] sm:text-[3rem] lg:text-[3.4rem];
+  }
+
+  .h-section {
+    @apply text-[2rem] leading-[1.08] sm:text-[2.6rem] lg:text-[3.15rem];
+  }
+
+  /* The italicised accent phrase that sits under a bold headline. */
+  .h-accent {
+    @apply font-display text-primary italic;
+  }
+
+  /* Terminal-style label inside dark UI mockups. */
+  .mono-label {
+    @apply font-mono text-[0.6875rem] tracking-[0.14em] uppercase;
+  }
+
+  .container-page {
+    @apply mx-auto w-full max-w-[76rem] px-5 sm:px-8;
+  }
+
+  /* Faint blueprint grid used behind dark technical graphics. */
+  .grid-lines {
+    background-image:
+      linear-gradient(to right, #f6ede40f 1px, transparent 1px),
+      linear-gradient(to bottom, #f6ede40f 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  .dashed-rule {
+    background-image: linear-gradient(
+      to right,
+      currentColor 0 6px,
+      transparent 6px 12px
+    );
+  }
+}
+
+@layer utilities {
+  @keyframes trace {
+    0% {
+      stroke-dashoffset: 220;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .animate-trace {
+    animation: trace 1.6s ease-out forwards;
+  }
+
+  @keyframes pulse-node {
+    0%,
+    100% {
+      opacity: 0.35;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.12);
+    }
+  }
+
+  .animate-pulse-node {
+    animation: pulse-node 2.4s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-trace,
+    .animate-pulse-node {
+      animation: none;
+    }
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
