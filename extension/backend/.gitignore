@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+
+# Runtime SQLite store (WAL mode writes three files). On-device data only —
+# never committed. Recreated automatically on first request.
+data/*.db
+data/*.db-wal
+data/*.db-shm
+
+# Local secrets / signing material
+.env
+state/dev_signing/
+*.pem
