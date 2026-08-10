@@ -11,6 +11,16 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: projectRoot,
   },
+  async redirects() {
+    return [
+      { source: "/product/email", destination: "/#channel-email", permanent: true },
+      { source: "/product/voice", destination: "/#channel-voice", permanent: true },
+      { source: "/product/video", destination: "/#channel-video", permanent: true },
+      { source: "/product/social", destination: "/#channel-social", permanent: true },
+      { source: "/product/extension", destination: "/#channel-web", permanent: true },
+      { source: "/product/authenticity", destination: "/#authenticity", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

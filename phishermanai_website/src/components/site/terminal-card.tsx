@@ -24,7 +24,7 @@ export function TerminalCard({
   return (
     <div
       className={cn(
-        "dark grid-lines overflow-hidden rounded-xl border border-cream/12 bg-navy text-cream shadow-[0_24px_60px_-24px_rgba(11,21,48,0.55)]",
+        "dark grid-lines overflow-hidden rounded-xl border border-cream/12 bg-navy text-cream shadow-[0_24px_60px_-24px_rgba(16,27,40,0.55)]",
         className,
       )}
     >

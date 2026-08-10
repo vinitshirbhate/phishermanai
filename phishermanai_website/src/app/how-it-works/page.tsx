@@ -29,9 +29,9 @@ export default function HowItWorksPage() {
     <>
       <PageHeader
         eyebrow="How it works"
-        title="Content enters through one API,"
-        accent="routes by type, and leaves as one of four answers."
-        lead="Text, audio, video and a URL are read by different detectors and judged by the same rules. Whichever path a piece of content takes, the answer carries the register it was checked against and the date that register was read."
+        title="Everything comes in through one door"
+        accent="and leaves as one of four honest answers."
+        lead="An email, a call recording, a video, a link — each gets read by its own detector, then judged by the same rules. Whatever the answer is, it names what got checked and when."
       />
 
       <Section>

@@ -337,7 +337,7 @@ export function VerifyConsole() {
                 className={cn(
                   "rounded-xl border p-4 text-left transition-all",
                   isActive
-                    ? "border-primary/50 bg-card shadow-[0_14px_36px_-26px_rgba(11,21,48,0.5)]"
+                    ? "border-primary/50 bg-card shadow-[0_14px_36px_-26px_rgba(16,27,40,0.5)]"
                     : "border-border bg-transparent hover:border-foreground/20",
                 )}
               >

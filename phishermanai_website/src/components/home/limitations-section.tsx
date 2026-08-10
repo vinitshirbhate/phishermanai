@@ -1,3 +1,4 @@
+import { Reveal } from "@/components/site/motion";
 import { Section, SectionHeading } from "@/components/site/section";
 import {
   Accordion,
@@ -25,9 +26,10 @@ export function LimitationsSection({
         eyebrow="Coverage and limitations"
         title="Stated plainly, because"
         accent="bounded claims are worth more than broad ones."
-        lead="Every one of these is a thing the system cannot currently do. They are published for the same reason the failing metrics are: a tool that hides its edges cannot be trusted at its centre."
+        lead="Each of these is something the system can't currently do. Published for the same reason the failing metrics are: a tool that hides its edges can't be trusted at its centre."
       />
 
+      <Reveal delay={0.1}>
       <Accordion type="single" collapsible className="mt-12 w-full">
         {items.map((item, index) => (
           <AccordionItem key={item.title} value={`limitation-${index}`}>
@@ -48,6 +50,7 @@ export function LimitationsSection({
           </AccordionItem>
         ))}
       </Accordion>
+      </Reveal>
     </Section>
   );
 }

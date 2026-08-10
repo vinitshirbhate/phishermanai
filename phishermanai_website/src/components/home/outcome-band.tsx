@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
+import { Reveal, RevealGroup, RevealItem } from "@/components/site/motion";
 import { channels } from "@/lib/content";
 
 /**
@@ -12,27 +13,27 @@ const columns = [
     label: "Target users",
     href: "/#who-its-for",
     lead: "Retail and first-generation investors",
-    body: "Primary beneficiary. Then registered intermediaries, market infrastructure institutions, and SEBI as the owner of any authentication standard.",
+    body: "The primary beneficiary — then intermediaries, infrastructure institutions, and SEBI.",
   },
   {
     label: "Channels addressed",
     href: "/#channels",
     lead: "Email · voice · video · social · web",
-    body: "Plus WhatsApp text and screenshots on the messaging path, and files offered in chat on the browser path.",
+    body: "Plus WhatsApp text, screenshots, and files offered in chat.",
   },
   {
     label: "Evidence of performance",
     href: "/evidence",
     lead: "0 false positives in 155 genuine samples",
-    body: "97.8% accuracy over four classes on the email path, MCC 0.6646 on the web path, and two published targets that are not yet met.",
+    body: "97.8% accuracy on email, MCC 0.6646 on web — measured, not claimed.",
   },
 ];
 
 export function OutcomeBand() {
   return (
-    <div className="container-page py-14 sm:py-16">
-      <div className="rounded-2xl border border-border bg-card">
-        <div className="grid gap-px overflow-hidden rounded-2xl bg-border md:grid-cols-3">
+    <Reveal className="container-page py-14 sm:py-16">
+      <div className="border border-border bg-card">
+        <div className="grid gap-px overflow-hidden bg-border md:grid-cols-3">
           {columns.map((column) => (
             <Link
               key={column.label}
@@ -52,19 +53,22 @@ export function OutcomeBand() {
           ))}
         </div>
 
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-border px-6 py-4 sm:px-7">
+        <RevealGroup
+          className="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-border px-6 py-4 sm:px-7"
+          stagger={0.05}
+        >
           <span className="mono-label text-foreground/35">coverage</span>
           {channels.map((channel) => (
-            <span
+            <RevealItem
               key={channel.id}
               className="inline-flex items-center gap-2 font-mono text-[0.75rem] text-foreground/55"
             >
               <channel.icon className="size-3.5 text-primary" aria-hidden />
               {channel.name.toLowerCase()}
-            </span>
+            </RevealItem>
           ))}
-        </div>
+        </RevealGroup>
       </div>
-    </div>
+    </Reveal>
   );
 }

@@ -45,9 +45,9 @@ export default function EvidencePage() {
     <>
       <PageHeader
         eyebrow="Evidence"
-        title="The numbers,"
-        accent="including the ones that miss."
-        lead="Two of the four extension targets are not met. They are published beside the two that are, because a results table you can only read one way is not a results table."
+        title="Here are the numbers —"
+        accent="the good ones, and the two we haven't hit yet."
+        lead="Two of four extension targets fall short. We're showing them next to the ones that pass, because a scoreboard you can only read one way isn't really a scoreboard."
       />
 
       <Section tone="raised">

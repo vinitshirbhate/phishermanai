@@ -1,3 +1,6 @@
+import { Compass, FileCheck2, PlayCircle, ShieldCheck, SlidersHorizontal } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+
 import { channels } from "./content";
 
 export const site = {
@@ -14,27 +17,57 @@ export type NavLink = {
   href: string;
   label: string;
   description?: string;
+  icon?: LucideIcon;
 };
 
-/** Every channel is first-class in the navigation, in the same order. */
-export const productNav: NavLink[] = [
-  ...channels.map((channel) => ({
-    href: channel.href,
-    label: channel.navLabel,
-    description: channel.navDescription,
-  })),
+/** Short nav labels — the full channel names are too long for a tab. */
+const shortLabel: Record<(typeof channels)[number]["id"], string> = {
+  email: "Email",
+  voice: "Voice",
+  video: "Video",
+  social: "Social",
+  web: "Web",
+};
+
+/** The five channels, front and centre in the island — one tap each. */
+export const channelNav: NavLink[] = channels.map((channel) => ({
+  href: channel.href,
+  label: shortLabel[channel.id],
+  icon: channel.icon,
+}));
+
+/** Everything that isn't a channel, tucked under "More". */
+export const moreNav: NavLink[] = [
   {
-    href: "/product/authenticity",
+    href: "/how-it-works",
+    label: "How it works",
+    description: "One API, four possible answers.",
+    icon: Compass,
+  },
+  {
+    href: "/features",
+    label: "Features",
+    description: "Every capability, channel by channel.",
+    icon: SlidersHorizontal,
+  },
+  {
+    href: "/evidence",
+    label: "Evidence",
+    description: "The numbers, including the ones that miss.",
+    icon: FileCheck2,
+  },
+  {
+    href: "/demo",
+    label: "Demo",
+    description: "Paste a message, watch it get judged.",
+    icon: PlayCircle,
+  },
+  {
+    href: "/#authenticity",
     label: "Authenticity framework",
     description: "Confirming a genuine communication, not merely failing to flag it.",
+    icon: ShieldCheck,
   },
-];
-
-export const mainNav: NavLink[] = [
-  { href: "/how-it-works", label: "How it works" },
-  { href: "/features", label: "Features" },
-  { href: "/evidence", label: "Evidence" },
-  { href: "/demo", label: "Demo" },
 ];
 
 export const footerNav: { title: string; links: NavLink[] }[] = [
@@ -45,9 +78,9 @@ export const footerNav: { title: string; links: NavLink[] }[] = [
   {
     title: "Verification",
     links: [
-      { href: "/product/authenticity", label: "Authenticity framework" },
-      { href: "/product/authenticity#registry", label: "Official-channel registry" },
-      { href: "/product/email#filing", label: "Filing cross-check" },
+      { href: "/#authenticity", label: "Authenticity framework" },
+      { href: "/#authenticity", label: "Official-channel registry" },
+      { href: "/#channel-email", label: "Filing cross-check" },
       { href: "/how-it-works#outcomes", label: "The four outcomes" },
     ],
   },

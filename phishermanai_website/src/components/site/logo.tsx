@@ -1,39 +1,40 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
-/** A fish hook read as a check mark — the product's two halves in one mark. */
-export function LogoMark({ className }: { className?: string }) {
+/** The knot mark — detection and verification, interlocked into one shape. */
+export function LogoMark({ className, spin = true }: { className?: string; spin?: boolean }) {
   return (
-    <svg
-      viewBox="0 0 28 28"
-      fill="none"
-      aria-hidden="true"
-      className={cn("size-7", className)}
-    >
-      <rect width="28" height="28" rx="7" className="fill-navy" />
-      <path
-        d="M18.5 6.5v8.2a5.2 5.2 0 1 1-10.4 0"
-        stroke="#e6500f"
-        strokeWidth="2.1"
-        strokeLinecap="round"
-      />
-      <path d="M15.6 8.9 18.5 6l2.9 2.9" stroke="#f6ede4" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="8.1" cy="20.9" r="1.6" fill="#e6500f" />
-    </svg>
-  );
-}
-
-export function Logo({ className }: { className?: string }) {
-  return (
-    <Link
-      href="/"
+    <span
       className={cn(
-        "group flex items-center gap-2.5 rounded-md outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
+        "grid shrink-0 place-items-center rounded-full border border-cream/40 bg-cream/80 p-1.5 shadow-[0_1px_0_0_rgba(16,27,40,0.06)] backdrop-blur-sm",
         className,
       )}
     >
-      <LogoMark />
+      <Image
+        src="/brand/phisherman-mark.png"
+        alt=""
+        width={40}
+        height={40}
+        priority
+        className={cn("size-full object-contain", spin && "animate-spin-slow")}
+      />
+    </span>
+  );
+}
+
+export function Logo({ className, markClassName }: { className?: string; markClassName?: string }) {
+  return (
+    <Link
+      href="/"
+      aria-label={`${"PhishermanAI"} — home`}
+      className={cn(
+        "group flex items-center gap-2.5 rounded-full outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
+        className,
+      )}
+    >
+      <LogoMark className={cn("size-9", markClassName)} />
       <span className="text-[1.0625rem] font-medium tracking-[-0.02em]">
         Phisherman<span className="text-primary">AI</span>
       </span>

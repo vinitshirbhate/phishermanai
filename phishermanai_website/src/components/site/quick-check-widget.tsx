@@ -32,7 +32,7 @@ export function QuickCheckWidget() {
   return (
     <div className="fixed right-4 bottom-4 z-50 flex flex-col items-end gap-3 sm:right-6 sm:bottom-6">
       {open ? (
-        <div className="w-[min(21rem,calc(100vw-2rem))] overflow-hidden rounded-xl border border-border bg-card shadow-[0_18px_50px_-12px_rgba(11,21,48,0.35)]">
+        <div className="w-[min(21rem,calc(100vw-2rem))] overflow-hidden rounded-xl border border-border bg-card shadow-[0_18px_50px_-12px_rgba(16,27,40,0.35)]">
           <div className="dark flex items-start justify-between gap-3 bg-navy px-4 py-3.5 text-cream">
             <div>
               <p className="text-sm font-medium">Quick check</p>

@@ -9,12 +9,12 @@ export function SiteFooter() {
       <div className="container-page py-16 sm:py-20">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_repeat(3,1fr)]">
           <div className="max-w-sm">
-            <div className="flex items-center gap-2.5">
-              <LogoMark />
+            <Link href="/" className="flex items-center gap-2.5">
+              <LogoMark className="size-9" />
               <span className="text-[1.0625rem] font-medium tracking-[-0.02em]">
                 Phisherman<span className="text-primary">AI</span>
               </span>
-            </div>
+            </Link>
             <p className="copy mt-5 text-cream/60">
               A verification engine for Indian retail investors. It asks whether what a message
               says is true — not merely where it came from.
@@ -42,10 +42,10 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-16 border-t border-cream/12 pt-8">
-          <p className="font-serif text-[0.9375rem] leading-relaxed text-cream/60 italic">
-            The system warns — it never acts for you. Nothing is blocked, sent, replied to,
-            forwarded or reported without your click. On the default path, no page content,
-            message text or payment identifier leaves your device.
+          <p className="font-serif text-[0.9375rem] leading-relaxed text-cream/60">
+            The system warns — it never acts for you. Nothing is blocked, sent or reported
+            without your click, and on the default path nothing you paste in ever leaves your
+            device.
           </p>
           <div className="mt-6 flex flex-col gap-3 text-xs text-cream/40 sm:flex-row sm:items-center sm:justify-between">
             <p>

@@ -9,20 +9,22 @@
   --color-foreground: var(--foreground);
 
   --font-sans: var(--font-inter);
-  --font-serif: var(--font-source-serif);
-  --font-display: var(--font-instrument-serif);
+  --font-serif: var(--font-inter);
+  --font-display: var(--font-archivo);
   --font-mono: var(--font-jetbrains-mono);
   --font-heading: var(--font-inter);
 
-  /* Brand palette — see docs/schema.md */
-  --color-cream: #f6ede4;
-  --color-cream-raised: #fdf8f2;
-  --color-cream-sunk: #ece0d2;
-  --color-navy: #0b1530;
-  --color-navy-raised: #111d3f;
-  --color-navy-sunk: #060d21;
-  --color-ember: #e6500f;
-  --color-ember-soft: #f2854e;
+  /* Blueprint palette — see docs/schema.md. "cream"/"navy"/"ember" names are
+     legacy from the previous brand pass; kept so every existing bg-navy /
+     text-cream / bg-ember reference repaints without touching each file. */
+  --color-cream: #eef1f5;
+  --color-cream-raised: #f6f8fa;
+  --color-cream-sunk: #e4e9ef;
+  --color-navy: #101b28;
+  --color-navy-raised: #16212f;
+  --color-navy-sunk: #0a1119;
+  --color-ember: #e4572e;
+  --color-ember-soft: #ef7b52;
 
   /*
    * Verdict colours — one per outcome, never reused. Indirected through
@@ -63,93 +65,95 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
 
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  /* Spec-sheet chrome: sharp corners everywhere except the floating nav
+     island and small status pills, which opt back into rounded-full. */
+  --radius-sm: 0rem;
+  --radius-md: 0rem;
+  --radius-lg: 0rem;
+  --radius-xl: 0rem;
+  --radius-2xl: 0rem;
+  --radius-3xl: 0rem;
+  --radius-4xl: 0rem;
 }
 
-/* Light — the warm cream ground. */
+/* Light — cool blueprint slate. */
 :root {
-  --background: #f6ede4;
-  --foreground: #0b1530;
-  --card: #fdf8f2;
-  --card-foreground: #0b1530;
-  --popover: #fdf8f2;
-  --popover-foreground: #0b1530;
-  --primary: #e6500f;
-  --primary-foreground: #fff8f3;
-  --secondary: #ece0d2;
-  --secondary-foreground: #0b1530;
-  --muted: #ece0d2;
-  --muted-foreground: #56618099;
-  --accent: #eadfd1;
-  --accent-foreground: #0b1530;
-  --destructive: #c62828;
-  --border: #0b153021;
-  --input: #0b15301f;
-  --ring: #e6500f;
-  --chart-1: #e6500f;
-  --chart-2: #0b1530;
+  --background: #eef1f5;
+  --foreground: #101b28;
+  --card: #ffffff;
+  --card-foreground: #101b28;
+  --popover: #ffffff;
+  --popover-foreground: #101b28;
+  --primary: #e4572e;
+  --primary-foreground: #fff8f5;
+  --secondary: #e4e9ef;
+  --secondary-foreground: #101b28;
+  --muted: #e4e9ef;
+  --muted-foreground: #5a6675;
+  --accent: #e4e9ef;
+  --accent-foreground: #101b28;
+  --destructive: #c0272e;
+  --border: #d3dae2;
+  --input: #d3dae2;
+  --ring: #e4572e;
+  --chart-1: #e4572e;
+  --chart-2: #101b28;
   --chart-3: #1f7a4d;
-  --chart-4: #c2670a;
-  --chart-5: #6c7a99;
-  --radius: 0.5rem;
-  --sidebar: #fdf8f2;
-  --sidebar-foreground: #0b1530;
-  --sidebar-primary: #e6500f;
-  --sidebar-primary-foreground: #fff8f3;
-  --sidebar-accent: #ece0d2;
-  --sidebar-accent-foreground: #0b1530;
-  --sidebar-border: #0b153021;
-  --sidebar-ring: #e6500f;
+  --chart-4: #b45c07;
+  --chart-5: #5a6675;
+  --radius: 0rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #101b28;
+  --sidebar-primary: #e4572e;
+  --sidebar-primary-foreground: #fff8f5;
+  --sidebar-accent: #e4e9ef;
+  --sidebar-accent-foreground: #101b28;
+  --sidebar-border: #d3dae2;
+  --sidebar-ring: #e4572e;
 
   --verdict-verified: #1c7a4a;
-  --verdict-quiet: #5b6a8c;
+  --verdict-quiet: #5a6675;
   --verdict-tampered: #b45c07;
-  --verdict-fraud: #c02626;
+  --verdict-fraud: #c0272e;
 }
 
 /*
  * `.dark` is applied per-section, not per-page: the layout alternates
- * cream → navy → cream, and every shadcn primitive inside a navy band
+ * slate → ink → slate, and every shadcn primitive inside an ink band
  * needs the inverted token set. Custom properties inherit, so the element
  * carrying `.dark` also picks up the values it defines.
  */
 .dark {
-  --background: #0b1530;
-  --foreground: #f6ede4;
-  --card: #111d3f;
-  --card-foreground: #f6ede4;
-  --popover: #111d3f;
-  --popover-foreground: #f6ede4;
-  --primary: #e6500f;
-  --primary-foreground: #fff8f3;
-  --secondary: #17244d;
-  --secondary-foreground: #f6ede4;
-  --muted: #17244d;
-  --muted-foreground: #f6ede4a8;
-  --accent: #1b2a58;
-  --accent-foreground: #f6ede4;
-  --destructive: #ef6a6a;
-  --border: #f6ede426;
-  --input: #f6ede41f;
-  --ring: #e6500f;
-  --sidebar: #111d3f;
-  --sidebar-foreground: #f6ede4;
-  --sidebar-primary: #e6500f;
-  --sidebar-primary-foreground: #fff8f3;
-  --sidebar-accent: #17244d;
-  --sidebar-accent-foreground: #f6ede4;
-  --sidebar-border: #f6ede426;
-  --sidebar-ring: #e6500f;
+  --background: #101b28;
+  --foreground: #eef1f5;
+  --card: #16212f;
+  --card-foreground: #eef1f5;
+  --popover: #16212f;
+  --popover-foreground: #eef1f5;
+  --primary: #e4572e;
+  --primary-foreground: #fff8f5;
+  --secondary: #1c2938;
+  --secondary-foreground: #eef1f5;
+  --muted: #1c2938;
+  --muted-foreground: #eef1f5a8;
+  --accent: #202e40;
+  --accent-foreground: #eef1f5;
+  --destructive: #f0645f;
+  --border: #eef1f526;
+  --input: #eef1f51f;
+  --ring: #e4572e;
+  --sidebar: #16212f;
+  --sidebar-foreground: #eef1f5;
+  --sidebar-primary: #e4572e;
+  --sidebar-primary-foreground: #fff8f5;
+  --sidebar-accent: #1c2938;
+  --sidebar-accent-foreground: #eef1f5;
+  --sidebar-border: #eef1f526;
+  --sidebar-ring: #e4572e;
 
-  /* Lifted for legibility on navy — same meanings, readable ground. */
+  /* Lifted for legibility on ink — same meanings, readable ground. */
   --verdict-verified: #5cc98d;
-  --verdict-quiet: #9fb0d4;
+  --verdict-quiet: #9fb0c4;
   --verdict-tampered: #f0a44a;
   --verdict-fraud: #f47070;
 }
@@ -162,14 +166,15 @@
   html {
     @apply font-sans antialiased;
     scroll-behavior: smooth;
-    /* The sticky header must not cover an anchored heading. */
-    scroll-padding-top: 6rem;
+    /* The floating island nav must not cover an anchored heading. */
+    scroll-padding-top: 6.5rem;
   }
 
   body {
     @apply bg-background text-foreground;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    font-feature-settings: "cv11", "ss01";
   }
 
   h1,
@@ -181,54 +186,84 @@
   }
 
   ::selection {
-    background-color: #e6500f;
-    color: #fff8f3;
+    background-color: #e4572e;
+    color: #fff8f5;
   }
 }
 
 @layer components {
-  /* Small italic serif tag above a heading. */
+  /* Mono eyebrow with a vermilion tick — the one place colour marks meaning. */
   .eyebrow {
-    @apply font-display text-primary text-sm italic tracking-[0.04em] sm:text-base;
+    @apply text-primary font-mono inline-flex items-center gap-2 text-[0.6875rem] tracking-[0.14em] uppercase not-italic sm:text-[0.75rem];
+  }
+  .eyebrow::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--primary);
+    flex: none;
   }
 
-  /* Editorial body copy: serif, generous leading, softer than headings. */
+  /* Editorial body copy, now IBM-Plex-style grotesk sans, not serif italic. */
   .copy {
-    @apply font-serif text-[1.0625rem] leading-[1.75] text-foreground/70;
+    @apply font-serif text-[1.0625rem] leading-[1.7] text-muted-foreground;
   }
 
   .copy-lg {
-    @apply font-serif text-lg leading-[1.7] text-foreground/70 sm:text-xl;
+    @apply font-serif text-lg leading-[1.65] text-muted-foreground sm:text-xl;
   }
 
-  /* Display headline sizes from the spec: 50–55px at desktop. */
+  /* Display headline sizes — Archivo, tight tracking, spec-sheet weight. */
   .h-display {
-    @apply text-[2.25rem] leading-[1.06] sm:text-[3rem] lg:text-[3.4rem];
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    @apply text-[2.35rem] leading-[1.04] sm:text-[3.15rem] lg:text-[3.85rem];
   }
 
   .h-section {
-    @apply text-[2rem] leading-[1.08] sm:text-[2.6rem] lg:text-[3.15rem];
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    @apply text-[1.9rem] leading-[1.08] sm:text-[2.4rem] lg:text-[2.85rem];
   }
 
-  /* The italicised accent phrase that sits under a bold headline. */
+  /* The accent phrase that closes a headline — same weight, vermilion. */
   .h-accent {
-    @apply font-display text-primary italic;
+    font-family: var(--font-display);
+    @apply text-primary not-italic;
   }
 
-  /* Terminal-style label inside dark UI mockups. */
+  /* Terminal-style label inside dark UI mockups, and every spec caption. */
   .mono-label {
     @apply font-mono text-[0.6875rem] tracking-[0.14em] uppercase;
+  }
+
+  /* Big tabular figures — stats, evidence numbers. */
+  .stat-figure {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
   }
 
   .container-page {
     @apply mx-auto w-full max-w-[76rem] px-5 sm:px-8;
   }
 
-  /* Faint blueprint grid used behind dark technical graphics. */
+  /* Faint drafting-paper grid — pure CSS, reads as blueprint paper. */
+  .grid-blueprint {
+    background-image:
+      linear-gradient(to right, #10192512 1px, transparent 1px),
+      linear-gradient(to bottom, #10192512 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
   .grid-lines {
     background-image:
-      linear-gradient(to right, #f6ede40f 1px, transparent 1px),
-      linear-gradient(to bottom, #f6ede40f 1px, transparent 1px);
+      linear-gradient(to right, #eef1f50f 1px, transparent 1px),
+      linear-gradient(to bottom, #eef1f50f 1px, transparent 1px);
     background-size: 28px 28px;
   }
 
@@ -271,9 +306,54 @@
     animation: pulse-node 2.4s ease-in-out infinite;
   }
 
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-marquee {
+    animation: marquee 32s linear infinite;
+  }
+
+  @keyframes spin-slow {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-spin-slow {
+    animation: spin-slow 9s linear infinite;
+  }
+
+  @keyframes stamp-in {
+    0% {
+      opacity: 0;
+      transform: rotate(-3deg) scale(1.4);
+    }
+    60% {
+      opacity: 1;
+      transform: rotate(-3deg) scale(0.94);
+    }
+    100% {
+      opacity: 1;
+      transform: rotate(-3deg) scale(1);
+    }
+  }
+
+  .animate-stamp {
+    animation: stamp-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1.2) both;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .animate-trace,
-    .animate-pulse-node {
+    .animate-pulse-node,
+    .animate-marquee,
+    .animate-stamp,
+    .animate-spin-slow {
       animation: none;
     }
     html {

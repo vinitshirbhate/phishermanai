@@ -1,22 +1,22 @@
 import { accreditations, dataSources } from "@/lib/content";
+import { RevealGroup, RevealItem } from "@/components/site/motion";
 
+/** A full-width ink ticker — plain-text sources, not customer logos. */
 export function TrustBar() {
+  const doubled = [...dataSources, ...dataSources];
   return (
-    <div className="border-y border-border bg-cream-sunk/40">
-      <div className="container-page py-8">
-        <p className="mono-label text-center text-foreground/40">
-          checked against public data from
-        </p>
-        <ul className="mt-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 sm:gap-x-12">
-          {dataSources.map((source) => (
-            <li
-              key={source}
-              className="font-sans text-[0.9375rem] font-medium tracking-[-0.01em] text-foreground/35 transition-colors hover:text-foreground/60"
-            >
-              {source}
-            </li>
-          ))}
-        </ul>
+    <div className="dark overflow-hidden border-y border-cream/12 bg-navy py-4">
+      <p className="mono-label container-page mb-3 text-cream/35">checked against public data from</p>
+      <div className="flex w-max animate-marquee items-center gap-8">
+        {doubled.map((source, i) => (
+          <span
+            key={`${source}-${i}`}
+            className="flex items-center gap-8 font-mono text-[0.8125rem] tracking-[0.02em] text-cream/55"
+          >
+            {source}
+            <span className="size-1.5 bg-primary" aria-hidden />
+          </span>
+        ))}
       </div>
     </div>
   );
@@ -25,10 +25,10 @@ export function TrustBar() {
 export function AccreditationRow() {
   return (
     <div className="container-page py-14 sm:py-16">
-      <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <RevealGroup className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4" stagger={0.07}>
         {accreditations.map((item) => (
-          <li key={item.label} className="flex gap-4">
-            <span className="mt-0.5 grid size-10 shrink-0 place-items-center rounded-lg border border-primary/25 bg-primary/8 text-primary">
+          <RevealItem key={item.label} className="flex gap-4">
+            <span className="mt-0.5 grid size-10 shrink-0 place-items-center border border-primary/25 bg-primary/8 text-primary">
               <item.icon className="size-5" aria-hidden />
             </span>
             <div>
@@ -37,9 +37,9 @@ export function AccreditationRow() {
                 {item.caption}
               </p>
             </div>
-          </li>
+          </RevealItem>
         ))}
-      </ul>
+      </RevealGroup>
     </div>
   );
 }

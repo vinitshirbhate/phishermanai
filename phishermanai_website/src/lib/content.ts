@@ -226,7 +226,7 @@ export const channels: Channel[] = [
   {
     id: "email",
     index: "01",
-    href: "/product/email",
+    href: "/#channel-email",
     icon: Mail,
     name: "Email and messaging",
     navLabel: "Email & messaging",
@@ -279,7 +279,7 @@ export const channels: Channel[] = [
   {
     id: "voice",
     index: "02",
-    href: "/product/voice",
+    href: "/#channel-voice",
     icon: AudioLines,
     name: "Voice",
     navLabel: "Voice",
@@ -326,7 +326,7 @@ export const channels: Channel[] = [
   {
     id: "video",
     index: "03",
-    href: "/product/video",
+    href: "/#channel-video",
     icon: Video,
     name: "Video",
     navLabel: "Video",
@@ -373,7 +373,7 @@ export const channels: Channel[] = [
   {
     id: "social",
     index: "04",
-    href: "/product/social",
+    href: "/#channel-social",
     icon: MessageSquareWarning,
     name: "Social and coordination",
     navLabel: "Social & coordination",
@@ -420,7 +420,7 @@ export const channels: Channel[] = [
   {
     id: "web",
     index: "05",
-    href: "/product/extension",
+    href: "/#channel-web",
     icon: Globe,
     name: "Web and browser",
     navLabel: "Browser extension",
