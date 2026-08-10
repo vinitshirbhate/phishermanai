@@ -231,5 +231,5 @@ Each one is now pinned by a regression test that fails against the old code.
 ---
 
 **The system warns — it never acts for you.** Nothing is blocked, sent, replied to, forwarded, or reported without your click. No page content, message text, or payment identifier leaves your device on the default path.
-
-[Implementation record](implementation04.md) · [Evaluation report](eval/REPORT.md) 
+ 
+[Research & Evaluation report](eval/REPORT.md) 
