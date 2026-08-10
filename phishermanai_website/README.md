@@ -46,13 +46,56 @@ auth layers, evidence and metrics; [src/lib/site.ts](src/lib/site.ts) derives th
 from it. Add a channel there and it shows up in the nav, the hero strip, the carousel
 and `/features` at once.
 
-## Two things that are deliberately not real
+## Wiring it to the engine
 
-Both say so on screen:
+`/demo` talks to the real verification engine in [`../email_detection`](../email_detection).
 
-1. **Demo fixtures are recorded, not computed.** They're shaped exactly like what
-   `POST /api/v1/verify` returns, so swapping in a live call changes where the data
-   comes from, not what the UI reads.
-2. **The in-browser rule preview is a subset.** It runs the claim/money rules locally
-   and uploads nothing, so it can only ever land on `FRAUDULENT` or `NO_RISK_FOUND` —
-   it can't prove a sender or check a filing, and it says so.
+```bash
+# 1. Engine
+cd email_detection
+pip install -e .
+python -m data.load_all          # builds the corpus offline, ~30 s
+uvicorn api.main:app --reload    # http://127.0.0.1:8000
+
+# 2. UI
+cd phishermanai_website
+npm run dev                      # http://localhost:3000/demo
+```
+
+The console probes `/health` on load and picks its mode:
+
+| Engine | Fixtures tab | Your-own-text tab |
+| ------ | ------------ | ----------------- |
+| **running** | `POST /demo/verify/{name}` — the real pipeline over `eval/fixtures` | `POST /verify` |
+| **down** | recorded results | in-browser rule subset |
+
+Either way the console says which mode it's in, and shows the live corpus counts
+(filings, entities, domains, rules) when connected.
+
+**Requests go through a proxy**, not straight to the engine. The browser calls
+`/api/engine/*` and [src/app/api/engine/[...path]/route.ts](src/app/api/engine/\[...path\]/route.ts)
+forwards it. The engine's CORS already permits `localhost:3000`, so this isn't
+required — it just keeps the engine's address server-side instead of in the client
+bundle, and means deploying the UI elsewhere needs no CORS change on the Python side.
+Set `PHISHERMANAI_API_URL` to point somewhere other than `127.0.0.1:8000` (see
+[.env.example](.env.example)).
+
+### Two things about the contract worth knowing
+
+[src/lib/engine-types.ts](src/lib/engine-types.ts) mirrors `api/schemas.py` field for
+field. Two details are easy to get wrong:
+
+1. **The engine's verdict codes are not the display strings.** It returns `GENUINE`,
+   `UNVERIFIED`, `TAMPERED`, `FRAUDULENT`, and serves a separate `label` field
+   (`VERIFIED`, `NO RISK FOUND`, …) *specifically* so each client doesn't keep its own
+   mapping and drift. The UI renders `label`; the code is only used to pick a colour.
+2. **`confidence` is 0–100 and means how much evidence was available**, not how bad the
+   message is. `genuine_01.eml` scores 95 because DKIM proved the sender;
+   `edge_01_unregistered_but_real.eml` scores 12 because there was nothing to see. A low
+   number is "I couldn't tell", not "this is fine" — the UI labels it accordingly.
+
+## One thing that is deliberately not real
+
+**The in-browser rule preview is a subset.** With the engine down, pasted text runs the
+claim/money rules locally and uploads nothing, so it can only land on `FRAUDULENT` or
+`NO_RISK_FOUND` — it can't prove a sender or check a filing, and it says so on screen.
