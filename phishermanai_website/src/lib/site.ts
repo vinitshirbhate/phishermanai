@@ -1,4 +1,4 @@
-import { Compass, FileCheck2, PlayCircle, ShieldCheck, SlidersHorizontal } from "lucide-react";
+import { Braces, Compass, FileCheck2, PlayCircle, ShieldCheck, SlidersHorizontal } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 import { channels } from "./content";
@@ -57,6 +57,12 @@ export const moreNav: NavLink[] = [
     icon: FileCheck2,
   },
   {
+    href: "/apif",
+    label: "APIF endpoints",
+    description: "The backend routes exposed by the verification engine.",
+    icon: Braces,
+  },
+  {
     href: "/demo",
     label: "Demo",
     description: "Paste a message, watch it get judged.",
@@ -90,6 +96,7 @@ export const footerNav: { title: string; links: NavLink[] }[] = [
       { href: "/how-it-works", label: "How it works" },
       { href: "/features", label: "Everything, by channel" },
       { href: "/evidence", label: "Evidence & limitations" },
+      { href: "/apif", label: "APIF endpoints" },
       { href: "/demo", label: "Interactive demo" },
     ],
   },
