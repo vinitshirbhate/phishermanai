@@ -5,7 +5,6 @@ import {
   AlertTriangle,
   Download,
   FileJson,
-  FileText,
   Image as ImageIcon,
   Loader2,
   Plug,
@@ -29,9 +28,9 @@ import {
 } from "@/lib/engine-client";
 import type { EngineHealth, EngineVerdictResponse } from "@/lib/engine-types";
 import { PREVIEW_HANDOFF_KEY } from "@/lib/handoff";
+import { downloadPdfReport } from "@/lib/verification-pdf";
 import {
   buildJsonReport,
-  buildMarkdownReport,
   downloadText,
   reportFilename,
 } from "@/lib/verification-report";
@@ -46,6 +45,7 @@ export function VerifyWorkbench() {
   const [text, setText] = useState("");
   const [moneySent, setMoneySent] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [pdfBusy, setPdfBusy] = useState(false);
   const [result, setResult] = useState<EngineVerdictResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -350,24 +350,40 @@ uvicorn api.main:app --reload`}
                   keep the evidence
                 </h2>
                 <p className="copy mt-2 text-[1rem]">
-                  Everything the engine checked, what it compared against, and
-                  what it could not see — generated here in your browser from
-                  the verdict already on screen.
+                  A readable PDF of everything the engine checked, what it
+                  compared against, and what it could not see — laid out here in
+                  your browser from the verdict already on screen, so nothing is
+                  sent anywhere to produce it.
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <Button
-                    variant="outline"
                     className="h-9"
-                    onClick={() =>
-                      downloadText(
-                        reportFilename(result, "md"),
-                        buildMarkdownReport(result, { inputLabel, moneySent }),
-                        "text/markdown",
-                      )
-                    }
+                    disabled={pdfBusy}
+                    onClick={async () => {
+                      setPdfBusy(true);
+                      try {
+                        await downloadPdfReport(
+                          result,
+                          { inputLabel, moneySent },
+                          reportFilename(result, "pdf"),
+                        );
+                      } catch (caught) {
+                        setError(
+                          caught instanceof Error
+                            ? `Could not build the PDF: ${caught.message}`
+                            : "Could not build the PDF.",
+                        );
+                      } finally {
+                        setPdfBusy(false);
+                      }
+                    }}
                   >
-                    <Download className="size-3.5" />
-                    Report (Markdown)
+                    {pdfBusy ? (
+                      <Loader2 className="size-3.5 animate-spin" aria-hidden />
+                    ) : (
+                      <Download className="size-3.5" />
+                    )}
+                    Report (PDF)
                   </Button>
                   <Button
                     variant="outline"
