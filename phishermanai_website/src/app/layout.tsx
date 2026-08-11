@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { Archivo, Inter, Instrument_Serif, JetBrains_Mono, Source_Serif_4 } from "next/font/google";
+import {
+  Archivo,
+  Inter,
+  Instrument_Serif,
+  JetBrains_Mono,
+  Source_Serif_4,
+} from "next/font/google";
 
 import { QuickCheckWidget } from "@/components/site/quick-check-widget";
 import { SiteFooter } from "@/components/site/site-footer";
@@ -64,8 +70,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html suppressHydrationWarning lang="en">
       <body
+        suppressHydrationWarning
         className={`${inter.variable} ${sourceSerif.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} ${archivo.variable} bg-background text-foreground`}
       >
         <TooltipProvider delayDuration={200}>

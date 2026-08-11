@@ -16,7 +16,7 @@ export const site = {
   description:
     "Detection of AI-generated threats across email, voice, video and social, plus a framework for verifying that a communication really is from SEBI, an exchange, a listed company or a registered intermediary. Built for SEBI Problem Statement 1.",
   url: "https://phishermanai.example",
-  hackathon: "SEBI Securities Market Hackathon · PS-01",
+  hackathon: "",
   repo: "https://github.com/phishermanai",
 } as const;
 
