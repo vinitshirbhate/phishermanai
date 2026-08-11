@@ -17,6 +17,9 @@ class Settings(BaseSettings):
 
     # --- external services ---
     anthropic_api_key: str = ""
+    openrouter_api_key: str = ""
+    openrouter_base_url: str = "https://openrouter.ai"
+    openrouter_model: str = "gpt-4o-mini"
     firecrawl_api_key: str = ""
     phishing_api_url: str = "http://127.0.0.1:8080"
     aurigin_api_key: str = ""

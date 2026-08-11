@@ -103,7 +103,7 @@ async def health() -> HealthStatus:
     )
     dependencies = {
         "phishing_classifier": phishing,
-        "anthropic": llm,
+        "openrouter": llm,
         "voice_spoof": spoof,
         "firecrawl": "ok" if firecrawl_ok else (firecrawl_err or "unavailable"),
         "database": "ok",
