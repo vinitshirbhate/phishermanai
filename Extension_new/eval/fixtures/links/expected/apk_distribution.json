@@ -1,0 +1,99 @@
+{
+  "id": "apk_distribution",
+  "note": "Off-store Android package — the private-app stage of the funnel.",
+  "input": {
+    "url": "https://vip-wealth-signals.top/downloads/TradePro.apk",
+    "anchor_text": "Download our private trading app",
+    "page_host": "web.whatsapp.com"
+  },
+  "expected_verdict": "L3_PAYMENT_RISK",
+  "verdict": {
+    "verdict": "L3_PAYMENT_RISK",
+    "codes_fired": [
+      "L3_PAYMENT_RISK"
+    ],
+    "codes": [
+      {
+        "code": "L3_PAYMENT_RISK",
+        "summary": "This link distributes an Android package (.apk) outside an app store.",
+        "evidence": {
+          "path": "/downloads/TradePro.apk"
+        },
+        "truth": "interaction"
+      }
+    ],
+    "truths": {
+      "channel": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      },
+      "identity": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      },
+      "content": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      },
+      "interaction": {
+        "state": "signals",
+        "summary": "This link distributes an Android package (.apk) outside an app store.",
+        "codes": [
+          "L3_PAYMENT_RISK"
+        ],
+        "disclaimers": [],
+        "assessed": true
+      }
+    },
+    "layer": "preflight",
+    "confidence": "high",
+    "confidence_is_label": true,
+    "action": "warn",
+    "dismissible": true,
+    "continue_allowed": true,
+    "stages_run": [
+      "offline"
+    ],
+    "stages_note": "Checked offline only.",
+    "url": "https://vip-wealth-signals.top/downloads/TradePro.apk",
+    "host": "vip-wealth-signals.top"
+  },
+  "parsed_summary": {
+    "scheme": "https:",
+    "host": "vip-wealth-signals.top",
+    "host_decoded": "vip-wealth-signals.top",
+    "registrable_domain": "vip-wealth-signals.top",
+    "public_suffix": "top",
+    "psl_matched": true,
+    "is_payment_link": false,
+    "payment": null,
+    "is_ip_host": false,
+    "ip_form": null,
+    "is_private_target": false,
+    "is_punycode": false,
+    "userinfo_looks_like_host": false,
+    "subdomain_stuffing": null,
+    "anchor_mismatch": null,
+    "is_shortener": false,
+    "expansion_required": false,
+    "skip_prefetch": false,
+    "obfuscation": null,
+    "signals": []
+  },
+  "identity_summary": {
+    "domain_status": "unknown",
+    "official_entity": null,
+    "lookalike_of": null,
+    "registration_state": "not_applicable",
+    "upi": []
+  },
+  "elapsed_ms": 0.806,
+  "matches_expected": true,
+  "blocked_claim_hits": []
+}

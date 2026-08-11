@@ -1,0 +1,137 @@
+[
+  {
+    "id": "safe_reply_drafter",
+    "name": "Safe Reply Drafter",
+    "purpose": "Prepare a plain-language refusal or de-escalation draft for a suspicious request.",
+    "default_enabled": false,
+    "capabilities": [
+      "page.context.read",
+      "scan.quick",
+      "agent.state.manage"
+    ],
+    "approval_required": true,
+    "side_effects": false,
+    "network_hosts": [
+      "http://127.0.0.1:8799/*"
+    ],
+    "guardrails": [
+      "No outbound send",
+      "No autonomous sharing",
+      "No impersonation or coercive copy"
+    ],
+    "integrity_sha256": "ce9d4644cfbe308a4502bce1b5728b1ee2b88d05413dbdaf44be485f7c00ba67"
+  },
+  {
+    "id": "evidence_pack_builder",
+    "name": "Evidence Pack Builder",
+    "purpose": "Collect a local JSON evidence bundle for a risky page or claim.",
+    "default_enabled": false,
+    "capabilities": [
+      "page.context.read",
+      "scan.page",
+      "evidence.export",
+      "agent.state.manage"
+    ],
+    "approval_required": true,
+    "side_effects": false,
+    "network_hosts": [
+      "http://127.0.0.1:8799/*"
+    ],
+    "guardrails": [
+      "Exports only on explicit user action",
+      "No remote upload",
+      "No background retention"
+    ],
+    "integrity_sha256": "9f849a2d1a102b19c8f428e3bf5aba03257ed25ade7b3a213401e1e6b951a655"
+  },
+  {
+    "id": "factcheck_researcher",
+    "name": "Fact Check Researcher",
+    "purpose": "Prepare a verification starting point using the curated fact-check and official-source map.",
+    "default_enabled": false,
+    "capabilities": [
+      "page.context.read",
+      "factcheck.lookup",
+      "news.verify",
+      "agent.state.manage"
+    ],
+    "approval_required": true,
+    "side_effects": false,
+    "network_hosts": [
+      "http://127.0.0.1:8799/*"
+    ],
+    "guardrails": [
+      "Must distinguish verified sources from unverified commentary",
+      "Must not claim certainty where evidence is absent",
+      "Must keep fact checking separate from scam scoring"
+    ],
+    "integrity_sha256": "11fe396e354d91f0b5ce445e4670bdd5abe7f56c3e7a7f8b721b5c71690e4da3"
+  },
+  {
+    "id": "recovery_case_builder",
+    "name": "Recovery Case Builder",
+    "purpose": "Prepare a local case packet and point the user to the correct official rail without filing anything automatically.",
+    "default_enabled": false,
+    "capabilities": [
+      "scan.page",
+      "recovery.prepare",
+      "report.packet.prepare",
+      "agent.state.manage"
+    ],
+    "approval_required": true,
+    "side_effects": false,
+    "network_hosts": [
+      "http://127.0.0.1:8799/*"
+    ],
+    "guardrails": [
+      "No autonomous reporting",
+      "No hidden outreach",
+      "Must keep official rails explicit and user-visible"
+    ],
+    "integrity_sha256": "f22802b918450a52dd9ff685d4fe717ce11c52715ab0a99d31ce9ced3f4b8c05"
+  },
+  {
+    "id": "channel_trust_advisor",
+    "name": "Channel Trust Advisor",
+    "purpose": "Explain whether the current issue is a sender, channel, or content trust problem and suggest the right verification path.",
+    "default_enabled": false,
+    "capabilities": [
+      "scan.quick",
+      "channel.identity.assess",
+      "agent.state.manage"
+    ],
+    "approval_required": true,
+    "side_effects": false,
+    "network_hosts": [
+      "http://127.0.0.1:8799/*"
+    ],
+    "guardrails": [
+      "Must not equate verified channel with safe intent",
+      "Must not claim live identity verification without an integrated rail",
+      "No outbound messaging"
+    ],
+    "integrity_sha256": "4e08082a955623f14a430fc46438f1d9ec2bd3a7561bd48b8f78918ee7f0d466"
+  },
+  {
+    "id": "provenance_reviewer",
+    "name": "Provenance Reviewer",
+    "purpose": "Prepare provenance-present, provenance-missing, or provenance-invalid assessments without overstating certainty.",
+    "default_enabled": false,
+    "capabilities": [
+      "factcheck.lookup",
+      "provenance.inspect",
+      "agent.state.manage"
+    ],
+    "approval_required": true,
+    "side_effects": false,
+    "network_hosts": [
+      "http://127.0.0.1:8799/*"
+    ],
+    "guardrails": [
+      "Missing credentials are not proof of deception",
+      "Keep unverified as a valid output",
+      "No autonomous publishing"
+    ],
+    "integrity_sha256": "4508471e706b458437cb4865683b7b86b52a1e55c9bfad0d0d05c7a2175d8368"
+  }
+]

@@ -1,0 +1,119 @@
+{
+  "meta": {
+    "version": 1,
+    "updated": "2026-08-04",
+    "requirement": "F-A1 securities-aware detection",
+    "note": "Functional typology pack loaded by engines/securities_typology.py. This is the live source; scam_patterns.yaml is legacy/unloaded. Each class carries a SEBI source URL rendered in the sidepanel reason list.",
+    "severity_scale": "weight is subtracted from a 100 trust baseline (higher = worse)"
+  },
+  "typologies": [
+    {
+      "id": "fake_stt_notice",
+      "weight": 50,
+      "source": "https://www.sebi.gov.in/sebiweb/other/OtherAction.do?doPmr=yes",
+      "patterns": [
+        "(?i)outstanding\\s+stt|securities\\s+transaction\\s+tax\\s+(due|pending|payable)",
+        "(?i)stt\\s+(dues|arrears|demand).{0,30}(pay|clear|settle)",
+        "(?i)(sebi|exchange).{0,40}(tax|stt).{0,20}(demand|notice|penalty)"
+      ],
+      "keywords": ["outstanding stt", "securities transaction tax due", "stt demand", "tax arrears settle", "rbi coordination", "sebi letterhead"],
+      "keywords_hi": ["एसटीटी बकाया", "प्रतिभूति लेनदेन कर", "कर बकाया चुकाएं", "सेबी नोटिस"]
+    },
+    {
+      "id": "account_handling",
+      "weight": 45,
+      "source": "https://www.sebi.gov.in/media-and-notifications/press-releases",
+      "patterns": [
+        "(?i)account\\s+handling\\s+(service|scheme|facility)",
+        "(?i)(risk[\\s-]?free|assured)\\s+profit.{0,30}(manage|handle|trade)\\s+your\\s+account",
+        "(?i)professional\\s+fund\\s+manager.{0,30}(profit\\s+share|minimum\\s+capital)"
+      ],
+      "keywords": ["account handling", "risk-free profit", "professional fund manager", "profit share", "minimum capital", "we trade for you"],
+      "keywords_hi": ["अकाउंट हैंडलिंग", "जोखिम मुक्त लाभ", "फंड मैनेजर", "लाभ हिस्सेदारी", "न्यूनतम पूंजी"]
+    },
+    {
+      "id": "fpi_institutional_lure",
+      "weight": 50,
+      "source": "https://www.sebi.gov.in/legal/circulars",
+      "patterns": [
+        "(?i)institutional\\s+trading\\s+account.{0,30}(retail|discount|access)",
+        "(?i)fpi\\s+route.{0,30}(ipo|allotment|discount|cheap)",
+        "(?i)(block\\s+trade|ipo\\s+allotment)\\s+at\\s+(discount|cheap\\s+rate|below\\s+market)"
+      ],
+      "keywords": ["institutional trading account", "fpi route", "ipo allotment at discount", "block trade cheap rate", "pre-ipo access", "ipo at discount"],
+      "keywords_hi": []
+    },
+    {
+      "id": "vip_group_funnel",
+      "weight": 35,
+      "source": "https://www.sebi.gov.in/media-and-notifications/press-releases",
+      "patterns": [
+        "(?i)(join|added\\s+to).{0,20}(vip|premium|exclusive).{0,15}(group|channel)",
+        "(?i)(whatsapp|telegram).{0,20}(w\\d+|vip|premium).{0,15}group",
+        "(?i)(private|exclusive)\\s+(app|link|platform).{0,20}(trading|profit|tips)"
+      ],
+      "keywords": ["vip group", "premium group", "exclusive trading group", "private app link", "w-number group", "unsolicited add"],
+      "keywords_hi": ["वीआईपी ग्रुप", "प्रीमियम ग्रुप", "प्राइवेट ऐप लिंक", "एक्सक्लूसिव ट्रेडिंग"]
+    },
+    {
+      "id": "withdrawal_trap",
+      "weight": 55,
+      "source": "https://www.sebi.gov.in/media-and-notifications/press-releases",
+      "patterns": [
+        "(?i)withdraw(al)?\\s+(blocked|frozen|on\\s+hold).{0,40}(tax|fee|charge|margin)",
+        "(?i)(pay|deposit).{0,20}(processing\\s+fee|verification\\s+charge|margin\\s+top[\\s-]?up).{0,30}(withdraw|release)",
+        "(?i)(unlock|release)\\s+your\\s+(funds|profit|balance).{0,30}(pay|fee|tax)"
+      ],
+      "keywords": ["withdrawal blocked", "processing fee", "verification charge", "margin top-up", "pay tax to withdraw", "release your funds"],
+      "keywords_hi": ["निकासी अवरुद्ध", "प्रोसेसिंग शुल्क", "सत्यापन शुल्क", "मार्जिन जमा करें", "कर चुकाकर निकासी"]
+    },
+    {
+      "id": "fake_mf_redemption",
+      "weight": 40,
+      "source": "https://www.amfiindia.com/investor-corner/investor-center/investor-awareness.html",
+      "patterns": [
+        "(?i)redeem(ption)?.{0,30}(off[\\s-]?platform|outside\\s+app|direct\\s+transfer)",
+        "(?i)(folio|mutual\\s+fund)\\s+redemption.{0,30}(agent|manager|whatsapp)",
+        "(?i)send\\s+(folio|units).{0,20}(redeem|liquidate).{0,20}(fast|instant)"
+      ],
+      "keywords": ["off-platform redemption", "folio redemption agent", "redeem outside app", "direct transfer redemption", "instant liquidation"],
+      "keywords_hi": []
+    },
+    {
+      "id": "boss_scam",
+      "weight": 50,
+      "source": "https://www.sebi.gov.in/media-and-notifications/press-releases",
+      "patterns": [
+        "(?i)(ceo|md|managing\\s+director|chairman).{0,30}(urgent|confidential).{0,30}(transfer|payment)",
+        "(?i)(keep\\s+this\\s+confidential|don'?t\\s+tell).{0,40}(transfer|payment|account)",
+        "(?i)i\\s+am\\s+in\\s+a\\s+meeting.{0,40}(transfer|pay|process).{0,20}(now|urgent)"
+      ],
+      "keywords": ["ceo urgent transfer", "confidential payment", "managing director instruction", "off-channel payment", "keep this confidential", "boss scam"],
+      "keywords_hi": ["सीईओ तत्काल", "गोपनीय भुगतान", "बॉस निर्देश", "गुप्त रखें", "तुरंत स्थानांतरण"]
+    },
+    {
+      "id": "forged_sebi_document",
+      "weight": 50,
+      "source": "https://www.sebi.gov.in/sebiweb/other/OtherAction.do?doRecognisedFpi=yes",
+      "patterns": [
+        "(?i)sebi\\s+(seal|logo|letterhead|order|directive).{0,40}(registration|reg\\s*no|ina|inh|inz)",
+        "(?i)(official\\s+sebi|government\\s+of\\s+india).{0,30}(certificate|approval|clearance)",
+        "(?i)attached\\s+(sebi|regulatory)\\s+(order|notice|approval)"
+      ],
+      "keywords": ["sebi seal", "sebi letterhead", "sebi order attached", "official sebi certificate", "regulatory approval document"],
+      "keywords_hi": []
+    },
+    {
+      "id": "guaranteed_return_claim",
+      "weight": 40,
+      "source": "https://www.sebi.gov.in/legal/regulations",
+      "patterns": [
+        "(?i)(assured|guaranteed|risk[\\s-]?free)\\s+(return|profit|income|gain)",
+        "(?i)\\d{2,3}\\s*%\\s+(guaranteed|assured|monthly|daily)\\s+(return|profit)",
+        "(?i)(no\\s+risk|100\\s*%\\s+safe)\\s+(investment|trading|returns)"
+      ],
+      "keywords": ["assured returns", "guaranteed profit", "risk-free investment", "100% safe", "fixed monthly returns", "no risk trading"],
+      "keywords_hi": ["सुनिश्चित रिटर्न", "गारंटीड लाभ", "जोखिम मुक्त निवेश", "100% सुरक्षित", "निश्चित मासिक रिटर्न"]
+    }
+  ]
+}

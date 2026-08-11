@@ -1,0 +1,128 @@
+{
+  "id": "punycode_lookalike",
+  "note": "xn--nsindia-8gg.com decodes to nsеindia.com, where the third character is Cyrillic е (U+0435), not Latin e. Visually identical to nseindia.com in every common font.",
+  "input": {
+    "url": "https://xn--nsindia-8gg.com/market/login",
+    "anchor_text": "NSE India — Market Login",
+    "page_host": "mail.example.com"
+  },
+  "expected_verdict": "L4_IDENTITY_MISMATCH",
+  "verdict": {
+    "verdict": "L4_IDENTITY_MISMATCH",
+    "codes_fired": [
+      "L4_IDENTITY_MISMATCH",
+      "L2_INFRASTRUCTURE_RISK"
+    ],
+    "codes": [
+      {
+        "code": "L4_IDENTITY_MISMATCH",
+        "summary": "This domain resembles nseindia.com (NSE) but is not it.",
+        "evidence": {
+          "official": "nseindia.com",
+          "entity": "NSE",
+          "observed": "xn--nsindia-8gg.com",
+          "decoded": "nsеindia.com",
+          "reason": "homoglyph_or_punycode"
+        },
+        "truth": "identity"
+      },
+      {
+        "code": "L2_INFRASTRUCTURE_RISK",
+        "summary": "Address-level signals: punycode hostname.",
+        "evidence": {
+          "details": [
+            "punycode hostname"
+          ],
+          "host": "xn--nsindia-8gg.com",
+          "decoded": "nsеindia.com"
+        },
+        "truth": "channel"
+      }
+    ],
+    "truths": {
+      "channel": {
+        "state": "signals",
+        "summary": "Address-level signals: punycode hostname.",
+        "codes": [
+          "L2_INFRASTRUCTURE_RISK"
+        ],
+        "disclaimers": [],
+        "assessed": true
+      },
+      "identity": {
+        "state": "signals",
+        "summary": "This domain resembles nseindia.com (NSE) but is not it.",
+        "codes": [
+          "L4_IDENTITY_MISMATCH"
+        ],
+        "disclaimers": [],
+        "assessed": true
+      },
+      "content": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      },
+      "interaction": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      }
+    },
+    "layer": "preflight",
+    "confidence": "high",
+    "confidence_is_label": true,
+    "action": "warn",
+    "dismissible": true,
+    "continue_allowed": true,
+    "stages_run": [
+      "offline"
+    ],
+    "stages_note": "Checked offline only.",
+    "url": "https://xn--nsindia-8gg.com/market/login",
+    "host": "xn--nsindia-8gg.com"
+  },
+  "parsed_summary": {
+    "scheme": "https:",
+    "host": "xn--nsindia-8gg.com",
+    "host_decoded": "nsеindia.com",
+    "registrable_domain": "nsеindia.com",
+    "public_suffix": "com",
+    "psl_matched": true,
+    "is_payment_link": false,
+    "payment": null,
+    "is_ip_host": false,
+    "ip_form": null,
+    "is_private_target": false,
+    "is_punycode": true,
+    "userinfo_looks_like_host": false,
+    "subdomain_stuffing": null,
+    "anchor_mismatch": null,
+    "is_shortener": false,
+    "expansion_required": false,
+    "skip_prefetch": false,
+    "obfuscation": null,
+    "signals": [
+      "punycode_host",
+      "lookalike_of:nseindia.com"
+    ]
+  },
+  "identity_summary": {
+    "domain_status": "lookalike",
+    "official_entity": null,
+    "lookalike_of": {
+      "official": "nseindia.com",
+      "entity": "NSE",
+      "observed": "xn--nsindia-8gg.com",
+      "decoded": "nsеindia.com",
+      "reason": "homoglyph_or_punycode"
+    },
+    "registration_state": "not_applicable",
+    "upi": []
+  },
+  "elapsed_ms": 18.318,
+  "matches_expected": true,
+  "blocked_claim_hits": []
+}

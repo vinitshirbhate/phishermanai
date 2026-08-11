@@ -1,0 +1,27 @@
+{
+  "registry_meta": {
+    "source": "official_domains",
+    "source_url": "https://www.sebi.gov.in",
+    "fetched_at": "2026-08-04",
+    "record_count": 12,
+    "licence": "Public. Regulator/MII domains are factual; intermediary websites are drawn from the curated sebi_register subset.",
+    "disclosure": "Regulator and market-infrastructure domains below are real, public facts. Intermediary *.example.in domains are fictional demo entries matching the curated register."
+  },
+  "regulator_and_mii": [
+    { "domain": "sebi.gov.in", "entity": "SEBI", "entity_type": "regulator" },
+    { "domain": "investor.sebi.gov.in", "entity": "SEBI Investor / SEBI Check", "entity_type": "regulator" },
+    { "domain": "scores.sebi.gov.in", "entity": "SCORES", "entity_type": "regulator" },
+    { "domain": "nseindia.com", "entity": "NSE", "entity_type": "exchange" },
+    { "domain": "bseindia.com", "entity": "BSE", "entity_type": "exchange" },
+    { "domain": "nsdl.co.in", "entity": "NSDL", "entity_type": "depository" },
+    { "domain": "cdslindia.com", "entity": "CDSL", "entity_type": "depository" },
+    { "domain": "amfiindia.com", "entity": "AMFI", "entity_type": "industry_body" }
+  ],
+  "recovery_rails": [
+    { "domain": "cybercrime.gov.in", "entity": "NCRP / 1930", "entity_type": "recovery" },
+    { "domain": "sancharsaathi.gov.in", "entity": "Chakshu / Sanchar Saathi", "entity_type": "recovery" },
+    { "domain": "npci.org.in", "entity": "NPCI", "entity_type": "payment_infra" },
+    { "domain": "i4c.mha.gov.in", "entity": "I4C", "entity_type": "recovery" }
+  ],
+  "note_intermediary_domains": "Per-intermediary official websites live in sebi_register.json under intermediaries[].website and are resolved from there, not duplicated here."
+}

@@ -1,0 +1,131 @@
+{
+  "id": "upi_deep_link_with_amount",
+  "note": "A payment instruction disguised as a hyperlink, amount pre-filled.",
+  "input": {
+    "url": "upi://pay?pa=profitdesk99@ybl&pn=VIP%20Wealth%20Desk&am=25000&cu=INR&tn=Margin%20topup",
+    "anchor_text": "Click here to release your withdrawal",
+    "page_host": "web.whatsapp.com"
+  },
+  "expected_verdict": "L3_PAYMENT_RISK",
+  "verdict": {
+    "verdict": "L3_PAYMENT_RISK",
+    "codes_fired": [
+      "L3_PAYMENT_RISK",
+      "L3_PAYMENT_RISK"
+    ],
+    "codes": [
+      {
+        "code": "L3_PAYMENT_RISK",
+        "summary": "This link opens a payment app with the amount already filled in (25000).",
+        "evidence": {
+          "payee_vpa": "profitdesk99@ybl",
+          "amount": "25000",
+          "scheme": "upi"
+        },
+        "truth": "interaction"
+      },
+      {
+        "code": "L3_PAYMENT_RISK",
+        "summary": "A payment identifier here is outside the SEBI @valid namespace used by registered intermediaries.",
+        "evidence": {
+          "upi": [
+            "profitdesk99@ybl"
+          ]
+        },
+        "truth": "interaction"
+      }
+    ],
+    "truths": {
+      "channel": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      },
+      "identity": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      },
+      "content": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      },
+      "interaction": {
+        "state": "signals",
+        "summary": "This link opens a payment app with the amount already filled in (25000). A payment identifier here is outside the SEBI @valid namespace used by registered intermediaries.",
+        "codes": [
+          "L3_PAYMENT_RISK",
+          "L3_PAYMENT_RISK"
+        ],
+        "disclaimers": [],
+        "assessed": true
+      }
+    },
+    "layer": "preflight",
+    "confidence": "medium",
+    "confidence_is_label": true,
+    "action": "warn",
+    "dismissible": true,
+    "continue_allowed": true,
+    "stages_run": [
+      "offline"
+    ],
+    "stages_note": "Checked offline only.",
+    "url": "upi://pay?pa=profitdesk99@ybl&pn=VIP%20Wealth%20Desk&am=25000&cu=INR&tn=Margin%20topup",
+    "host": ""
+  },
+  "parsed_summary": {
+    "scheme": "upi:",
+    "host": "",
+    "host_decoded": "",
+    "registrable_domain": "",
+    "public_suffix": "",
+    "psl_matched": false,
+    "is_payment_link": true,
+    "payment": {
+      "scheme": "upi",
+      "payee_vpa": "profitdesk99@ybl",
+      "payee_name": "VIP Wealth Desk",
+      "amount": "25000",
+      "currency": "INR",
+      "note": "Margin topup",
+      "amount_prefilled": true
+    },
+    "is_ip_host": false,
+    "ip_form": null,
+    "is_private_target": false,
+    "is_punycode": false,
+    "userinfo_looks_like_host": false,
+    "subdomain_stuffing": null,
+    "anchor_mismatch": null,
+    "is_shortener": false,
+    "expansion_required": false,
+    "skip_prefetch": true,
+    "obfuscation": null,
+    "signals": [
+      "payment_deep_link",
+      "payment_payee:profitdesk99@ybl",
+      "payment_amount_prefilled"
+    ]
+  },
+  "identity_summary": {
+    "domain_status": "unknown",
+    "official_entity": null,
+    "lookalike_of": null,
+    "registration_state": "not_applicable",
+    "upi": [
+      {
+        "upi_id": "profitdesk99@ybl",
+        "in_valid_namespace": false,
+        "amount": "25000"
+      }
+    ]
+  },
+  "elapsed_ms": 1.425,
+  "matches_expected": true,
+  "blocked_claim_hits": []
+}

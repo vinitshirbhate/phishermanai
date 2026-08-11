@@ -1,0 +1,107 @@
+{
+  "id": "shortener_with_token",
+  "note": "Known shortener plus a high-entropy single-use token — must set skip_prefetch.",
+  "input": {
+    "url": "https://bit.ly/3xKq9Zt?token=aB9xQ2mZ7pLk4RtY",
+    "anchor_text": "Your statement is ready",
+    "page_host": "web.whatsapp.com"
+  },
+  "expected_verdict": "L2_INFRASTRUCTURE_RISK",
+  "verdict": {
+    "verdict": "L2_INFRASTRUCTURE_RISK",
+    "codes_fired": [
+      "L2_INFRASTRUCTURE_RISK"
+    ],
+    "codes": [
+      {
+        "code": "L2_INFRASTRUCTURE_RISK",
+        "summary": "Address-level signals: this is a link shortener, so the real destination is hidden until it is opened; the address carries a one-time token that identifies the recipient.",
+        "evidence": {
+          "details": [
+            "this is a link shortener, so the real destination is hidden until it is opened",
+            "the address carries a one-time token that identifies the recipient"
+          ],
+          "host": "bit.ly",
+          "decoded": "bit.ly"
+        },
+        "truth": "channel"
+      }
+    ],
+    "truths": {
+      "channel": {
+        "state": "signals",
+        "summary": "Address-level signals: this is a link shortener, so the real destination is hidden until it is opened; the address carries a one-time token that identifies the recipient.",
+        "codes": [
+          "L2_INFRASTRUCTURE_RISK"
+        ],
+        "disclaimers": [],
+        "assessed": true
+      },
+      "identity": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      },
+      "content": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      },
+      "interaction": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      }
+    },
+    "layer": "preflight",
+    "confidence": "medium",
+    "confidence_is_label": true,
+    "action": "warn",
+    "dismissible": true,
+    "continue_allowed": true,
+    "stages_run": [
+      "offline"
+    ],
+    "stages_note": "Checked offline only.",
+    "url": "https://bit.ly/3xKq9Zt?token=aB9xQ2mZ7pLk4RtY",
+    "host": "bit.ly"
+  },
+  "parsed_summary": {
+    "scheme": "https:",
+    "host": "bit.ly",
+    "host_decoded": "bit.ly",
+    "registrable_domain": "bit.ly",
+    "public_suffix": "ly",
+    "psl_matched": true,
+    "is_payment_link": false,
+    "payment": null,
+    "is_ip_host": false,
+    "ip_form": null,
+    "is_private_target": false,
+    "is_punycode": false,
+    "userinfo_looks_like_host": false,
+    "subdomain_stuffing": null,
+    "anchor_mismatch": null,
+    "is_shortener": true,
+    "expansion_required": true,
+    "skip_prefetch": true,
+    "obfuscation": null,
+    "signals": [
+      "known_shortener:bit.ly",
+      "single_use_token"
+    ]
+  },
+  "identity_summary": {
+    "domain_status": "unknown",
+    "official_entity": null,
+    "lookalike_of": null,
+    "registration_state": "not_applicable",
+    "upi": []
+  },
+  "elapsed_ms": 1.528,
+  "matches_expected": true,
+  "blocked_claim_hits": []
+}
