@@ -82,7 +82,22 @@ function ComparisonRow({ comparison }: { comparison: EngineFieldComparison }) {
   );
 }
 
-export function LiveResult({ result }: { result: EngineVerdictResponse }) {
+export function LiveResult({
+  result,
+  /**
+   * The reason codes are the engine's own working. /verify hides them because
+   * the escalation card answers "what now" better for someone who has just been
+   * scammed — they are still in the downloadable report, which is where anyone
+   * making a complaint needs them.
+   */
+  showReasons = true,
+  /** /verify renders the richer EscalationPanel instead, so this would duplicate it. */
+  showActions = true,
+}: {
+  result: EngineVerdictResponse;
+  showReasons?: boolean;
+  showActions?: boolean;
+}) {
   const tone = engineVerdictTone[result.verdict];
   const meta = verdictMeta[tone];
   const checks = Object.entries(result.checks ?? {});
@@ -178,6 +193,7 @@ export function LiveResult({ result }: { result: EngineVerdictResponse }) {
         </div>
       ) : null}
 
+      {showReasons ? (
       <div>
         <h3 className="mono-label text-foreground/45">reasons · {result.reasons.length}</h3>
         <div className="mt-3 space-y-3">
@@ -224,8 +240,9 @@ export function LiveResult({ result }: { result: EngineVerdictResponse }) {
           )}
         </div>
       </div>
+      ) : null}
 
-      {result.recommended_actions.length > 0 ? (
+      {result.recommended_actions.length > 0 && showActions ? (
         <div>
           <h3 className="mono-label text-foreground/45">what to do next</h3>
           <ul className="mt-3 space-y-2">

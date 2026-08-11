@@ -43,8 +43,13 @@ export default function VerifyPage() {
                 key={code}
                 className={cn("rounded-xl border bg-card p-6", meta.border)}
               >
-                <span className={cn("size-2.5 rounded-full", meta.dot)} aria-hidden />
-                <h3 className={cn("mt-5 text-lg font-medium", meta.text)}>{meta.label}</h3>
+                <span
+                  className={cn("size-2.5 rounded-full", meta.dot)}
+                  aria-hidden
+                />
+                <h3 className={cn("mt-5 text-lg font-medium", meta.text)}>
+                  {meta.label}
+                </h3>
                 <p className="mt-3 font-serif text-[0.9375rem] leading-relaxed text-foreground/70">
                   {meta.summary}
                 </p>
@@ -53,32 +58,6 @@ export default function VerifyPage() {
           })}
         </div>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-3">
-          <div className="rounded-xl border border-border bg-card p-6">
-            <h3 className="text-base font-medium">Nothing is reported for you</h3>
-            <p className="copy mt-3 text-[1rem]">
-              The system warns; it never acts. Nothing is blocked, forwarded or reported without
-              your click, and the links you are given are the official ones from SEBI&rsquo;s
-              register — not numbers found through a search engine.
-            </p>
-          </div>
-          <div className="rounded-xl border border-border bg-card p-6">
-            <h3 className="text-base font-medium">Your message is not stored</h3>
-            <p className="copy mt-3 text-[1rem]">
-              A SHA-256 fingerprint of the normalised content and the verdict are kept. The body,
-              the file and anything identifying you are not. The fingerprint is what makes five
-              reports of one scam legible as a single campaign.
-            </p>
-          </div>
-          <div className="rounded-xl border border-border bg-card p-6">
-            <h3 className="text-base font-medium">A miss is safer than a false accusation</h3>
-            <p className="copy mt-3 text-[1rem]">
-              A field the engine cannot read confidently is never compared, so it can never
-              produce a tamper finding. Tamper recall is 70%; tampered documents called genuine:
-              zero. That trade is deliberate.
-            </p>
-          </div>
-        </div>
       </Section>
     </>
   );
