@@ -5,7 +5,7 @@
       "name": "Securities and Exchange Board of India",
       "short_name": "SEBI",
       "type": "regulator",
-      "domains": ["sebi.gov.in", "scores.sebi.gov.in", "siportal.sebi.gov.in"],
+      "domains": ["sebi.gov.in", "scores.sebi.gov.in", "siportal.sebi.gov.in", "twitter.com/SEBI_India","@SEBI_India"],
       "x_handles": ["SEBI_India"],
       "email_domains": ["sebi.gov.in"],
       "requires_digital_signature": true

@@ -4,17 +4,27 @@ from __future__ import annotations
 
 import asyncio
 import json
+import subprocess
 from pathlib import Path
 
 from ..config import get_settings
 
 
 async def _run(*args: str) -> tuple[int, bytes, bytes]:
-    proc = await asyncio.create_subprocess_exec(
-        *args, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
-    )
-    out, err = await proc.communicate()
-    return proc.returncode or 0, out, err
+    try:
+        proc = await asyncio.create_subprocess_exec(
+            *args, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
+        )
+        out, err = await proc.communicate()
+        return proc.returncode or 0, out, err
+    except NotImplementedError:
+        proc = await asyncio.to_thread(
+            subprocess.run,
+            args,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        return proc.returncode or 0, proc.stdout, proc.stderr
 
 
 async def probe_duration(path: str | Path) -> float | None:
