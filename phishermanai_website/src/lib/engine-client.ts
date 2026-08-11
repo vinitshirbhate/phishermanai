@@ -75,16 +75,30 @@ export async function verifyText(
   );
 }
 
-/** Verify an uploaded .eml, image or PDF. Mirrors `POST /verify` with a file. */
-export async function verifyFile(file: File): Promise<EngineVerdictResponse> {
+/**
+ * Verify an uploaded .eml, image or PDF.
+ *
+ * Goes to `POST /verify` rather than `/verify/email` even for .eml: that route
+ * infers the type from the payload anyway, and it is the only one that accepts
+ * `money_sent`, which is what decides whether the engine routes escalation to
+ * the cybercrime helpline or to SCORES.
+ */
+export async function verifyFile(
+  file: File,
+  options: { moneySent?: boolean } = {},
+): Promise<EngineVerdictResponse> {
   const form = new FormData();
   form.set("file", file);
   form.set("channel", "WEB");
+  if (options.moneySent) form.set("money_sent", "true");
 
   return json<EngineVerdictResponse>(
     await fetch(`${BASE}/verify`, { method: "POST", body: form }),
   );
 }
+
+/** The engine rejects anything larger; checked client-side to fail fast. */
+export const MAX_UPLOAD_BYTES = 12 * 1024 * 1024;
 
 /** The fixtures the engine ships with, read from eval/fixtures/manifest.json. */
 export async function fetchDemoExamples(): Promise<EngineDemoExample[]> {
