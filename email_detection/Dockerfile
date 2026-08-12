@@ -48,9 +48,15 @@ RUN python -m data.load_all
 # database as it is served. /var/lib/phishermanai exists so that pointing
 # DATABASE_URL at a mounted volume works without a root-owned-directory fight;
 # core.db.init_db only creates the default path's parent, not a custom one.
+#
+# The tldextract cache is in that list because tldextract takes a filelock
+# before every lookup -- even a cache hit -- and creating the .lock file needs
+# WRITE on the directory, which the a+rX above does not grant. Without this,
+# every message containing a URL fails with EACCES on
+# publicsuffix.org-tlds/*.tldextract.json.lock and the API returns 500.
 RUN useradd --create-home --uid 10001 phisherman \
  && mkdir -p /var/lib/phishermanai \
- && chown -R phisherman:phisherman /app/data /var/lib/phishermanai
+ && chown -R phisherman:phisherman /app/data /var/lib/phishermanai /opt/tldextract-cache
 USER phisherman
 
 ENV PORT=8000
