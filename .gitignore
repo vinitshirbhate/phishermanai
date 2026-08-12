@@ -10,7 +10,9 @@ __pycache__/
 # Uploaded media held for the duration of a request
 apif/data/uploads/
 
-diagrams/
+# Excalidraw sources at the repo root only — must stay anchored, or this also
+# swallows phishermanai_website/src/components/diagrams/
+/diagrams/
 
 # Sample media used for local testing (any depth)
 samples/
