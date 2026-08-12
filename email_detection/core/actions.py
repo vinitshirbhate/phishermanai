@@ -39,7 +39,9 @@ from core.scoring import FRAUDULENT, GENUINE, TAMPERED, UNVERIFIED, Verdict
 VERDICT_STYLE = {
     GENUINE: {"colour": (22, 138, 74), "label": "GENUINE", "icon": "OK"},
     TAMPERED: {"colour": (194, 120, 3), "label": "TAMPERED", "icon": "!"},
-    UNVERIFIED: {"colour": (90, 98, 112), "label": "UNVERIFIED", "icon": "?"},
+    # The card shows the display wording, not the internal code: "UNVERIFIED"
+    # reads as an accusation, which is the opposite of what this verdict means.
+    UNVERIFIED: {"colour": (90, 98, 112), "label": "NO RISK FOUND", "icon": "?"},
     FRAUDULENT: {"colour": (185, 28, 28), "label": "FRAUDULENT", "icon": "X"},
 }
 

@@ -1,4 +1,12 @@
-import { Braces, Compass, FileCheck2, PlayCircle, ShieldCheck, SlidersHorizontal } from "lucide-react";
+import {
+  Braces,
+  Compass,
+  FileCheck2,
+  MailSearch,
+  PlayCircle,
+  ShieldCheck,
+  SlidersHorizontal,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 import { channels } from "./content";
@@ -9,7 +17,7 @@ export const site = {
   description:
     "Detection of AI-generated threats across email, voice, video and social, plus a framework for verifying that a communication really is from SEBI, an exchange, a listed company or a registered intermediary. Built for SEBI Problem Statement 1.",
   url: "https://phishermanai.example",
-  hackathon: "SEBI Securities Market Hackathon · PS-01",
+  hackathon: "",
   repo: "https://github.com/phishermanai",
 } as const;
 
@@ -29,15 +37,25 @@ const shortLabel: Record<(typeof channels)[number]["id"], string> = {
   web: "Web",
 };
 
-/** The five channels, front and centre in the island — one tap each. */
+/**
+ * The five channels, front and centre in the island — one tap each.
+ * Email is the one you can actually run, so it goes straight to the checker
+ * rather than to its section on the home page.
+ */
 export const channelNav: NavLink[] = channels.map((channel) => ({
-  href: channel.href,
+  href: channel.id === "email" ? "/verify" : channel.href,
   label: shortLabel[channel.id],
   icon: channel.icon,
 }));
 
 /** Everything that isn't a channel, tucked under "More". */
 export const moreNav: NavLink[] = [
+  {
+    href: "/verify",
+    label: "Check an email",
+    description: "Drop in an .eml or paste the text — checked against the real filings.",
+    icon: MailSearch,
+  },
   {
     href: "/how-it-works",
     label: "How it works",
@@ -84,6 +102,7 @@ export const footerNav: { title: string; links: NavLink[] }[] = [
   {
     title: "Verification",
     links: [
+      { href: "/verify", label: "Check an email" },
       { href: "/#authenticity", label: "Authenticity framework" },
       { href: "/#authenticity", label: "Official-channel registry" },
       { href: "/#channel-email", label: "Filing cross-check" },
