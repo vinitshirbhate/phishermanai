@@ -12,7 +12,8 @@
     "approval_required": true,
     "side_effects": false,
     "network_hosts": [
-      "http://127.0.0.1:8799/*"
+      "http://127.0.0.1:8799/*",
+      "https://phishermanai-1.onrender.com/*"
     ],
     "guardrails": [
       "No outbound send",
@@ -35,7 +36,8 @@
     "approval_required": true,
     "side_effects": false,
     "network_hosts": [
-      "http://127.0.0.1:8799/*"
+      "http://127.0.0.1:8799/*",
+      "https://phishermanai-1.onrender.com/*"
     ],
     "guardrails": [
       "Exports only on explicit user action",
@@ -58,7 +60,8 @@
     "approval_required": true,
     "side_effects": false,
     "network_hosts": [
-      "http://127.0.0.1:8799/*"
+      "http://127.0.0.1:8799/*",
+      "https://phishermanai-1.onrender.com/*"
     ],
     "guardrails": [
       "Must distinguish verified sources from unverified commentary",
@@ -81,7 +84,8 @@
     "approval_required": true,
     "side_effects": false,
     "network_hosts": [
-      "http://127.0.0.1:8799/*"
+      "http://127.0.0.1:8799/*",
+      "https://phishermanai-1.onrender.com/*"
     ],
     "guardrails": [
       "No autonomous reporting",
@@ -103,7 +107,8 @@
     "approval_required": true,
     "side_effects": false,
     "network_hosts": [
-      "http://127.0.0.1:8799/*"
+      "http://127.0.0.1:8799/*",
+      "https://phishermanai-1.onrender.com/*"
     ],
     "guardrails": [
       "Must not equate verified channel with safe intent",
@@ -125,7 +130,8 @@
     "approval_required": true,
     "side_effects": false,
     "network_hosts": [
-      "http://127.0.0.1:8799/*"
+      "http://127.0.0.1:8799/*",
+      "https://phishermanai-1.onrender.com/*"
     ],
     "guardrails": [
       "Missing credentials are not proof of deception",
