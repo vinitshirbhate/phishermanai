@@ -1,0 +1,51 @@
+# Render blueprint for the PhishermanAI verification engine.
+#
+# This file lives in email_detection/ for discoverability, but Render only reads
+# a blueprint from the REPOSITORY ROOT. Either copy it to the repo root, or skip
+# the blueprint and create the service in the dashboard with the settings below.
+#
+# Paths here are relative to the repo root, which is why they are spelled out in
+# full rather than relying on rootDir -- Render resolves dockerfilePath and
+# dockerContext from the root regardless of rootDir, and mixing the two is the
+# usual way a monorepo Docker deploy ends up building the wrong directory.
+
+services:
+  - type: web
+    name: phishermanai-engine
+    runtime: docker
+    plan: free
+    region: singapore          # closest to the Indian retail investors this serves
+    branch: deployment
+
+    dockerfilePath: ./email_detection/Dockerfile
+    dockerContext: ./email_detection
+
+    # Render ignores the Dockerfile's HEALTHCHECK and uses this instead. /health
+    # returns 200 even when degraded, so a corpus problem shows up in the body
+    # rather than as a failed deploy you cannot inspect.
+    healthCheckPath: /health
+
+    # Only rebuild when the engine changes, not on every website commit.
+    autoDeploy: true
+
+    envVars:
+      # PORT is injected by Render (10000) and read by serve.py. Do not set it.
+
+      - key: PHISHERMANAI_DEMO_MODE
+        value: "1"
+
+      # Keep at 1. The warning-card cache in api/main.py is a per-process dict,
+      # so a second worker makes /warning-card/{hash} 404 about half the time.
+      - key: WEB_CONCURRENCY
+        value: "1"
+
+      # The Next.js front-end reaches the engine server-side through its
+      # /api/engine proxy, so it needs nothing here. This is for the Chrome
+      # extension and any browser client calling the engine directly.
+      - key: PHISHERMANAI_CORS_ORIGINS
+        sync: false            # set in the dashboard; blank is fine to start
+
+      # The corpus is baked into the image at build time, so the startup check
+      # in serve.py finds it immediately and skips the loader.
+      - key: PHISHERMANAI_SKIP_LOAD
+        value: "0"
