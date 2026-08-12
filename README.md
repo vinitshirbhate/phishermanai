@@ -746,3 +746,14 @@ python eval/parity_test.py                 # JS vs Python, must agree to ±0.02
 python eval/corpus_audit.py                # corpus composition audit
 python scripts/check_blocked_claims.py     # blocked-claims gate
 ```
+
+---
+
+## 🚀 Meet the Team
+
+**Shourya Wikhe** · [LinkedIn](https://www.linkedin.com/in/shourya-wikhe-7b5a642a2/)  
+**Vinit Shirbhate** · [LinkedIn](https://www.linkedin.com/in/vinitshirbhate/)  
+**Arhant Bagde** · [LinkedIn](https://www.linkedin.com/in/arhant-bagde/)  
+**Vivek Latpate** · [LinkedIn](https://www.linkedin.com/in/vivek-latpate-2521112b8/)
+
+---
