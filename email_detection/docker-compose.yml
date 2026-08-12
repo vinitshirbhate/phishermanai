@@ -1,0 +1,38 @@
+# Local run of the verification API.
+#
+#   docker compose up --build
+#   curl http://localhost:8000/health
+#
+# The SMTP gateway is not here: it needs the `gateway` extra and a relay target,
+# and the API's /gateway/messages endpoints only read the shared verifications
+# table, so the API stands alone. See gateway/README.md.
+
+services:
+  api:
+    build: .
+    image: phishermanai-api
+    ports:
+      - "8000:8000"
+    environment:
+      PORT: "8000"
+      # Offline by contract -- no live SEBI lookups during a demo.
+      PHISHERMANAI_DEMO_MODE: "1"
+      # Add the deployed front-end origin here; localhost:3000 is already allowed.
+      PHISHERMANAI_CORS_ORIGINS: ""
+
+      # Verdicts are written to the database baked into the image, so they are
+      # lost when the container is replaced. To keep them, point the database at
+      # the volume below instead -- note the four slashes, three for the sqlite://
+      # scheme and one starting the absolute path.
+      # DATABASE_URL: "sqlite:////var/lib/phishermanai/phishermanai.db"
+
+    # Uncomment together with DATABASE_URL above. Do NOT mount over /app/data --
+    # that directory holds the loader and the reference corpus, not just the
+    # database, and a stale volume would shadow both.
+    # volumes:
+    #   - phishermanai-data:/var/lib/phishermanai
+
+    restart: unless-stopped
+
+# volumes:
+#   phishermanai-data:

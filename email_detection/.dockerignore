@@ -1,0 +1,48 @@
+# Keep the build context to what the API actually serves.
+#
+# NOTE: data/cache/ is deliberately NOT ignored. Those committed JSON snapshots
+# are what `python -m data.load_all` reads during the build; without them the
+# image ships an empty corpus and every verdict comes back UNVERIFIED.
+
+.git
+.gitignore
+.dockerignore
+Dockerfile
+docker-compose.yml
+*.md
+!README.md
+
+# The Next.js UI and the Chrome extension deploy separately.
+web/
+extension/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+.mypy_cache/
+.ruff_cache/
+
+# Built at image build time by data.load_all -- never copy a local one in, it
+# would shadow the fresh build and can carry a developer's test verdicts.
+*.db
+*.db-wal
+*.db-shm
+
+# Dev-only trees
+tests/
+docs/
+eval/results/
+gateway/maildir/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example

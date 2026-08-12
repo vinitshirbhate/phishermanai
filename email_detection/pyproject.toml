@@ -5,7 +5,9 @@ description = "PhishermanAI - financial communication verifier for Indian retail
 requires-python = ">=3.11"
 
 # Core dependencies. Everything in the EMAIL path must be installable from this
-# list alone -- the image/OCR path adds heavy optional extras, see below.
+# list alone -- the image/OCR path adds heavy optional extras, see below. This
+# list is what the deployed API image installs; see requirements.txt for the
+# pinned resolution of exactly this set.
 dependencies = [
     "fastapi>=0.115",
     "uvicorn[standard]>=0.32",
@@ -15,11 +17,12 @@ dependencies = [
     "rapidfuzz>=3.10",
     "dnspython>=2.7",
     "tldextract>=5.1",
-    "python-whois>=0.9.5",
     "authres>=1.2",
     "requests>=2.32",
     "python-dateutil>=2.9",
     "Pillow>=11.0",
+    # /verify accepts PDF uploads, so the PDF text extractor is core, not extra.
+    "pypdf>=5.1",
 ]
 
 [project.optional-dependencies]
@@ -37,6 +40,18 @@ ocr = [
 semantic = [
     "sentence-transformers>=3.3",
 ]
+# SMTP gateway (gateway/run.py). The API's /gateway/messages endpoints only read
+# the shared verifications table, so the API itself does NOT need these.
+gateway = [
+    "aiosmtpd>=1.4",
+    "PyYAML>=6.0",
+]
+# Corpus refresh only (data/scrapers/*). Not installed in the serving image --
+# data/cache/*.json is committed, and data.load_all reads it offline.
+scrape = [
+    "xlrd>=2.0",
+    "urllib3>=2.2",
+]
 dev = [
     "pytest>=8.3",
     "httpx>=0.27",
@@ -47,8 +62,11 @@ dev = [
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-packages = ["api", "core", "data", "eval"]
+# `packages = [...]` would have shipped only the top level and silently dropped
+# core.chokepoints / core.filings / core.ingest / core.rules, so discover them.
+[tool.setuptools.packages.find]
+include = ["api*", "core*", "data*", "eval*", "gateway*"]
+exclude = ["tests*", "web*", "extension*", "docs*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

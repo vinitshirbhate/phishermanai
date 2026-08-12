@@ -136,6 +136,7 @@ if a rule with no action is given a severity above 1.
 # 1. Python side
 pip install -e .                    # core (email path)
 pip install -e ".[image,ocr]"       # optional: screenshot path
+pip install -e ".[gateway]"         # optional: SMTP gateway
 pip install -e ".[dev]"             # tests
 
 # 2. Build the database from the committed cache (offline, ~30 s)

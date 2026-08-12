@@ -24,6 +24,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+from contextlib import asynccontextmanager
 from datetime import datetime, timedelta
 from typing import Any
 
@@ -55,6 +56,38 @@ log = logging.getLogger("phishermanai.api")
 DEMO_MODE = os.environ.get("PHISHERMANAI_DEMO_MODE", "1") == "1"
 MAX_UPLOAD_BYTES = 12 * 1024 * 1024
 
+# Origins that always work: local dev for the Next.js UI, and WhatsApp Web for
+# the extension's content script.
+DEFAULT_CORS_ORIGINS = [
+    "http://localhost:3000", "http://127.0.0.1:3000",
+    "https://web.whatsapp.com",
+]
+
+
+def _cors_origins() -> list[str]:
+    """Defaults plus whatever the deployment adds.
+
+    Deployed front-ends live on hostnames this code cannot know, so the origin
+    list has to come from the environment. Comma-separated; a bare "*" turns
+    the allowlist off entirely, which is only safe because we never accept
+    credentials on these routes (allow_credentials=False below).
+    """
+    extra = os.environ.get("PHISHERMANAI_CORS_ORIGINS", "")
+    origins = list(DEFAULT_CORS_ORIGINS)
+    for raw in extra.split(","):
+        origin = raw.strip().rstrip("/")
+        if origin and origin not in origins:
+            origins.append(origin)
+    return origins
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    init_db()
+    log.info("PhishermanAI API started (demo_mode=%s)", DEMO_MODE)
+    yield
+
+
 app = FastAPI(
     title="PhishermanAI",
     version="0.1.0",
@@ -63,15 +96,14 @@ app = FastAPI(
         "chokepoints and cross-checks content against what companies actually "
         "filed with the exchange."
     ),
+    lifespan=lifespan,
 )
 
-# The browser extension and the local Next.js UI both call this API directly.
+# The browser extension and the Next.js UI both call this API directly.
+_origins = _cors_origins()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000", "http://127.0.0.1:3000",
-        "https://web.whatsapp.com",
-    ],
+    allow_origins=["*"] if "*" in _origins else _origins,
     allow_origin_regex=r"chrome-extension://.*",
     allow_credentials=False,
     allow_methods=["GET", "POST", "OPTIONS"],
@@ -82,12 +114,6 @@ app.add_middleware(
 # of the verdict, so there is nothing to gain by persisting them.
 _CARD_CACHE: dict[str, bytes] = {}
 _CARD_CACHE_LIMIT = 200
-
-
-@app.on_event("startup")
-def _startup() -> None:
-    init_db()
-    log.info("PhishermanAI API started (demo_mode=%s)", DEMO_MODE)
 
 
 def _persist(
