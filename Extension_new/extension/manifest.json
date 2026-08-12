@@ -15,7 +15,15 @@
   "host_permissions": [
     "http://*/*",
     "https://*/*",
+    "http://localhost/*",
+    "http://127.0.0.1/*",
     "http://127.0.0.1:8799/*",
+    "https://localhost/*",
+    "https://127.0.0.1/*",
+    "https://phishermanai-1.onrender.com/*",
+    "https://*.onrender.com/*",
+    "https://*.vercel.app/*",
+    "https://*.github.dev/*",
     "https://chetana.activemirror.ai/*",
     "https://web.whatsapp.com/*",
     "https://web.telegram.org/*"

@@ -1,7 +1,7 @@
 // Phisherman AI v6 - Options Page Logic
 
 const DEFAULT_SETTINGS = {
-  backendUrl: 'http://127.0.0.1:8799',
+  backendUrl: 'https://phishermanai-1.onrender.com',
   autoScan: true,
   submitGuard: true,
   overlayPosition: 'bottom-right',

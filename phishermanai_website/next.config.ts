@@ -8,8 +8,18 @@ import type { NextConfig } from "next";
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
+  output: "standalone",
+  poweredByHeader: false,
+  compress: true,
+  productionBrowserSourceMaps: false,
+  images: {
+    formats: ["image/avif", "image/webp"],
+  },
   turbopack: {
     root: projectRoot,
+  },
+  experimental: {
+    optimizePackageImports: ["lucide-react", "framer-motion", "motion"],
   },
   async redirects() {
     return [
