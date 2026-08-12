@@ -28,7 +28,7 @@ export default function DemoPage() {
         <div className="mt-14">
           <Suspense
             fallback={
-              <div className="min-h-[24rem] rounded-xl border border-dashed border-border" />
+              <div className="min-h-96 rounded-xl border border-dashed border-border" />
             }
           >
             <VerifyConsole />

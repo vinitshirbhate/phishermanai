@@ -1,0 +1,271 @@
+{
+  "meta": {
+    "version": 1,
+    "updated": "2026-08-05",
+    "requirement": "Behavioural analysis lane for messaging surfaces (WhatsApp / Telegram / SMS-style text)",
+    "note": "Complements engines/manipulation_detector.py, which targets e-commerce dark patterns on web PAGES (cookie banners, fake reviews, subscription traps). This pack targets what a scam MESSAGE does to the reader: how it opens, what it promises, what it asks for first, and how it escalates. Regex-based, not substring-based, because message grammar varies ('working from home' vs 'work from home', 'joining bonus' vs 'joining fee').",
+    "scoring": "Each matched tactic contributes its weight to a 0-100 behaviour_score. Combos add more: individual tactics are weak evidence, co-occurrence is strong evidence.",
+    "false_positive_policy": "Tactics that appear in ordinary conversation (cold-contact framing, generic urgency) carry LOW standalone weight and earn their score through combos. A single tactic must never on its own drive a message to high risk."
+  },
+
+  "tactics": [
+    {
+      "id": "unsolicited_recruitment",
+      "label": "Unsolicited job offer",
+      "explain": "An unrequested offer of work — the opening move of task and job scams, which need volume rather than a match.",
+      "weight": 10,
+      "severity": "medium",
+      "patterns": [
+        "(?i)\\b(?:we|i)\\s+(?:are|am)\\s+(?:hiring|recruiting|looking\\s+for)\\b",
+        "(?i)\\bhiring\\s+for\\s+(?:a\\s+)?(?:part|full)?[\\s-]?time\\b",
+        "(?i)\\b(?:part|full)[\\s-]?time\\s+(?:job|work|role|position|opportunity)\\b",
+        "(?i)\\b(?:job|work)\\s+(?:opportunity|vacancy|opening)\\b.{0,40}\\b(?:home|online|remote)\\b",
+        "(?i)\\bwork\\s*(?:ing)?\\s+from\\s+home\\b",
+        "(?i)\\bimmediate\\s+joining\\b"
+      ]
+    },
+    {
+      "id": "reward_bait",
+      "label": "Concrete money promise",
+      "explain": "A specific earnings figure stated up front. Legitimate employers state a role first and pay later; scams lead with the number because the number is the product.",
+      "weight": 22,
+      "severity": "high",
+      "patterns": [
+        "(?i)\\bearn\\s+(?:rs\\.?|inr|₹)?\\s*[\\d,]+\\s*(?:to|-|–|—)\\s*(?:rs\\.?|inr|₹)?\\s*[\\d,]+",
+        "(?i)\\b(?:earn|income|salary|payout|profit|payment)\\s+(?:up\\s+to\\s+)?(?:rs\\.?|inr|₹)\\s*[\\d,]{3,}",
+        "(?i)\\b[\\d,]{3,}\\s*(?:rupees|rs\\.?|inr|₹)\\s*(?:per|a|every|each|\\/)\\s*(?:day|week|month|hour|task)\\b",
+        "(?i)\\b(?:daily|weekly|monthly)\\s+(?:income|earning|earnings|payout|payment|salary)\\b",
+        "(?i)\\bearn\\s+(?:up\\s+to\\s+)?[\\d,]{3,}\\b",
+        "(?i)\\b(?:salary|income)\\s+[\\d,]{4,}\\b"
+      ]
+    },
+    {
+      "id": "effort_reward_mismatch",
+      "label": "Trivial task, large reward",
+      "explain": "The work described is worth far less than the money offered. This asymmetry is the defining tell of a task scam — the task is a pretext, not a job.",
+      "weight": 24,
+      "severity": "high",
+      "patterns": [
+        "(?i)\\b(?:give|post|leave|do|submit|drop)\\s+(?:us\\s+)?(?:some\\s+)?(?:positive|good|5[\\s-]?star|five[\\s-]?star)?\\s*(?:ratings?|reviews?|likes?|comments?)\\b",
+        "(?i)\\b(?:rate|review|like|subscribe\\s+to|follow)\\s+(?:the\\s+|our\\s+|these\\s+)?(?:brands?|products?|hotels?|videos?|apps?|channels?|pages?|listings?)\\b",
+        "(?i)\\b(?:just|simply|only)\\s+(?:like|rate|review|click|watch|subscribe|follow|share|forward)\\b",
+        "(?i)\\bno\\s+(?:experience|skill|skills|qualification|degree|investment|target)\\s+(?:is\\s+)?(?:needed|required|necessary)\\b",
+        "(?i)\\b(?:only\\s+)?\\d+\\s*(?:-|to)?\\s*\\d*\\s*(?:hours?|hrs?|minutes?|mins?)\\s+(?:daily|per\\s+day|a\\s+day|of\\s+work)\\b",
+        "(?i)\\b(?:easy|simple|basic)\\s+(?:task|tasks|work|job|online\\s+work)\\b",
+        "(?i)\\b(?:copy\\s*[\\-–]?\\s*paste|data\\s+entry|form\\s+filling|typing)\\s+(?:job|work|task)\\b"
+      ]
+    },
+    {
+      "id": "reciprocity_hook",
+      "label": "Free money before the ask",
+      "explain": "A small unearned payment or bonus creates a felt debt, so the target complies with the next request. The first payout is bait and is real; it is recovered many times over later.",
+      "weight": 20,
+      "severity": "high",
+      "patterns": [
+        "(?i)\\bjoining\\s+(?:bonus|gift|reward|amount|credit|money)\\b",
+        "(?i)\\b(?:free|welcome|signup|sign[\\s-]?up|registration)\\s+(?:bonus|credit|cash|reward|gift)\\b",
+        "(?i)\\bwe\\s+(?:also\\s+)?(?:give|offer|credit|provide|pay)\\s+(?:you\\s+)?(?:rs\\.?|inr|₹)?\\s*[\\d,]{2,}",
+        "(?i)\\bfirst\\s+(?:task|job|order|assignment)\\s+(?:is\\s+)?free\\b",
+        "(?i)\\b(?:instant|immediate)\\s+(?:bonus|credit|payment)\\s+(?:on|after)\\s+(?:joining|signup|registration)\\b"
+      ]
+    },
+    {
+      "id": "commitment_ladder",
+      "label": "Small first commitment",
+      "explain": "Asking for a trivially cheap 'yes' first. Once the target has replied, they are talking to the operator and the next requests grow. The reply itself also confirms the number is live.",
+      "weight": 14,
+      "severity": "medium",
+      "patterns": [
+        "(?i)\\breply\\s+(?:back\\s+)?(?:with\\s+)?[\"']?(?:yes|y|ok|okay|interested|start|1)[\"']?\\b",
+        "(?i)\\b(?:send|type|message|text)\\s+(?:me\\s+|us\\s+)?[\"']?(?:yes|hi|hello|start|join|1)[\"']?\\s+(?:to|for|if|and)\\b",
+        "(?i)\\bif\\s+(?:you\\s+(?:are\\s+)?)?interested\\s*,?\\s*(?:then\\s+)?(?:reply|message|text|contact|dm|ping|let)\\b",
+        "(?i)\\b(?:click|tap|open)\\s+(?:the\\s+|this\\s+)?link\\s+to\\s+(?:start|begin|join|register|apply)\\b",
+        "(?i)\\bsay\\s+[\"']?yes[\"']?\\s+to\\s+(?:start|begin|proceed)\\b"
+      ]
+    },
+    {
+      "id": "authority_persona",
+      "label": "Borrowed authority",
+      "explain": "A named person with a role and an organisation. The persona is what makes a cold message feel like a process rather than a stranger.",
+      "weight": 8,
+      "severity": "low",
+      "patterns": [
+        "(?i)\\b(?:i\\s+am|this\\s+is|myself)\\s+(?:the\\s+)?(?:hr|h\\.r\\.|recruiter|hiring\\s+manager|team\\s+lead|relationship\\s+manager|account\\s+manager)\\b",
+        "(?i)\\b(?:hr|recruiter|manager|executive|team)\\s+(?:from|at|of)\\s+[A-Za-z][A-Za-z0-9&.\\- ]{2,30}\\b",
+        "\\b(?:[Ii]\\s+am|[Tt]his\\s+is)\\s+[A-Z][a-z]+(?:\\s+[A-Z][a-z]+)?\\s+from\\s+[A-Z][A-Za-z0-9&.\\-]{2,}",
+        "(?i)\\b(?:official|authorised|authorized|certified)\\s+(?:partner|vendor|recruiter|agency|representative)\\b"
+      ]
+    },
+    {
+      "id": "trust_transfer",
+      "label": "Borrowed brand trust",
+      "explain": "Naming a large, trusted company the sender has no relationship with. Recognition is transferred to the sender without any credential being shown.",
+      "weight": 16,
+      "severity": "medium",
+      "patterns": [
+        "(?i)\\b(?:amazon|flipkart|meesho|myntra|zomato|swiggy|tata|reliance|adani|google|microsoft|netflix|nykaa|ajio|paytm)\\b.{0,40}\\b(?:hiring|recruitment|project|campaign|partner|authoriz|authoris|work)",
+        "(?i)\\bwe\\s+work\\s+(?:with|for)\\s+(?:top\\s+|leading\\s+|reputed\\s+)?(?:brands?|companies|clients?)\\b",
+        "(?i)\\b(?:brands?|companies|clients?)\\s+we\\s+work\\s+with\\b",
+        "(?i)\\b(?:on\\s+behalf\\s+of|in\\s+association\\s+with|partnered\\s+with)\\s+[A-Z][A-Za-z]{2,}"
+      ]
+    },
+    {
+      "id": "channel_migration",
+      "label": "Move to a private channel",
+      "explain": "Pulling the conversation to Telegram, a private group or a downloaded app — surfaces with no moderation, no record and no recourse.",
+      "weight": 18,
+      "severity": "medium",
+      "patterns": [
+        "(?i)\\b(?:join|contact|message|add|dm|ping)\\s+(?:me\\s+|us\\s+)?on\\s+(?:telegram|whatsapp|signal|wechat)\\b",
+        "(?i)\\bt\\.me\\/|\\bwa\\.me\\/|\\bchat\\.whatsapp\\.com\\/",
+        "(?i)\\b(?:download|install)\\s+(?:our|the|this)\\s+(?:app|apk|application|platform)\\b",
+        "(?i)\\b(?:join|added\\s+to)\\s+(?:our\\s+)?(?:vip|premium|exclusive|private)\\s+(?:group|channel)\\b",
+        "(?i)\\b(?:apk|\\.apk)\\b"
+      ]
+    },
+    {
+      "id": "advance_fee",
+      "label": "Pay before you earn",
+      "explain": "Money must flow to the sender before any is promised back. No legitimate employer charges the employee to begin work.",
+      "weight": 28,
+      "severity": "high",
+      "patterns": [
+        "(?i)\\b(?:registration|joining|training|security|processing|activation|verification|refundable)\\s+(?:fee|fees|charge|charges|deposit|amount)\\b",
+        "(?i)\\b(?:pay|deposit|recharge|top[\\s-]?up|transfer|send)\\s+(?:rs\\.?|inr|₹)?\\s*[\\d,]+\\s*(?:only\\s*)?(?:to|for|and\\s+then)\\s+(?:start|begin|activate|unlock|withdraw|receive|continue)\\b",
+        "(?i)\\bprepaid\\s+task\\b",
+        "(?i)\\b(?:small|one[\\s-]?time|nominal)\\s+(?:fee|amount|payment|deposit)\\s+(?:is\\s+)?(?:required|needed|applicable)\\b",
+        "(?i)\\brecharge\\s+to\\s+(?:start|continue|unlock)\\b"
+      ]
+    },
+    {
+      "id": "withdrawal_friction",
+      "label": "Blocked withdrawal",
+      "explain": "The balance is visible but cannot be taken out until another payment is made. The displayed balance is a number in the operator's database, not money.",
+      "weight": 30,
+      "severity": "high",
+      "patterns": [
+        "(?i)\\bwithdraw(?:al|als)?\\s+(?:is\\s+|are\\s+|has\\s+been\\s+)?(?:blocked|locked|frozen|on\\s+hold|pending|restricted|disabled)\\b",
+        "(?i)\\b(?:pay|deposit|complete|clear)\\b.{0,40}\\bto\\s+(?:unlock|release|enable|process)\\s+(?:your\\s+)?(?:withdrawal|balance|funds?|payment|earnings?)\\b",
+        "(?i)\\bminimum\\s+(?:balance|deposit|tasks?)\\s+(?:required\\s+)?(?:to|before)\\s+withdraw",
+        "(?i)\\b(?:complete|finish)\\s+\\d+\\s+(?:more\\s+)?(?:tasks?|orders?)\\s+to\\s+withdraw\\b"
+      ]
+    },
+    {
+      "id": "manufactured_urgency",
+      "label": "Artificial time pressure",
+      "explain": "A deadline invented to prevent the target from checking. Real opportunities survive a phone call to someone else.",
+      "weight": 10,
+      "severity": "low",
+      "patterns": [
+        "(?i)\\b(?:limited|only)\\s+\\d+\\s+(?:seats?|slots?|positions?|vacancies|openings?)\\b",
+        "(?i)\\b(?:today|tonight)\\s+only\\b",
+        "(?i)\\b(?:hurry|act\\s+now|don'?t\\s+delay|apply\\s+fast)\\b",
+        "(?i)\\blast\\s+(?:date|chance|day)\\b",
+        "(?i)\\b(?:limited|few)\\s+(?:seats?|slots?|vacancies)\\s+(?:left|remaining|available)\\b"
+      ]
+    },
+    {
+      "id": "social_proof_fabrication",
+      "label": "Unverifiable proof of others",
+      "explain": "Screenshots and member counts that cannot be checked. Fabricated evidence that other people are already being paid.",
+      "weight": 12,
+      "severity": "medium",
+      "patterns": [
+        "(?i)\\b[\\d,]{2,}\\s*\\+?\\s*(?:members?|people|users?|students?|workers?|candidates?)\\s+(?:are\\s+)?(?:already\\s+)?(?:earning|joined|working|benefit|enrolled)",
+        "(?i)\\b(?:see|check|view)\\s+(?:the\\s+|our\\s+)?(?:screenshots?|payment\\s+proofs?|proofs?)\\b",
+        "(?i)\\bpayment\\s+proof\\b",
+        "(?i)\\b(?:join|joined)\\s+(?:by\\s+)?[\\d,]{3,}\\s+(?:members?|people|users?)\\b"
+      ]
+    },
+    {
+      "id": "isolation_pressure",
+      "label": "Told to keep it private",
+      "explain": "Discouraging the target from consulting family, their bank or the police. Isolation is what keeps a scam alive past the first doubt.",
+      "weight": 26,
+      "severity": "high",
+      "patterns": [
+        "(?i)\\b(?:do\\s*n[o']?t|never|please\\s+don'?t)\\s+(?:tell|share|inform|discuss|disclose)\\b.{0,30}\\b(?:anyone|any\\s+one|family|bank|police|friends?)\\b",
+        "(?i)\\bkeep\\s+(?:this\\s+)?(?:confidential|secret|private|between\\s+us)\\b",
+        "(?i)\\bthis\\s+is\\s+(?:a\\s+)?(?:confidential|secret)\\s+(?:matter|offer|process)\\b"
+      ]
+    },
+    {
+      "id": "identity_probe",
+      "label": "Early request for identity documents",
+      "explain": "Aadhaar, PAN, bank details or an OTP requested before any relationship exists. These enable account takeover and loans in the target's name.",
+      "weight": 30,
+      "severity": "high",
+      "patterns": [
+        "(?i)\\b(?:send|share|provide|upload|give)\\s+(?:me\\s+|us\\s+|your\\s+)*(?:aadhaar|aadhar|pan\\s*card|pan\\s+number|bank\\s+(?:details|account)|passbook|cancelled\\s+cheque|selfie)\\b",
+        "(?i)\\b(?:otp|one[\\s-]?time\\s+password)\\b.{0,30}\\b(?:share|send|tell|provide|forward|confirm)\\b",
+        "(?i)\\b(?:share|send|tell|provide|forward)\\b.{0,30}\\b(?:otp|one[\\s-]?time\\s+password|cvv|mpin|upi\\s+pin)\\b",
+        "(?i)\\b(?:kyc|verification)\\s+(?:documents?|details?)\\s+(?:required|needed|send|share)\\b"
+      ]
+    }
+  ],
+
+  "combos": [
+    {
+      "id": "task_scam_signature",
+      "requires": ["reward_bait", "effort_reward_mismatch"],
+      "bonus": 22,
+      "explain": "A large, specific payout attached to work that is trivial. This pairing is the structural signature of a task scam and is very rare in genuine recruitment."
+    },
+    {
+      "id": "recruitment_funnel",
+      "requires": ["unsolicited_recruitment", "commitment_ladder"],
+      "bonus": 14,
+      "explain": "An unrequested offer that asks only for a one-word reply. The reply costs the target nothing, which is the point — it opens the channel and confirms the number is live."
+    },
+    {
+      "id": "reciprocity_to_fee",
+      "requires": ["reciprocity_hook", "advance_fee"],
+      "bonus": 24,
+      "explain": "Free money first, a payment demand second. The bonus exists to make the later fee feel reasonable."
+    },
+    {
+      "id": "invest_then_lock",
+      "requires": ["reward_bait", "withdrawal_friction"],
+      "bonus": 28,
+      "explain": "Earnings are promised and then held hostage. At this stage the target is paying to recover money that was never theirs."
+    },
+    {
+      "id": "brand_backed_pitch",
+      "requires": ["trust_transfer", "reward_bait"],
+      "bonus": 16,
+      "explain": "A known brand is invoked to underwrite an earnings claim the sender cannot back themselves."
+    },
+    {
+      "id": "offsite_funnel",
+      "requires": ["unsolicited_recruitment", "channel_migration"],
+      "bonus": 16,
+      "explain": "Contact is opened on one platform and immediately moved to an unmoderated one."
+    },
+    {
+      "id": "credential_harvest",
+      "requires": ["unsolicited_recruitment", "identity_probe"],
+      "bonus": 26,
+      "explain": "Identity documents requested off the back of a job offer that has no verifiable employer."
+    },
+    {
+      "id": "lock_and_extract",
+      "requires": ["withdrawal_friction", "advance_fee"],
+      "bonus": 26,
+      "explain": "A balance is shown as locked and a payment is demanded to release it. This is the extraction stage: the target is now sending real money to recover a number that only exists on the operator's screen."
+    },
+    {
+      "id": "brand_backed_credential_ask",
+      "requires": ["trust_transfer", "identity_probe"],
+      "bonus": 22,
+      "explain": "A recognised brand is named and identity documents or an OTP are requested in the same breath. No real employer asks for an OTP — an OTP authorises a transaction, it does not confirm an interview."
+    }
+  ],
+
+  "bands": [
+    { "min": 0,  "label": "none",     "note": "No recognised social-engineering structure." },
+    { "min": 20, "label": "weak",     "note": "Isolated persuasive language. Common in ordinary marketing." },
+    { "min": 40, "label": "moderate", "note": "Several tactics co-occur. Treat unsolicited contact with care." },
+    { "min": 60, "label": "strong",   "note": "A recognised scam structure, not just persuasive wording." },
+    { "min": 80, "label": "severe",   "note": "Multiple reinforcing tactics matching a documented fraud playbook." }
+  ]
+}

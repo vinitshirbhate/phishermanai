@@ -1,0 +1,112 @@
+{
+  "id": "userinfo_trick",
+  "note": "Everything before @ is userinfo. The browser goes to evil-verify.tld.",
+  "input": {
+    "url": "https://icicidirect.com@evil-verify.tld/login",
+    "anchor_text": "icicidirect.com",
+    "page_host": "mail.example.com"
+  },
+  "expected_verdict": "L2_INFRASTRUCTURE_RISK",
+  "verdict": {
+    "verdict": "L2_INFRASTRUCTURE_RISK",
+    "codes_fired": [
+      "L2_INFRASTRUCTURE_RISK"
+    ],
+    "codes": [
+      {
+        "code": "L2_INFRASTRUCTURE_RISK",
+        "summary": "Address-level signals: the address shows one site before '@' but goes to another; the visible link text names a different site than the link goes to.",
+        "evidence": {
+          "details": [
+            "the address shows one site before '@' but goes to another",
+            "the visible link text names a different site than the link goes to"
+          ],
+          "host": "evil-verify.tld",
+          "decoded": "evil-verify.tld"
+        },
+        "truth": "channel"
+      }
+    ],
+    "truths": {
+      "channel": {
+        "state": "signals",
+        "summary": "Address-level signals: the address shows one site before '@' but goes to another; the visible link text names a different site than the link goes to.",
+        "codes": [
+          "L2_INFRASTRUCTURE_RISK"
+        ],
+        "disclaimers": [],
+        "assessed": true
+      },
+      "identity": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      },
+      "content": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      },
+      "interaction": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      }
+    },
+    "layer": "preflight",
+    "confidence": "medium",
+    "confidence_is_label": true,
+    "action": "warn",
+    "dismissible": true,
+    "continue_allowed": true,
+    "stages_run": [
+      "offline"
+    ],
+    "stages_note": "Checked offline only.",
+    "url": "https://icicidirect.com@evil-verify.tld/login",
+    "host": "evil-verify.tld"
+  },
+  "parsed_summary": {
+    "scheme": "https:",
+    "host": "evil-verify.tld",
+    "host_decoded": "evil-verify.tld",
+    "registrable_domain": "evil-verify.tld",
+    "public_suffix": "tld",
+    "psl_matched": false,
+    "is_payment_link": false,
+    "payment": null,
+    "is_ip_host": false,
+    "ip_form": null,
+    "is_private_target": false,
+    "is_punycode": false,
+    "userinfo_looks_like_host": true,
+    "subdomain_stuffing": null,
+    "anchor_mismatch": {
+      "claimed": "icicidirect.com",
+      "claimed_domain": "icicidirect.com",
+      "actual_domain": "evil-verify.tld"
+    },
+    "is_shortener": false,
+    "expansion_required": false,
+    "skip_prefetch": false,
+    "obfuscation": null,
+    "signals": [
+      "userinfo_trick:icicidirect.com",
+      "unknown_public_suffix",
+      "anchor_text_mismatch"
+    ]
+  },
+  "identity_summary": {
+    "domain_status": "unknown",
+    "official_entity": null,
+    "lookalike_of": null,
+    "registration_state": "not_applicable",
+    "upi": []
+  },
+  "elapsed_ms": 1.694,
+  "matches_expected": true,
+  "blocked_claim_hits": []
+}

@@ -1,0 +1,10 @@
+# Test-only dependencies. Not required to run the backend or the extension.
+#
+# C3 budget: this is the ONLY new pip package added by the SEBI-register work
+# (1 of the 3 permitted). Everything else in scripts/fetch_sebi_register.py and
+# backend/engines/securities_identity.py is stdlib — urllib, re, html, json,
+# hashlib, difflib — with no HTML-parsing or fuzzy-matching library added.
+#
+#   python -m pip install -r backend/requirements-dev.txt
+#   python -m pytest backend/tests -q
+pytest>=8.0

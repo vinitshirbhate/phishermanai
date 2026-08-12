@@ -18,11 +18,15 @@ from __future__ import annotations
 
 import json
 from functools import lru_cache
+from typing import Any
+
+import httpx
 
 from ..config import get_settings
 from ..schemas import ExtractedEntities, Verdict
 
 MODEL = "claude-opus-5"
+OPENROUTER_MODEL = "gpt-4o-mini"
 
 _ENTITY_SCHEMA = {
     "type": "object",
@@ -74,49 +78,107 @@ detectors were unavailable, say the result is inconclusive rather than projectin
 confidence. No preamble, no markdown, no bullet points."""
 
 
-@lru_cache(maxsize=1)
-def _client():
+def _openrouter_url() -> str:
+    return f"{get_settings().openrouter_base_url.rstrip('/')}/api/v1/chat/completions"
+
+
+def _openrouter_text(response_json: dict[str, Any]) -> str:
+    if not isinstance(response_json, dict):
+        return ""
+    choices = response_json.get("choices") or []
+    if not choices:
+        return ""
+    message = choices[0].get("message", {})
+    content = message.get("content") if isinstance(message, dict) else None
+    if isinstance(content, dict):
+        text = content.get("text") or content.get("content") or ""
+        if isinstance(text, str):
+            return text
+        if isinstance(text, list):
+            return "".join(item.get("text", "") for item in text if isinstance(item, dict))
+    if isinstance(content, str):
+        return content
+    if isinstance(choices[0].get("text"), str):
+        return choices[0]["text"]
+    return ""
+
+
+async def _openrouter_request(payload: dict[str, Any]) -> dict[str, Any]:
+    headers = {
+        "Authorization": f"Bearer {get_settings().openrouter_api_key}",
+        "Content-Type": "application/json",
+    }
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        response = await client.post(_openrouter_url(), json=payload, headers=headers)
+        response.raise_for_status()
+        return response.json()
+
+
+async def _anthropic_request(messages: list[dict[str, str]], max_tokens: int) -> str:
     import anthropic
 
-    return anthropic.AsyncAnthropic(api_key=get_settings().anthropic_api_key)
+    client = anthropic.AsyncAnthropic(api_key=get_settings().anthropic_api_key)
+    response = await client.messages.create(
+        model=MODEL,
+        max_tokens=max_tokens,
+        system=messages[0]["content"],
+        thinking={"type": "adaptive"},
+        output_config={"effort": "low"},
+        messages=[messages[1]],
+    )
+    return _first_text(response)
 
 
 def is_enabled() -> bool:
-    return bool(get_settings().anthropic_api_key)
+    return bool(get_settings().openrouter_api_key or get_settings().anthropic_api_key)
 
 
 def _first_text(response) -> str:
     return "".join(b.text for b in response.content if b.type == "text").strip()
 
 
+async def _send_llm_request(messages: list[dict[str, str]], max_tokens: int) -> str:
+    if get_settings().openrouter_api_key:
+        payload = {
+            "model": get_settings().openrouter_model,
+            "messages": messages,
+            "max_tokens": max_tokens,
+            "temperature": 0.0,
+        }
+        return _openrouter_text(await _openrouter_request(payload))
+
+    if get_settings().anthropic_api_key:
+        return await _anthropic_request(messages, max_tokens)
+
+    raise RuntimeError("no LLM API key set")
+
+
 async def extract_entities(text: str) -> tuple[ExtractedEntities, str | None]:
     """Pull issuer/tickers/cues out of content. Returns (entities, error)."""
     if not is_enabled():
-        return ExtractedEntities(), "ANTHROPIC_API_KEY not set"
+        return ExtractedEntities(), "OPENROUTER_API_KEY not set"
     if not (text or "").strip():
         return ExtractedEntities(), "no text supplied"
 
+    prompt = (
+        _EXTRACT_SYSTEM + "\n\nRespond with only a single JSON object. "
+        "Do not include markdown, commentary, or extra keys. "
+        "Match the schema exactly and use null or empty arrays for missing fields.\n"
+        f"Schema: {json.dumps(_ENTITY_SCHEMA, ensure_ascii=False)}\n\n"
+        f"Text: {text[:20000]}"
+    )
+    messages = [
+        {"role": "system", "content": prompt},
+        {"role": "user", "content": "Extract the entities from the text above."},
+    ]
+
     try:
-        response = await _client().messages.create(
-            model=MODEL,
-            max_tokens=2048,
-            system=_EXTRACT_SYSTEM,
-            thinking={"type": "adaptive"},
-            output_config={
-                "effort": "low",  # extraction is mechanical; save latency for /verify
-                "format": {"type": "json_schema", "schema": _ENTITY_SCHEMA},
-            },
-            messages=[{"role": "user", "content": text[:20000]}],
-        )
+        raw_text = await _send_llm_request(messages, max_tokens=2048)
     except Exception as exc:  # noqa: BLE001 - network/auth/rate-limit all degrade alike
         return ExtractedEntities(), f"{type(exc).__name__}: {exc}"
 
-    # Opus 5 can decline; this app feeds it scam text, so check before reading content.
-    if response.stop_reason == "refusal":
-        return ExtractedEntities(), "model declined to analyze this content"
-
     try:
-        return ExtractedEntities.model_validate_json(_first_text(response)), None
+        return ExtractedEntities.model_validate_json(raw_text), None
     except (ValueError, json.JSONDecodeError) as exc:
         return ExtractedEntities(), f"could not parse extraction: {exc}"
 
@@ -141,7 +203,7 @@ def _fallback_explanation(verdict: Verdict) -> str:
 async def explain(verdict: Verdict, content_excerpt: str = "") -> tuple[str, str | None]:
     """Write the investor-facing explanation. Returns (explanation, error)."""
     if not is_enabled():
-        return _fallback_explanation(verdict), "ANTHROPIC_API_KEY not set"
+        return _fallback_explanation(verdict), "OPENROUTER_API_KEY not set"
 
     findings = [
         {"detector": s.name, "finding": s.summary, "available": s.available,
@@ -156,31 +218,29 @@ async def explain(verdict: Verdict, content_excerpt: str = "") -> tuple[str, str
         "transcript_excerpt": (verdict.transcript or "")[:2000],
     }
 
+    messages = [
+        {"role": "system", "content": _EXPLAIN_SYSTEM},
+        {"role": "user", "content": json.dumps(briefing, ensure_ascii=False)},
+    ]
     try:
-        response = await _client().messages.create(
-            model=MODEL,
-            max_tokens=1024,
-            system=_EXPLAIN_SYSTEM,
-            thinking={"type": "adaptive"},
-            output_config={"effort": "low"},
-            messages=[{"role": "user", "content": json.dumps(briefing, ensure_ascii=False)}],
-        )
+        raw_text = await _send_llm_request(messages, max_tokens=1024)
     except Exception as exc:  # noqa: BLE001
         return _fallback_explanation(verdict), f"{type(exc).__name__}: {exc}"
 
-    if response.stop_reason == "refusal":
+    if raw_text.strip().lower().startswith("i'm sorry"):
         return _fallback_explanation(verdict), "model declined to write an explanation"
 
-    text = _first_text(response)
-    return (text or _fallback_explanation(verdict)), None
+    return (raw_text or _fallback_explanation(verdict)), None
 
 
 async def health() -> str:
     if not is_enabled():
-        return "disabled (no ANTHROPIC_API_KEY)"
+        return "disabled (no OPENROUTER_API_KEY or ANTHROPIC_API_KEY)"
     try:
-        await _client().messages.create(
-            model=MODEL, max_tokens=1, messages=[{"role": "user", "content": "ok"}]
+        await _send_llm_request(
+            [{"role": "system", "content": _EXPLAIN_SYSTEM},
+             {"role": "user", "content": "ok"}],
+            max_tokens=1,
         )
         return "ok"
     except Exception as exc:  # noqa: BLE001

@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "version": 1,
+    "updated": "2026-08-05",
+    "requirement": "False-positive control for the L0 keyword lane",
+    "problem": "The keyword categories in scam_signals.json contain bare ENTITY names ('sebi', 'rbi', 'police', 'sbi') and bare TOPIC words ('kyc', 'otp', 'investment', 'pay', 'upi', 'payment'). Substring-matching those against page text means MENTIONING the regulator scores as IMPERSONATING it. Measured: a Google results page for the query 'sebi' scored 21/100 DANGER, from 'sebi' (+25 authority_impersonation) and 'kyc' (+30 financial_triggers) alone. SEBI's own website trips the same wires, as does any bank site ('bank account', 'kyc', 'pay') and any checkout page ('pay', 'payment', 'upi').",
+    "principle": "An entity or a topic is not evidence. An entity or topic PLUS an act is. 'RBI' is a noun; 'RBI has frozen your account, pay now' is an accusation being made against the reader. Tokens listed here score only when a corroborating act pattern appears in the same text; on their own they are silently skipped.",
+    "note": "This does NOT gate multi-word scam phrases. 'share your otp', 'account will be closed', 'digital arrest' and similar remain ungated because they already carry the act inside the phrase. Only the bare tokens below need corroboration."
+  },
+
+  "gated_tokens": {
+    "_comment": "Bare tokens that carry no evidentiary weight on their own, grouped by the act that must accompany them.",
+
+    "impersonation_act": [
+      "sbi", "rbi", "police", "cbi", "income tax", "uidai", "aadhar", "aadhaar",
+      "passport", "customs", "narcotics", "cyber cell", "reserve bank", "sebi",
+      "epfo", "ministry", "trai", "irctc", "indian railway", "nia",
+      "central bureau", "hdfc bank", "icici bank", "axis bank", "kotak bank",
+      "bob bank", "canara bank", "pnb", "lic", "insurance company",
+      "mutual fund company", "telecom company", "pan", "kyc",
+      "sadhguru", "nirmala sitharaman", "jaggi vasudev", "court order"
+    ],
+
+    "credential_act": [
+      "otp", "one time password", "kyc", "bank account", "pan card",
+      "aadhaar link", "investment", "suspended", "locked", "deactivated",
+      "ai-powered", "ai-generated", "deepfake", "digital borrowing"
+    ],
+
+    "payment_pressure_act": [
+      "pay", "transfer", "payment", "upi", "deposit", "qr code",
+      "google pay", "phonepe", "paytm"
+    ]
+  },
+
+  "acts": {
+    "_comment": "If any of these match, the gated tokens in that group are allowed to score. These describe something being DONE TO the reader, not a subject being discussed.",
+
+    "impersonation_act": [
+      "(?i)\\b(?:this\\s+is|i\\s+am|calling\\s+from|on\\s+behalf\\s+of|speaking\\s+from)\\s+(?:the\\s+)?(?:sebi|rbi|sbi|cbi|police|income\\s+tax|uidai|epfo|trai|customs|enforcement)",
+      "(?i)\\b(?:officer|inspector|official|department|headquarters)\\b.{0,40}\\b(?:calling|contacting|informing|notice|case)\\b",
+      "(?i)\\b(?:notice|summons|warrant|complaint|case|fir)\\s+(?:has\\s+been\\s+)?(?:issued|registered|filed|lodged)\\s+(?:against|in\\s+your)",
+      "(?i)\\byour\\s+(?:account|number|sim|kyc|pan|aadhaar|passport)\\s+(?:has\\s+been|will\\s+be|is)\\s+(?:blocked|suspended|frozen|deactivated|cancelled|seized|closed)",
+      "(?i)\\b(?:arrest|legal\\s+action|penalty|fine|prosecution|jail)\\b.{0,60}\\b(?:you|your)\\b",
+      "(?i)\\b(?:pay|deposit|transfer|remit)\\b.{0,50}\\b(?:to\\s+avoid|to\\s+release|to\\s+clear|to\\s+settle|immediately|within\\s+\\d+)",
+      "(?i)\\b(?:do\\s*n[o']?t\\s+(?:tell|inform|disconnect)|keep\\s+(?:this\\s+)?confidential)\\b",
+      "(?i)\\bdigital\\s+arrest\\b"
+    ],
+
+    "credential_act": [
+      "(?i)\\b(?:share|send|give|enter|provide|forward|tell|confirm|submit)\\b.{0,40}\\b(?:otp|password|pin|cvv|mpin|aadhaar|pan|bank\\s+details|account\\s+number|card\\s+number)\\b",
+      "(?i)\\b(?:otp|password|pin|cvv|mpin|aadhaar|pan\\s+card|bank\\s+details)\\b.{0,40}\\b(?:share|send|give|enter|provide|forward|tell|confirm|submit)\\b",
+      "(?i)\\b(?:update|verify|complete|re-?submit)\\s+(?:your\\s+)?kyc\\b.{0,60}\\b(?:immediately|urgent|today|within|or\\s+your|to\\s+avoid|click|link)",
+      "(?i)\\byour\\s+(?:account|kyc|card|wallet)\\s+(?:has\\s+been|will\\s+be|is)\\s+(?:blocked|suspended|frozen|expired|deactivated|closed)",
+      "(?i)\\b(?:click|tap|open|visit)\\s+(?:the\\s+|this\\s+)?link\\b.{0,50}\\b(?:verify|update|activate|unblock|restore|kyc)\\b",
+      "(?i)\\b(?:download|install)\\s+(?:the\\s+|this\\s+)?(?:apk|app)\\b.{0,40}\\b(?:verify|kyc|update|unblock)\\b"
+    ],
+
+    "payment_pressure_act": [
+      "(?i)\\b(?:pay|deposit|transfer|remit|send)\\b.{0,50}\\b(?:to\\s+(?:avoid|release|unlock|activate|claim|receive|withdraw|start)|immediately|urgently|within\\s+\\d+|or\\s+your)",
+      "(?i)\\b(?:processing|registration|activation|clearance|security|refundable|joining)\\s+fee\\b",
+      "(?i)\\b(?:advance|token)\\s+(?:payment|amount|money)\\b",
+      "(?i)\\b(?:scan|send)\\s+(?:this\\s+|the\\s+)?qr\\b.{0,40}\\b(?:receive|credit|refund|claim|collect)\\b",
+      "(?i)\\bupi\\s*(?:id|handle)?\\s*[:\\-]?\\s*[a-z0-9.\\-_]{2,}@[a-z]{2,}\\b",
+      "(?i)\\b(?:withdraw(?:al)?|balance|funds?)\\s+(?:is\\s+|are\\s+|has\\s+been\\s+)?(?:blocked|locked|frozen|on\\s+hold|pending)\\b"
+    ]
+  },
+
+  "corroboration": {
+    "_comment": "Even after gating, a lone keyword category must not reach DANGER by itself. Real fraud leaves more than one kind of trace: a tactic, a bad URL, a payment handle, a registration mismatch. This mirrors the combo requirement in behavior_lane.py.",
+    "single_category_max_score": 35,
+    "note": "If exactly one keyword category matched and no URL/behavioural/entity evidence exists, the L0 risk score is capped here — enough to show CAUTION, not enough to accuse."
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "id": "subdomain_stuffing",
+  "note": "sebi.gov.in appears in the labels; the registrable domain is secure-verify.xyz.",
+  "input": {
+    "url": "https://sebi.gov.in.secure-verify.xyz/intermediary/check",
+    "anchor_text": "SEBI Intermediary Check",
+    "page_host": "mail.example.com"
+  },
+  "expected_verdict": "L4_IDENTITY_MISMATCH",
+  "verdict": {
+    "verdict": "L4_IDENTITY_MISMATCH",
+    "codes_fired": [
+      "L4_IDENTITY_MISMATCH",
+      "L2_INFRASTRUCTURE_RISK"
+    ],
+    "codes": [
+      {
+        "code": "L4_IDENTITY_MISMATCH",
+        "summary": "This domain resembles sebi.gov.in (SEBI) but is not it.",
+        "evidence": {
+          "official": "sebi.gov.in",
+          "entity": "SEBI",
+          "reason": "subdomain_stuffing"
+        },
+        "truth": "identity"
+      },
+      {
+        "code": "L2_INFRASTRUCTURE_RISK",
+        "summary": "Address-level signals: an official name appears in the subdomain of an unrelated domain.",
+        "evidence": {
+          "details": [
+            "an official name appears in the subdomain of an unrelated domain"
+          ],
+          "host": "sebi.gov.in.secure-verify.xyz",
+          "decoded": "sebi.gov.in.secure-verify.xyz"
+        },
+        "truth": "channel"
+      }
+    ],
+    "truths": {
+      "channel": {
+        "state": "signals",
+        "summary": "Address-level signals: an official name appears in the subdomain of an unrelated domain.",
+        "codes": [
+          "L2_INFRASTRUCTURE_RISK"
+        ],
+        "disclaimers": [],
+        "assessed": true
+      },
+      "identity": {
+        "state": "signals",
+        "summary": "This domain resembles sebi.gov.in (SEBI) but is not it.",
+        "codes": [
+          "L4_IDENTITY_MISMATCH"
+        ],
+        "disclaimers": [],
+        "assessed": true
+      },
+      "content": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      },
+      "interaction": {
+        "state": "no_signals",
+        "summary": "No signals for this dimension.",
+        "codes": [],
+        "assessed": true
+      }
+    },
+    "layer": "preflight",
+    "confidence": "high",
+    "confidence_is_label": true,
+    "action": "warn",
+    "dismissible": true,
+    "continue_allowed": true,
+    "stages_run": [
+      "offline"
+    ],
+    "stages_note": "Checked offline only.",
+    "url": "https://sebi.gov.in.secure-verify.xyz/intermediary/check",
+    "host": "sebi.gov.in.secure-verify.xyz"
+  },
+  "parsed_summary": {
+    "scheme": "https:",
+    "host": "sebi.gov.in.secure-verify.xyz",
+    "host_decoded": "sebi.gov.in.secure-verify.xyz",
+    "registrable_domain": "secure-verify.xyz",
+    "public_suffix": "xyz",
+    "psl_matched": true,
+    "is_payment_link": false,
+    "payment": null,
+    "is_ip_host": false,
+    "ip_form": null,
+    "is_private_target": false,
+    "is_punycode": false,
+    "userinfo_looks_like_host": false,
+    "subdomain_stuffing": {
+      "official": "sebi.gov.in",
+      "entity": "SEBI",
+      "observed_host": "sebi.gov.in.secure-verify.xyz"
+    },
+    "anchor_mismatch": null,
+    "is_shortener": false,
+    "expansion_required": false,
+    "skip_prefetch": false,
+    "obfuscation": null,
+    "signals": [
+      "subdomain_stuffing:sebi.gov.in"
+    ]
+  },
+  "identity_summary": {
+    "domain_status": "lookalike",
+    "official_entity": null,
+    "lookalike_of": {
+      "official": "sebi.gov.in",
+      "entity": "SEBI",
+      "reason": "subdomain_stuffing"
+    },
+    "registration_state": "not_applicable",
+    "upi": []
+  },
+  "elapsed_ms": 0.837,
+  "matches_expected": true,
+  "blocked_claim_hits": []
+}

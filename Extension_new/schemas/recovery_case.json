@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://activemirror.ai/schemas/phisherman/recovery_case.json",
+  "title": "Phisherman AI Recovery Case",
+  "type": "object",
+  "required": [
+    "channel",
+    "incident_type",
+    "risk_level",
+    "risk_score",
+    "official_rails",
+    "evidence_checklist",
+    "support_script",
+    "case_packet"
+  ],
+  "properties": {
+    "channel": {
+      "type": "string"
+    },
+    "incident_type": {
+      "type": "string"
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH"]
+    },
+    "risk_score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "official_rails": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "url", "use_when"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "use_when": { "type": "string" }
+        }
+      }
+    },
+    "evidence_checklist": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "support_script": {
+      "type": "object",
+      "required": ["language", "opening", "facts", "ask", "close", "copy_text"],
+      "properties": {
+        "language": {
+          "type": "string",
+          "enum": ["en", "hi"]
+        },
+        "opening": { "type": "string" },
+        "facts": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "ask": { "type": "string" },
+        "close": { "type": "string" },
+        "copy_text": { "type": "string" }
+      }
+    },
+    "case_packet": {
+      "type": "object",
+      "required": ["channel", "extracted", "signals"],
+      "properties": {
+        "claimed_brand": { "type": "string" },
+        "title": { "type": "string" },
+        "channel": { "type": "string" },
+        "mode": { "type": "string" },
+        "url": { "type": "string" },
+        "lost_money": { "type": "boolean" },
+        "amount_inr": { "type": ["integer", "null"] },
+        "bank_contacted": { "type": "boolean" },
+        "unresolved_with_bank": { "type": "boolean" },
+        "preferred_language": {
+          "type": "string",
+          "enum": ["en", "hi"]
+        },
+        "extracted": {
+          "type": "object",
+          "properties": {
+            "urls": { "type": "array", "items": { "type": "string" } },
+            "phones": { "type": "array", "items": { "type": "string" } },
+            "upi": { "type": "array", "items": { "type": "string" } },
+            "domain": { "type": "string" }
+          }
+        },
+        "signals": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phisherman AI - Trust Panel</title>
+  <link rel="stylesheet" href="panel.css">
+</head>
+<body>
+  <div class="panel-container">
+    <header class="panel-header">
+      <div class="logo-row">
+        <svg class="logo-icon" width="28" height="28" viewBox="0 0 128 128">
+          <circle cx="64" cy="64" r="58" fill="none" stroke="#22c55e" stroke-width="6"/>
+          <text x="64" y="82" text-anchor="middle" fill="#22c55e" font-size="64" font-weight="700" font-family="system-ui">P</text>
+        </svg>
+        <div>
+          <h1 class="logo-title">Phisherman AI</h1>
+          <p class="logo-tagline">Trust by Design</p>
+        </div>
+      </div>
+      <div id="connection-status" class="connection-status offline">
+        <span class="status-dot"></span>
+        <span class="status-text">Checking...</span>
+      </div>
+    </header>
+
+    <section class="card" id="trust-section">
+      <h2 class="card-title">Current Page</h2>
+      <div class="trust-display" id="trust-display">
+        <div class="trust-ring-container">
+          <svg class="trust-ring" viewBox="0 0 120 120">
+            <circle class="ring-bg" cx="60" cy="60" r="52" />
+            <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="52" />
+          </svg>
+          <div class="trust-score" id="trust-score">--</div>
+        </div>
+        <div class="trust-info">
+          <span class="risk-badge" id="risk-badge">NOT SCANNED</span>
+          <p class="page-title" id="page-title">Navigate to a page</p>
+          <p class="page-url" id="page-url">-</p>
+          <p class="muted-text" id="score-scope" style="display: none;"></p>
+        </div>
+      </div>
+      <button class="btn-primary" id="scan-btn">Scan This Page</button>
+    </section>
+
+    <section class="card" id="signals-section" style="display: none;">
+      <h2 class="card-title">Signals</h2>
+      <div class="signal-list" id="signal-list"></div>
+    </section>
+
+    <section class="card" id="securities-section" style="display: none;">
+      <h2 class="card-title">Securities Identity</h2>
+      <div id="securities-body"></div>
+      <p class="muted-text" id="securities-asof"></p>
+    </section>
+
+    <section class="card" id="comms-section" style="display: none;">
+      <h2 class="card-title">Official Communication</h2>
+      <div id="comms-body"></div>
+      <p class="muted-text" id="comms-asof"></p>
+    </section>
+
+    <section class="card" id="summary-section" style="display: none;">
+      <h2 class="card-title">Deep Analysis</h2>
+      <p class="detail-paragraph" id="analysis-summary"></p>
+      <div class="detail-block" id="selection-evidence" style="display: none;">
+        <div class="detail-label">Selected Text</div>
+        <div class="detail-quote" id="selected-text"></div>
+      </div>
+      <div class="detail-block" id="surrounding-evidence" style="display: none;">
+        <div class="detail-label">Nearby Context</div>
+        <div class="detail-context" id="surrounding-text"></div>
+      </div>
+    </section>
+
+    <section class="card" id="behavior-section" style="display: none;">
+      <h2 class="card-title">Behavioral Analysis</h2>
+      <span class="behavior-band" id="behavior-band" style="display: none;"></span>
+      <div class="detail-list" id="behavior-list"></div>
+    </section>
+
+    <section class="card" id="conversation-section" style="display: none;">
+      <h2 class="card-title">Message Scope</h2>
+      <div class="stat-strip" id="conversation-stats"></div>
+      <div class="detail-list" id="conversation-list"></div>
+    </section>
+
+    <section class="card" id="media-section" style="display: none;">
+      <h2 class="card-title">Photos And QR</h2>
+      <div class="detail-list" id="media-list"></div>
+    </section>
+
+    <section class="card" id="factcheck-section" style="display: none;">
+      <h2 class="card-title">Fact Check</h2>
+      <div id="factcheck-content"></div>
+    </section>
+
+    <section class="card" id="recommendations-section" style="display: none;">
+      <h2 class="card-title">Recommendations</h2>
+      <ul class="recommendations-list" id="recommendations-list"></ul>
+    </section>
+
+    <section class="card">
+      <h2 class="card-title">Recent Scans</h2>
+      <div class="history-list" id="history-list">
+        <p class="muted-text">No scan history yet.</p>
+      </div>
+    </section>
+
+    <footer class="panel-footer">
+      <button class="btn-ghost" id="copy-evidence-btn" style="display: none;">Copy Evidence</button>
+      <a href="#" id="settings-link" class="settings-link">Settings</a>
+      <span class="version-text">v6.0.0</span>
+    </footer>
+  </div>
+
+  <!-- signal_polarity must load first: panel.js calls it at render time. -->
+  <script src="../shared/signal_polarity.js"></script>
+  <script src="panel.js"></script>
+</body>
+</html>

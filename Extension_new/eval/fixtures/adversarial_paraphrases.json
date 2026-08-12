@@ -1,0 +1,72 @@
+{
+  "meta": {
+    "purpose": "A.7 — adversarial degradation by layer. Each entry paraphrases a malicious fixture while preserving intent, then asks: does each detection layer still fire?",
+    "provenance": "AUTHOR-WRITTEN paraphrases, hand-crafted to evade keyword and regex matching while preserving meaning. These are NOT LLM-generated. An LLM-generated set would likely be MORE evasive, so the degradation reported here is a conservative LOWER bound on real-world adversarial impact, not an upper bound.",
+    "method": "Two tiers per class. `mild` = synonym substitution (approximates zero-shot paraphrase). `strong` = full restructuring with obfuscated numerals and spacing (approximates few-shot adversarial paraphrase).",
+    "invariant_under_test": "The registration number is a legally-required credential and cannot be paraphrased away. It is preserved verbatim in every variant, exactly as it would be in a real scam that wants to appear credentialled.",
+    "synthetic": true,
+    "data_class": "synthetic_fixture"
+  },
+  "cases": [
+    {
+      "class": "withdrawal_trap", "reg_number": "INZ000031633", "poster": "PayoutDesk",
+      "original": "Your withdrawal is blocked. Pay a processing fee and margin top-up to release your funds. Broker INZ000031633.",
+      "mild": "Your payout is on hold. Settle a handling charge and add margin to unlock your balance. Broker INZ000031633.",
+      "strong": "Funds cannot move out just yet. There is a small administrative amount plus a top-up needed against your position before the balance frees up. Broker INZ000031633."
+    },
+    {
+      "class": "guaranteed_return_claim", "reg_number": "INA000012345", "poster": "SureGains",
+      "original": "Assured returns of 30% monthly, 100% safe, risk-free investment in our trading scheme. INA000012345.",
+      "mild": "Certain gains of 30% each month, completely secure, no-risk placement in our trading plan. INA000012345.",
+      "strong": "Our members have never seen a losing month; thirty percent is the usual figure and your capital is never exposed. INA000012345."
+    },
+    {
+      "class": "vip_group_funnel", "reg_number": "INH000001234", "poster": "AlphaCircle",
+      "original": "You have been added to our VIP premium trading group. Download our private app link for exclusive profit tips. INH000001234.",
+      "mild": "You are now part of our elite dealing circle. Get our members-only application for restricted gain calls. INH000001234.",
+      "strong": "Welcome aboard the inner circle. The handset tool we use is not on any store, the link is below, and calls are shared only with those inside. INH000001234."
+    },
+    {
+      "class": "fake_stt_notice", "reg_number": "INZ000042744", "poster": "TaxRecovery",
+      "original": "URGENT: Your outstanding STT (securities transaction tax due) of Rs 45,000 must be cleared. INZ000042744.",
+      "mild": "IMPORTANT: An unpaid securities levy of Rs 45,000 stands against your account and must be settled. INZ000042744.",
+      "strong": "A statutory amount tied to your dealings remains unsettled at forty five thousand. Clearance is required before further activity. INZ000042744."
+    },
+    {
+      "class": "boss_scam", "reg_number": "INM000011234", "poster": "MD Office",
+      "original": "This is the CEO. I am in a meeting, keep this confidential. Process an urgent transfer to this account now. INM000011234.",
+      "mild": "Chief here. Currently occupied, keep it between us. Push through a priority payment to this account immediately. INM000011234.",
+      "strong": "Writing quickly between sessions and would rather this stayed with you alone. There is a payment that needs to go out before close today. INM000011234."
+    },
+    {
+      "class": "account_handling", "reg_number": "INP000005678", "poster": "FundDesk",
+      "original": "Our professional fund manager offers account handling with risk-free profit. Minimum capital 50,000, profit share 30%. INP000005678.",
+      "mild": "Our seasoned money manager provides account operation with secure gains. Entry capital 50,000, gain split 30%. INP000005678.",
+      "strong": "An experienced person operates the account on your behalf; you contribute fifty thousand to begin and we retain three tenths of what is made. INP000005678."
+    },
+    {
+      "class": "fpi_institutional_lure", "reg_number": "INZ000053855", "poster": "BlockDesk",
+      "original": "Get IPO allotment at discount via the FPI route. Institutional trading account access for retail. INZ000053855.",
+      "mild": "Secure new issue shares below price through the foreign route. Institution-grade dealing access for individuals. INZ000053855.",
+      "strong": "New listings can be picked up under the market price through a channel normally reserved for large overseas participants, now opened to individuals. INZ000053855."
+    },
+    {
+      "class": "fake_mf_redemption", "reg_number": "ARN-123456", "poster": "RedeemFast",
+      "original": "Redeem your folio off-platform via our agent on WhatsApp for instant liquidation, direct transfer. ARN-123456.",
+      "mild": "Cash out your holding away from the app through our representative on chat for immediate settlement. ARN-123456.",
+      "strong": "Rather than going through the usual application, our representative can settle your holding straight away over chat and move the money directly. ARN-123456."
+    },
+    {
+      "class": "forged_sebi_document", "reg_number": "INA000023456", "poster": "RegulatoryDesk",
+      "original": "Attached SEBI order with official seal and letterhead confirming registration INA000023456 approval.",
+      "mild": "Enclosed regulator directive bearing the official stamp and header confirming clearance of INA000023456.",
+      "strong": "Please find the authority's signed communication, on its usual stationery, confirming the standing of INA000023456."
+    },
+    {
+      "class": "fake_stt_notice", "reg_number": "INH000002345", "poster": "DuesDept",
+      "original": "Securities transaction tax due immediately, SEBI letterhead attached, RBI coordination. INH000002345.",
+      "mild": "Transaction levy on securities payable at once, regulator stationery enclosed, central bank aligned. INH000002345.",
+      "strong": "An amount arising from your dealings is payable without delay; the paperwork is attached and the central authority has been informed. INH000002345."
+    }
+  ]
+}
