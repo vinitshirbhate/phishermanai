@@ -37,9 +37,13 @@ const shortLabel: Record<(typeof channels)[number]["id"], string> = {
   web: "Web",
 };
 
-/** The five channels, front and centre in the island — one tap each. */
+/**
+ * The five channels, front and centre in the island — one tap each.
+ * Email is the one you can actually run, so it goes straight to the checker
+ * rather than to its section on the home page.
+ */
 export const channelNav: NavLink[] = channels.map((channel) => ({
-  href: channel.href,
+  href: channel.id === "email" ? "/verify" : channel.href,
   label: shortLabel[channel.id],
   icon: channel.icon,
 }));
