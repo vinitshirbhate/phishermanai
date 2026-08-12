@@ -14,6 +14,7 @@ Two substantive changes:
 from __future__ import annotations
 
 import asyncio
+from pathlib import Path
 from typing import Any
 
 import httpx
@@ -151,6 +152,89 @@ async def _search_twitter(client: httpx.AsyncClient, query: str, limit: int = 8)
         return items, None
     except httpx.HTTPError as exc:
         return [], {"source": f"twitter-search:{query}", "status": None, "error": str(exc)}
+
+
+LINK_PREVIEW_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "title": {"type": "string"},
+        "summary": {"type": "string"},
+        "text": {"type": "string"},
+        "source_name": {"type": "string"},
+        "media": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "type": {"type": "string", "enum": ["video", "audio", "image"]},
+                    "url": {"type": "string", "format": "uri"},
+                    "description": {"type": "string"},
+                },
+                "required": ["type", "url"],
+                "additionalProperties": False,
+            },
+        },
+    },
+    "required": ["title", "summary", "text", "media"],
+}
+
+LINK_PREVIEW_PROMPT = """
+Extract the content from this web page. Return a JSON object with:
+- title: page title or headline
+- summary: one short summary sentence
+- text: the main post text or article body
+- source_name: the site or author name if available
+- media: an array of found media items, each with type audio, video, or image, a public URL, and a short description
+Return only JSON matching the schema.
+"""
+
+
+def _normalize_preview(raw: dict[str, Any], url: str) -> dict[str, Any]:
+    preview = {
+        "url": url,
+        "title": raw.get("title", ""),
+        "summary": raw.get("summary", ""),
+        "text": raw.get("text", ""),
+        "source_name": raw.get("source_name"),
+        "media": [],
+    }
+    for item in raw.get("media", []) or []:
+        if not isinstance(item, dict):
+            continue
+        item_type = item.get("type")
+        item_url = item.get("url")
+        if item_type not in {"video", "audio", "image"} or not item_url:
+            continue
+        preview["media"].append({
+            "type": item_type,
+            "url": item_url,
+            "description": item.get("description", ""),
+        })
+    return preview
+
+
+async def preview_link(client: httpx.AsyncClient, page_url: str) -> dict[str, Any]:
+    payload = {
+        "url": page_url,
+        "formats": [
+            {"type": "json", "prompt": LINK_PREVIEW_PROMPT, "schema": LINK_PREVIEW_SCHEMA}
+        ],
+        "onlyMainContent": True,
+        "blockAds": True,
+    }
+    resp = await client.post(FIRECRAWL_SCRAPE_URL, headers=_headers(), json=payload, timeout=90)
+    if resp.status_code != 200:
+        raise httpx.HTTPStatusError("Firecrawl preview failed", request=resp.request, response=resp)
+    body = resp.json()
+    raw = body.get("data", {}).get("json", {})
+    return _normalize_preview(raw, page_url)
+
+
+async def download_media(url: str, out_path: Path) -> None:
+    async with httpx.AsyncClient(timeout=90) as client:
+        resp = await client.get(url)
+        resp.raise_for_status()
+        out_path.write_bytes(resp.content)
 
 
 async def check_key() -> tuple[bool, str | None]:

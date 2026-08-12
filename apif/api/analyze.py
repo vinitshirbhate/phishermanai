@@ -4,11 +4,18 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import httpx
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
 from .. import pipeline
-from ..ingest import store
-from ..schemas import TextAnalysisRequest, Verdict
+from ..ingest import firecrawl, store
+from ..schemas import (
+    LinkPreview,
+    LinkPreviewRequest,
+    LinkVerifyResponse,
+    TextAnalysisRequest,
+    Verdict,
+)
 
 router = APIRouter(prefix="/api/v1", tags=["analysis"])
 
@@ -43,6 +50,93 @@ async def analyze_text(payload: TextAnalysisRequest) -> Verdict:
         tickers=entities.tickers, source=source or "",
     )
     return verdict
+
+
+@router.post("/preview", response_model=LinkPreview)
+async def preview_link(payload: LinkPreviewRequest) -> LinkPreview:
+    """Scrape a Twitter or news link with Firecrawl and return extracted preview metadata."""
+    page_url = str(payload.url)
+    try:
+        async with httpx.AsyncClient() as client:
+            preview = await firecrawl.preview_link(client, page_url)
+    except httpx.HTTPStatusError as exc:
+        raise HTTPException(
+            exc.response.status_code,
+            f"Firecrawl preview failed: {exc.response.text[:500]}",
+        )
+    except httpx.HTTPError as exc:
+        raise HTTPException(503, f"Firecrawl connection failed: {exc}")
+
+    return LinkPreview(**preview)
+
+
+@router.post("/verify-link", response_model=LinkVerifyResponse)
+async def verify_link(
+    url: str = Form(..., description="Twitter/X or news media URL"),
+    include_coordination: bool = Form(
+        True, description="Fold in campaign analysis over ingested social chatter"
+    ),
+    file: UploadFile | None = File(
+        None,
+        description="Optional video or audio file to analyse together with the extracted post text",
+    ),
+) -> LinkVerifyResponse:
+    """Run link preview extraction and verify the extracted content via APIF."""
+    page_url = str(url)
+    try:
+        async with httpx.AsyncClient() as client:
+            preview = await firecrawl.preview_link(client, page_url)
+    except httpx.HTTPStatusError as exc:
+        raise HTTPException(
+            exc.response.status_code,
+            f"Firecrawl preview failed: {exc.response.text[:500]}",
+        )
+    except httpx.HTTPError as exc:
+        raise HTTPException(503, f"Firecrawl connection failed: {exc}")
+
+    text = (preview.get("text") or preview.get("summary") or preview.get("title") or "").strip()
+    verdict: Verdict
+    entities = None
+
+    if file is not None:
+        data = await file.read()
+        if not data:
+            raise HTTPException(400, "Uploaded file is empty.")
+        path = await pipeline.save_upload(file.filename or "upload.bin", data)
+        kind = _kind_for(file.filename or "", file.content_type)
+        if kind == "audio":
+            verdict, entities = await pipeline.analyze_audio(
+                path, source=page_url, caption=text
+            )
+        elif kind == "video":
+            verdict, entities = await pipeline.analyze_video(
+                path, caption=text, source=page_url
+            )
+        elif kind == "image":
+            verdict, entities = await pipeline.analyze_image(
+                path, caption=text, source=page_url
+            )
+        else:
+            raise HTTPException(
+                415,
+                f"Unsupported file type '{file.filename}'. Supported: audio "
+                f"({', '.join(sorted(_AUDIO_SUFFIXES))}), video "
+                f"({', '.join(sorted(_VIDEO_SUFFIXES))}), image "
+                f"({', '.join(sorted(_IMAGE_SUFFIXES))}).",
+            )
+    else:
+        if not text:
+            raise HTTPException(422, "The URL preview did not return any text to verify.")
+        verdict, entities = await pipeline.analyze_text(text, source=page_url)
+
+    if include_coordination:
+        verdict = await pipeline.add_coordination_signal(verdict, content_excerpt=text)
+
+    store.record_analysis(
+        "link", verdict, claimed_issuer=entities.claimed_issuer or "",
+        tickers=entities.tickers, source=page_url,
+    )
+    return LinkVerifyResponse(preview=LinkPreview(**preview), verdict=verdict)
 
 
 @router.post("/analyze/audio", response_model=Verdict)

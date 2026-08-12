@@ -6,7 +6,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, HttpUrl
 
 Band = Literal["Low", "Medium", "High", "Critical"]
 
@@ -79,6 +79,17 @@ class TextAnalysisRequest(BaseModel):
     sender: str | None = Field(None, description="Email address or @handle")
 
 
+class LinkPreviewRequest(BaseModel):
+    url: HttpUrl
+
+
+class LinkVerifyRequest(BaseModel):
+    url: HttpUrl
+    include_coordination: bool = Field(
+        True, description="Fold in campaign analysis over ingested social chatter"
+    )
+
+
 class RegistryLookupResult(BaseModel):
     query: str
     matched: bool
@@ -102,6 +113,26 @@ class ContentItemOut(BaseModel):
     risk_score: float | None = None
     band: Band | None = None
     ingested_at: datetime
+
+
+class MediaItem(BaseModel):
+    type: Literal["video", "audio", "image"]
+    url: str
+    description: str = ""
+
+
+class LinkPreview(BaseModel):
+    url: str
+    title: str = ""
+    summary: str = ""
+    text: str = ""
+    media: list[MediaItem] = Field(default_factory=list)
+    source_name: str | None = None
+
+
+class LinkVerifyResponse(BaseModel):
+    preview: LinkPreview
+    verdict: Verdict
 
 
 class HealthStatus(BaseModel):
