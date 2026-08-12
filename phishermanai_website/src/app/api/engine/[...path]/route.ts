@@ -15,8 +15,15 @@ import { NextResponse } from "next/server";
 
 const ENGINE_URL = (process.env.PHISHERMANAI_API_URL ?? "http://127.0.0.1:8000").replace(/\/$/, "");
 
-/** Long enough for a cold screenshot path (~3 s) with room to spare. */
-const TIMEOUT_MS = 30_000;
+/**
+ * Long enough for a cold screenshot path (~3 s) against a local engine, and for
+ * a sleeping free-tier Render instance to wake -- measured at ~50 s.
+ *
+ * 30 s was not. The first request after ~15 minutes idle aborted mid-boot and
+ * surfaced as `engine_unreachable`, which tells the user to go start a server
+ * that is in fact already starting.
+ */
+const TIMEOUT_MS = 90_000;
 
 type Context = { params: Promise<{ path: string[] }> };
 
