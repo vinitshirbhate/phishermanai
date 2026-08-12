@@ -34,8 +34,14 @@ RUN pip install -r requirements.txt
 # Prime the public-suffix list. tldextract otherwise fetches it the first time
 # a domain is parsed, which turns the first /verify of a cold container into a
 # network round-trip -- or a silent fall back to its bundled snapshot.
+#
+# a+rwX, not a+rX: tldextract takes a filelock in this directory before it will
+# even READ the cache, so a read-only cache dir makes every domain parse raise
+# PermissionError and 500s the whole /verify path. It must stay writable by
+# whatever uid ends up running the container -- 10001 below, but Spaces-style
+# hosts substitute their own.
 RUN python -c "import tldextract; tldextract.TLDExtract(cache_dir='/opt/tldextract-cache')('example.co.uk')" \
- && chmod -R a+rX /opt/tldextract-cache
+ && chmod -R a+rwX /opt/tldextract-cache
 
 COPY . .
 

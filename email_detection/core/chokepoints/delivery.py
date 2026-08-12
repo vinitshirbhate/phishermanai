@@ -117,9 +117,34 @@ def reset_domain_cache() -> None:
     _known_domains.cache_clear()
 
 
+@functools.lru_cache(maxsize=1)
+def _extractor() -> tldextract.TLDExtract:
+    """The process-wide suffix-list extractor, with a no-filesystem fallback.
+
+    tldextract's module-level `extract()` takes a filelock inside its cache
+    directory before it will even READ that cache. In a container running as a
+    non-root user against a root-owned cache, that raises PermissionError on
+    every single domain parse, which propagates all the way up and 500s the
+    whole /verify path -- a deployment detail taking out the engine.
+
+    So probe the cache once, and on any failure fall back to the suffix list
+    bundled inside the package, which needs no cache directory and no network.
+    Slightly staler, but this is exactly the list the docstring on safe_domain
+    already assumes, and a missing new gTLD makes us say nothing rather than
+    say something wrong.
+    """
+    cached = tldextract.TLDExtract()
+    try:
+        cached("example.co.uk")
+        return cached
+    except Exception as exc:  # noqa: BLE001 - any cache failure, not just perms
+        log.warning("tldextract cache unusable (%s); using the bundled suffix list", exc)
+        return tldextract.TLDExtract(suffix_list_urls=(), cache_dir=None)
+
+
 def registrable_domain(url_or_domain: str) -> str:
     """eTLD+1, e.g. 'canarabank-dividends.co.in' from a full URL."""
-    ext = tldextract.extract(url_or_domain)
+    ext = _extractor()(url_or_domain)
     if not ext.domain:
         return ""
     return ".".join(p for p in (ext.domain, ext.suffix) if p)
@@ -139,7 +164,7 @@ def safe_domain(url_or_domain: str) -> str | None:
     """
     if not url_or_domain:
         return None
-    ext = tldextract.extract(url_or_domain.strip())
+    ext = _extractor()(url_or_domain.strip())
     # An empty suffix means the PSL did not recognise the TLD.
     if not ext.domain or not ext.suffix:
         return None
@@ -367,7 +392,7 @@ def check(
 
     clean_domains = 0
     for domain, original_url in seen_domains.items():
-        ext = tldextract.extract(domain)
+        ext = _extractor()(domain)
         tld = (ext.suffix or "").split(".")[-1]
 
         if domain in URL_SHORTENERS or normalise_domain(original_url) in URL_SHORTENERS:
