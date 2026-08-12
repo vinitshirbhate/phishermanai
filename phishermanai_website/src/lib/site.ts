@@ -4,6 +4,7 @@ import {
   FileCheck2,
   MailSearch,
   PlayCircle,
+  Puzzle,
   ShieldCheck,
   SlidersHorizontal,
 } from "lucide-react";
@@ -42,11 +43,14 @@ const shortLabel: Record<(typeof channels)[number]["id"], string> = {
  * Email is the one you can actually run, so it goes straight to the checker
  * rather than to its section on the home page.
  */
-export const channelNav: NavLink[] = channels.map((channel) => ({
-  href: channel.id === "email" ? "/verify" : channel.href,
-  label: shortLabel[channel.id],
-  icon: channel.icon,
-}));
+export const channelNav: NavLink[] = [
+  ...channels.map((channel) => ({
+    href: channel.id === "email" ? "/verify" : channel.href,
+    label: shortLabel[channel.id],
+    icon: channel.icon,
+  })),
+  { href: "/extension", label: "Extension", icon: Puzzle },
+];
 
 /** Everything that isn't a channel, tucked under "More". */
 export const moreNav: NavLink[] = [
@@ -117,6 +121,7 @@ export const footerNav: { title: string; links: NavLink[] }[] = [
       { href: "/evidence", label: "Evidence & limitations" },
       { href: "/apif", label: "APIF endpoints" },
       { href: "/demo", label: "Interactive demo" },
+      { href: "/extension", label: "Get the extension" },
     ],
   },
 ];
