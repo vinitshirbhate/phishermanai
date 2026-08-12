@@ -19,7 +19,8 @@
     ],
     "approval_required": false,
     "network_hosts": [
-      "http://127.0.0.1:8799/*"
+      "http://127.0.0.1:8799/*",
+      "https://phishermanai-1.onrender.com/*"
     ],
     "integrity_sha256": "4992970232bcb583592bc907335db0a2c98bc7c8996c6042fe401e2cacfdec33"
   },
@@ -42,7 +43,8 @@
     ],
     "approval_required": true,
     "network_hosts": [
-      "http://127.0.0.1:8799/*"
+      "http://127.0.0.1:8799/*",
+      "https://phishermanai-1.onrender.com/*"
     ],
     "integrity_sha256": "e2a63747a1d8c5f1b80173c7fa61e629ea5fde4acba4b5b622f60846fd0af382"
   },
@@ -65,7 +67,8 @@
     ],
     "approval_required": true,
     "network_hosts": [
-      "http://127.0.0.1:8799/*"
+      "http://127.0.0.1:8799/*",
+      "https://phishermanai-1.onrender.com/*"
     ],
     "integrity_sha256": "cdb5ee25dfa7444f28d7cfb0f96ac7ce1ccbdc0fb98337310efae1b6f1ab8f65"
   },
@@ -85,7 +88,8 @@
     ],
     "approval_required": true,
     "network_hosts": [
-      "http://127.0.0.1:8799/*"
+      "http://127.0.0.1:8799/*",
+      "https://phishermanai-1.onrender.com/*"
     ],
     "integrity_sha256": "779c6f4cacdcea68b508b394697b20c598c93fd7903f85a84ecfe611a3f72b26"
   },
@@ -111,7 +115,8 @@
     ],
     "approval_required": false,
     "network_hosts": [
-      "http://127.0.0.1:8799/*"
+      "http://127.0.0.1:8799/*",
+      "https://phishermanai-1.onrender.com/*"
     ],
     "integrity_sha256": "6d61770b6497a4d1145fe11630c13f0b0644f11cb5f344fe25d2cacc9a4fb6c1"
   },
@@ -136,7 +141,8 @@
     ],
     "approval_required": true,
     "network_hosts": [
-      "http://127.0.0.1:8799/*"
+      "http://127.0.0.1:8799/*",
+      "https://phishermanai-1.onrender.com/*"
     ],
     "integrity_sha256": "2b67eee7c6cfda4a336e769d7e200c85d6e1976c24ea63b2110aaa7fb02f7eb8"
   },
@@ -160,7 +166,8 @@
     ],
     "approval_required": true,
     "network_hosts": [
-      "http://127.0.0.1:8799/*"
+      "http://127.0.0.1:8799/*",
+      "https://phishermanai-1.onrender.com/*"
     ],
     "integrity_sha256": "3eb1edc06f860ce3ad26edb64be5c914305919c069cc4e56a0b65846b1d90da6"
   },
@@ -182,7 +189,8 @@
     ],
     "approval_required": true,
     "network_hosts": [
-      "http://127.0.0.1:8799/*"
+      "http://127.0.0.1:8799/*",
+      "https://phishermanai-1.onrender.com/*"
     ],
     "integrity_sha256": "50929c42b06e82f5077507978ae582905a6fd4eb841eab4e12b1e7b1f439df7b"
   },
@@ -212,7 +220,8 @@
     ],
     "approval_required": false,
     "network_hosts": [
-      "http://127.0.0.1:8799/*"
+      "http://127.0.0.1:8799/*",
+      "https://phishermanai-1.onrender.com/*"
     ],
     "integrity_sha256": "f6fb21c10005c324376679d680fdaefee0a533c501c7e6e5d4ef856ef4eb9333"
   }
