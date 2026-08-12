@@ -1,4 +1,4 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+﻿# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
 /node_modules
@@ -45,3 +45,11 @@ next-env.d.ts
 /docs
 CLAUDE.md
 AGENTS.md
+# The repo root ignores `diagrams/` at any depth (it means Python-generated
+# diagrams). These are React components and must be tracked. A lower-level
+# .gitignore overrides the parent, and un-excluding the directory itself is
+# what lets git descend into it again.
+!src/components/diagrams/
+# .env.example is documentation, not a secret. It must survive the .env* rule
+# above, which is why this negation sits after it.
+!.env.example
