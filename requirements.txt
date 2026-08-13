@@ -1,13 +1,20 @@
 # APIF — AI Propaganda Intelligence Framework
-# Install into the repo-root venv:  .\.venv\Scripts\pip install -r requirements.txt
 #
-# torch + transformers are intentionally absent: the venv is created with
-# --system-site-packages so it reuses the ~2GB CPU build already installed
-# globally, along with the pre-downloaded Whisper models in the HF cache.
+#   pip install -r requirements.txt
+#
+# This is the complete dependency set. There is no second requirements file and
+# no step outside pip: no system ffmpeg, no --system-site-packages venv, no
+# pre-downloaded Hugging Face cache.
+#
+# torch, transformers and librosa used to be required and are deliberately gone.
+# They existed for one thing, a local whisper-small, and cost ~2GB of wheels plus
+# a 10-20s load on the first request. Transcription is now an API call and the
+# video model runs on onnxruntime, so nothing left in the tree imports torch.
 
 # --- web service ---
 fastapi
 uvicorn[standard]
+pydantic
 pydantic-settings
 python-multipart
 httpx
@@ -15,17 +22,18 @@ httpx
 # --- LLM enrichment ---
 anthropic
 
-# --- audio: ASR + spoof detection ---
-# The spoof model is a local checkpoint (deepfake_detection/voice_detection) run through
-# plain torch; it decodes audio with ffmpeg, so no extra audio backend is required.
-# speechbrain and torchaudio were dropped along with speaker verification -- torchaudio
-# only existed to satisfy speechbrain, and its wheel had to be version-matched by hand
-# against the global torch (2.7.1) or its C extension failed to load on Windows.
-librosa
-soundfile
+# --- video deepfake: local ONNX EfficientNet-B0 ---
+# The graph is apif/data/models/ffpp_efficientnet_b0.onnx. headless, not plain
+# opencv-python: a server has no display, and the GUI build drags in GTK/X11
+# shared objects that add weight and break slim base images.
+onnxruntime
+opencv-python-headless
 
-# --- video deepfake (remote HF Space client) ---
-gradio_client
+# --- media handling ---
+# Ships a static ffmpeg binary in the wheel, so audio extraction and transcoding
+# work on a bare container with nothing installed at the OS level. It does not
+# ship ffprobe; detectors/media.py reads duration from ffmpeg's own output.
+imageio-ffmpeg
 
 # --- market correlation ---
 yfinance
@@ -40,3 +48,7 @@ scikit-learn
 SQLAlchemy
 pypdf
 python-Levenshtein
+
+# Speech-to-text (AssemblyAI) and voice-spoof detection (Aurigin) are plain HTTP
+# APIs called through httpx above -- neither needs its own SDK. Both need a key
+# in .env: ASSEMBLYAI_API_KEY and AURIGIN_API_KEY.

@@ -1,35 +1,12 @@
 """Detector package.
 
-`warm_imports()` exists to fix a real race. On a cold process, two concurrent requests
-can reach `import librosa` / `import transformers` in different worker threads at the
-same moment. Those packages pull in numba and torch extensions whose lazy submodule
-loading is not import-safe under concurrency, which surfaces as a spurious
-`ImportError: cannot import name ...` in whichever thread loses the race -- the other
-thread succeeds, so the failure looks random.
+This used to expose `warm_imports()`, a lock that serialised the first
+`import librosa` / `import torch` / `import transformers` because their lazy
+submodule loading was not import-safe under concurrency -- two requests hitting
+a cold process could race and one would fail with a spurious ImportError.
 
-Serialising just the first import removes it, without holding the lock across inference.
-
-Originally this also covered the spoof detector racing ASR within a single request. The
-spoof detector is now a network call and imports none of this stack, so ASR is the only
-caller -- the lock now guards concurrent *requests* rather than concurrent detectors.
+None of those packages are installed any more. ASR is an AssemblyAI call, the
+voice spoof check is an Aurigin call, and the video detector is onnxruntime,
+whose session is a plain lru_cache singleton with no such problem. The lock
+guarded a race that no longer has anything to race.
 """
-
-import threading
-
-_IMPORT_LOCK = threading.Lock()
-_warmed = False
-
-
-def warm_imports() -> None:
-    """Import the heavy audio/ML stack once, under a lock. Cheap no-op afterwards."""
-    global _warmed
-    if _warmed:
-        return
-    with _IMPORT_LOCK:
-        if _warmed:
-            return
-        import librosa  # noqa: F401
-        import torch  # noqa: F401
-        import transformers  # noqa: F401
-
-        _warmed = True

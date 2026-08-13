@@ -19,7 +19,7 @@ from fastapi.responses import JSONResponse
 from . import __version__
 from .api import analyze, feed, registry
 from .config import get_settings
-from .detectors import llm_analyst, text_phishing, voice
+from .detectors import asr, llm_analyst, text_phishing, video, voice
 from .ingest import firecrawl, store
 from .pipeline import MediaTooLongError
 from .schemas import HealthStatus
@@ -98,13 +98,22 @@ async def health() -> HealthStatus:
     being down degrades one signal, it does not take the service offline. Hence
     'degraded' rather than a non-200.
     """
-    phishing, llm, spoof, (firecrawl_ok, firecrawl_err) = await asyncio.gather(
-        text_phishing.health(), llm_analyst.health(), voice.health(), firecrawl.check_key()
+    phishing, llm, spoof, transcription, deepfake, (firecrawl_ok, firecrawl_err) = (
+        await asyncio.gather(
+            text_phishing.health(),
+            llm_analyst.health(),
+            voice.health(),
+            asr.health(),
+            video.health(),
+            firecrawl.check_key(),
+        )
     )
     dependencies = {
         "phishing_classifier": phishing,
         "openrouter": llm,
         "voice_spoof": spoof,
+        "transcription": transcription,
+        "video_deepfake": deepfake,
         "firecrawl": "ok" if firecrawl_ok else (firecrawl_err or "unavailable"),
         "database": "ok",
     }
