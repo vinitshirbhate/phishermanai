@@ -33,9 +33,26 @@ import functools
 from pathlib import Path
 
 import anyio
+import cv2
+import numpy as np
+import onnxruntime as ort
 
 from ..config import get_settings
 from ..schemas import SIGNAL_VIDEO_DEEPFAKE, Signal
+
+# These are imported at module scope on purpose, not lazily inside the functions
+# that use them.
+#
+# cv2's __init__ reassigns sys.modules["cv2"] partway through its own bootstrap.
+# A thread that imports cv2 while another is mid-bootstrap finds a populated
+# sys.modules entry, returns immediately, and gets the half-built module -- which
+# presents as `AttributeError: module 'cv2' has no attribute 'CascadeClassifier'`
+# from whichever thread lost the race. Scoring runs in a worker thread via
+# anyio.to_thread, and /verify-link overlaps it with Firecrawl and coordination
+# work, so a lazy import here is genuinely reachable and was observed in
+# production. Importing at module scope means it happens once, during app import,
+# before any request thread exists. It costs ~0.3s of startup and removes the
+# failure mode entirely.
 
 IMG_SIZE = 224
 IMAGENET_MEAN = (0.485, 0.456, 0.406)
@@ -55,10 +72,8 @@ _IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
 
 @functools.lru_cache(maxsize=1)
 def _session():
-    """Lazy singleton. Loading the graph costs a few hundred ms; importing this
-    module must stay instant so uvicorn starts fast."""
-    import onnxruntime as ort
-
+    """Lazy singleton for the *session* only -- the 16MB graph is loaded on first
+    use, while onnxruntime itself is imported at module scope above."""
     settings = get_settings()
     path = Path(settings.video_model_path)
     if not path.exists():
@@ -82,8 +97,6 @@ def _session():
 
 @functools.lru_cache(maxsize=1)
 def _cascade():
-    import cv2
-
     path = cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
     cascade = cv2.CascadeClassifier(path)
     if cascade.empty():
@@ -93,8 +106,6 @@ def _cascade():
 
 def _largest_face(frame):
     """(x, y, w, h) of the biggest usable face in a BGR frame, or None."""
-    import cv2
-
     h_img, w_img = frame.shape[:2]
     scale = min(1.0, _DETECT_MAX_SIDE / max(h_img, w_img))
     small = (cv2.resize(frame, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA)
@@ -126,9 +137,6 @@ def _iter_frames(path: Path, count: int):
     uint8 before anything is done with them, and only the 224x224 crops need to
     survive the loop.
     """
-    import cv2
-    import numpy as np
-
     if path.suffix.lower() in _IMAGE_SUFFIXES:
         image = cv2.imread(str(path))
         if image is not None:
@@ -177,9 +185,6 @@ def _iter_frames(path: Path, count: int):
 
 def _preprocess(image):
     """BGR uint8 -> normalised CHW float32, exactly as in training."""
-    import cv2
-    import numpy as np
-
     resized = cv2.resize(image, (IMG_SIZE, IMG_SIZE), interpolation=cv2.INTER_AREA)
     rgb = cv2.cvtColor(resized, cv2.COLOR_BGR2RGB).astype(np.float32) / 255.0
     normed = (rgb - np.array(IMAGENET_MEAN, np.float32)) / np.array(IMAGENET_STD, np.float32)
@@ -188,8 +193,6 @@ def _preprocess(image):
 
 def _score_sync(video_path: str) -> dict:
     """Blocking inference. Called in a worker thread, never on the event loop."""
-    import numpy as np
-
     settings = get_settings()
     path = Path(video_path)
 

@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { FileUpload } from "../ui/file-upload";
 
 type VerdictResponse = {
   band: string;
@@ -54,10 +55,15 @@ export function ApifVerifyForm() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (filesOrEvent: File[] | React.ChangeEvent<HTMLInputElement>) => {
     setResult(null);
     setError(null);
-    setFile(event.target.files?.[0] ?? null);
+
+    const selected = Array.isArray(filesOrEvent)
+      ? filesOrEvent
+      : Array.from(filesOrEvent.target.files ?? []);
+
+    setFile(selected[0] ?? null);
   };
 
   const apiBase = process.env.NEXT_PUBLIC_APIF_BASE_URL ?? "http://localhost:8000";
@@ -149,15 +155,11 @@ export function ApifVerifyForm() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="apif-file" className="font-medium">
+            <label htmlFor="file-upload-handle" className="font-medium">
               Audio / video / image file
             </label>
-            <Input
-              id="apif-file"
-              type="file"
-              accept={ACCEPTED_MEDIA}
-              onChange={handleFileChange}
-            />
+
+            <FileUpload onChange={handleFileChange} />
             <p className="text-sm text-foreground/50">
               Supported formats: audio, video, and image files. Text is optional when a file is present.
             </p>

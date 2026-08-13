@@ -19,6 +19,7 @@ from fastapi.responses import JSONResponse
 from . import __version__
 from .api import analyze, feed, registry
 from .config import get_settings
+from . import detectors
 from .detectors import asr, llm_analyst, text_phishing, video, voice
 from .ingest import firecrawl, store
 from .pipeline import MediaTooLongError
@@ -45,6 +46,11 @@ async def lifespan(app: FastAPI):
     settings = get_settings()
     store.init_db()
     settings.upload_dir.mkdir(parents=True, exist_ok=True)
+    # Serialise the heavy imports here, on one thread, before any request can
+    # race them across worker threads. See detectors/__init__.py for the failure
+    # this prevents. Runs in a thread so a slow import cannot block the loop
+    # during startup.
+    await asyncio.to_thread(detectors.warm_imports)
     yield
 
 
