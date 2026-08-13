@@ -2,8 +2,10 @@ import {
   Braces,
   Compass,
   FileCheck2,
+  Globe,
   MailSearch,
   PlayCircle,
+  Puzzle,
   ShieldCheck,
   SlidersHorizontal,
 } from "lucide-react";
@@ -38,15 +40,28 @@ const shortLabel: Record<(typeof channels)[number]["id"], string> = {
 };
 
 /**
- * The five channels, front and centre in the island — one tap each.
- * Email is the one you can actually run, so it goes straight to the checker
- * rather than to its section on the home page.
+ * Only channels with a real, dedicated destination ride in the island —
+ * one tap each. Email goes straight to the checker, Web straight to APIF,
+ * the pipeline its checks actually run through. Voice, video and social
+ * don't have that yet: their only destination is a homepage anchor, and
+ * the homepage is where you'd already be tapping from, so they're dropped
+ * from here rather than shipping a dead-feeling redirect.
  */
-export const channelNav: NavLink[] = channels.map((channel) => ({
-  href: channel.id === "email" ? "/verify" : channel.href,
-  label: shortLabel[channel.id],
-  icon: channel.icon,
-}));
+const dedicatedHref: Partial<Record<(typeof channels)[number]["id"], string>> = {
+  email: "/verify",
+  web: "/apif",
+};
+
+export const channelNav: NavLink[] = [
+  ...channels
+    .filter((channel) => channel.id in dedicatedHref)
+    .map((channel) => ({
+      href: dedicatedHref[channel.id]!,
+      label: shortLabel[channel.id],
+      icon: channel.icon,
+    })),
+  { href: "/extension", label: "Extension", icon: Puzzle },
+];
 
 /** Everything that isn't a channel, tucked under "More". */
 export const moreNav: NavLink[] = [
@@ -79,6 +94,12 @@ export const moreNav: NavLink[] = [
     label: "APIF endpoints",
     description: "The backend routes exposed by the verification engine.",
     icon: Braces,
+  },
+  {
+    href: "/web",
+    label: "Web and browser",
+    description: "Lookalike sites, registration lookups and the four lanes that watch the page.",
+    icon: Globe,
   },
   {
     href: "/demo",
@@ -117,6 +138,7 @@ export const footerNav: { title: string; links: NavLink[] }[] = [
       { href: "/evidence", label: "Evidence & limitations" },
       { href: "/apif", label: "APIF endpoints" },
       { href: "/demo", label: "Interactive demo" },
+      { href: "/extension", label: "Get the extension" },
     ],
   },
 ];

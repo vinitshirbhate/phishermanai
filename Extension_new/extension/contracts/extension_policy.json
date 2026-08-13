@@ -42,7 +42,8 @@
   "host_permissions_rationale": {
     "http://*/*, https://*/*": "Securities-market impersonation is not confined to a knowable domain set — a cloned broker site can appear on any host, which is precisely why an allowlist cannot work here. Mitigations: all analysis is local by default; no page content is transmitted off-device on the default path; every data class touched is declared per module in module_registry.json and shown in the options page.",
     "https://web.whatsapp.com/*, https://web.telegram.org/*": "Live message-render hooks for the two messaging surfaces named in the requirements (CH2). Scoped explicitly rather than relying on the wildcard so the intent is auditable.",
-    "http://127.0.0.1:8799/*": "Loopback-only backend. Never an external listener.",
+    "http://127.0.0.1:8799/*": "Loopback-only backend for local development. Never an external listener.",
+    "https://phishermanai-1.onrender.com/*": "Primary deployed backend for live scans and verification requests.",
     "https://chetana.activemirror.ai/*": "Legacy cloud fallback (chain layer 3). REVIEW_PENDING — retained only for graceful degradation; the origin is a single constant (CLOUD_API_ORIGIN in background.js) and removing it degrades the chain to the offline gate rather than breaking it. Owner: unassigned."
   },
   "allowed_permissions": [
@@ -56,6 +57,7 @@
   ],
   "allowed_host_permissions": [
     "http://127.0.0.1:8799/*",
+    "https://phishermanai-1.onrender.com/*",
     "http://*/*",
     "https://*/*",
     "https://web.whatsapp.com/*",
