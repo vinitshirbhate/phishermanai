@@ -1,17 +1,16 @@
 "use client";
 
-import { useState } from "react";
-import {
-  CheckCircle2,
-  FileText,
-  ShieldCheck,
-  Upload,
-  Video,
-} from "lucide-react";
+import { useCallback, useState } from "react";
+import { CheckCircle2, Radar, ShieldCheck, Upload } from "lucide-react";
 
+import { ApifAnalysisLoader } from "@/components/apif/apif-analysis-loader";
 import { Button } from "@/components/ui/button";
+import { FileUpload } from "@/components/ui/file-upload";
 import { Input } from "@/components/ui/input";
+import { SwitchField } from "@/components/ui/switch-field";
 import { Textarea } from "@/components/ui/textarea";
+import { ACCEPTED_MEDIA, kindForFile } from "@/lib/media-kind";
+import { postFormDataWithProgress } from "@/lib/upload";
 import { cn } from "@/lib/utils";
 
 type VerdictResponse = {
@@ -22,29 +21,6 @@ type VerdictResponse = {
   [key: string]: unknown;
 };
 
-const ACCEPTED_MEDIA = [
-  ".wav",
-  ".mp3",
-  ".m4a",
-  ".flac",
-  ".ogg",
-  ".aac",
-  ".wma",
-  ".opus",
-  ".mp4",
-  ".mov",
-  ".mkv",
-  ".avi",
-  ".webm",
-  ".m4v",
-  ".jpg",
-  ".jpeg",
-  ".png",
-  ".webp",
-  ".bmp",
-  ".gif",
-].join(",");
-
 export function ApifVerifyForm() {
   const [text, setText] = useState("");
   const [source, setSource] = useState("");
@@ -53,12 +29,14 @@ export function ApifVerifyForm() {
   const [result, setResult] = useState<VerdictResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFilesChange = useCallback((files: File[]) => {
     setResult(null);
     setError(null);
-    setFile(event.target.files?.[0] ?? null);
-  };
+    setUploadProgress(null);
+    setFile(files[0] ?? null);
+  }, []);
 
   const apiBase = process.env.NEXT_PUBLIC_APIF_BASE_URL ?? "http://localhost:8000";
 
@@ -83,29 +61,33 @@ export function ApifVerifyForm() {
     form.append("include_coordination", String(includeCoordination));
 
     setBusy(true);
+    setUploadProgress(file ? 0 : null);
 
     try {
-      const response = await fetch(`${apiBase}/api/v1/verify`, {
-        method: "POST",
-        body: form,
-      });
+      const body = await postFormDataWithProgress(
+        `${apiBase}/api/v1/verify`,
+        form,
+        file ? setUploadProgress : undefined,
+      );
 
-      if (!response.ok) {
-        const body = await response.text();
-        throw new Error(body || "APIF request failed.");
-      }
-
-      const data = (await response.json()) as VerdictResponse;
-      setResult(data);
+      setResult(JSON.parse(body) as VerdictResponse);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setBusy(false);
+      setUploadProgress(null);
     }
   };
 
   return (
     <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+      <ApifAnalysisLoader
+        loading={busy}
+        hasLink={false}
+        kind={kindForFile(file)}
+        includeCoordination={includeCoordination}
+      />
+
       <div className="space-y-6 rounded-3xl border border-border bg-card p-6 shadow-sm">
         <div className="flex items-center gap-3">
           <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/10 text-primary">
@@ -149,30 +131,34 @@ export function ApifVerifyForm() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="apif-file" className="font-medium">
-              Audio / video / image file
-            </label>
-            <Input
-              id="apif-file"
-              type="file"
+            <span className="font-medium">Audio / video / image file</span>
+            <FileUpload
               accept={ACCEPTED_MEDIA}
-              onChange={handleFileChange}
+              maxSizeMB={100}
+              disabled={busy}
+              uploadProgress={uploadProgress}
+              onFilesChange={handleFilesChange}
+              title="Drop your media here"
+              hint="Audio, video or image ∙ Up to 100MB"
+              selectLabel="Select media"
             />
             <p className="text-sm text-foreground/50">
               Supported formats: audio, video, and image files. Text is optional when a file is present.
             </p>
           </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <label className="inline-flex cursor-pointer items-center gap-2 text-sm text-foreground/70">
-              <input
-                type="checkbox"
-                checked={includeCoordination}
-                onChange={(event) => setIncludeCoordination(event.target.checked)}
-                className="h-4 w-4 rounded border-input text-primary focus-visible:ring-ring"
-              />
-              Include coordination analysis
-            </label>
+          <SwitchField
+            id="apif-coordination"
+            checked={includeCoordination}
+            onCheckedChange={setIncludeCoordination}
+            disabled={busy}
+            icon={Radar}
+            label="Include coordination analysis"
+            sublabel="slower"
+            description="Cross-checks the submission against known coordinated campaign clusters before the verdict is fused."
+          />
+
+          <div className="flex justify-end">
             <Button type="submit" disabled={busy} className="h-11 rounded-full px-6">
               {busy ? "Verifying…" : "Verify now"}
             </Button>

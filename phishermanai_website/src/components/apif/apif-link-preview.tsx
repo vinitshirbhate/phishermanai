@@ -1,14 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowRight, FileText, Link2, ShieldCheck, Video, Music, ImageIcon } from "lucide-react";
+import { useCallback, useState } from "react";
+import { ArrowRight, FileText, Link2, Radar, ShieldCheck, Video, Music, ImageIcon } from "lucide-react";
 
+import { ApifAnalysisLoader } from "@/components/apif/apif-analysis-loader";
 import { Button } from "@/components/ui/button";
+import { FileUpload } from "@/components/ui/file-upload";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { SwitchField } from "@/components/ui/switch-field";
+import { kindForFile } from "@/lib/media-kind";
+import { postFormDataWithProgress } from "@/lib/upload";
 import { cn } from "@/lib/utils";
 
 type MediaItem = {
+  
   type: "video" | "audio" | "image";
   url: string;
   description: string;
@@ -93,6 +98,14 @@ export function ApifLinkPreview() {
   const [result, setResult] = useState<VerifyResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+
+  const handleFilesChange = useCallback((files: File[]) => {
+    setFile(files[0] ?? null);
+    setResult(null);
+    setError(null);
+    setUploadProgress(null);
+  }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -112,23 +125,21 @@ export function ApifLinkPreview() {
     }
 
     setBusy(true);
+    setUploadProgress(file ? 0 : null);
+
     try {
-      const response = await fetch(`${apiBase}/api/v1/verify-link`, {
-        method: "POST",
-        body: form,
-      });
+      const body = await postFormDataWithProgress(
+        `${apiBase}/api/v1/verify-link`,
+        form,
+        file ? setUploadProgress : undefined,
+      );
 
-      if (!response.ok) {
-        const body = await response.text();
-        throw new Error(body || "Preview verification failed.");
-      }
-
-      const data = (await response.json()) as VerifyResponse;
-      setResult(data);
+      setResult(JSON.parse(body) as VerifyResponse);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setBusy(false);
+      setUploadProgress(null);
     }
   };
 
@@ -136,6 +147,13 @@ export function ApifLinkPreview() {
 
   return (
     <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+      <ApifAnalysisLoader
+        loading={busy}
+        hasLink
+        kind={kindForFile(file)}
+        includeCoordination={includeCoordination}
+      />
+
       <div className="space-y-6 rounded-3xl border border-border bg-card p-6 shadow-sm">
         <div className="flex items-center gap-3">
           <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/10 text-primary">
@@ -168,35 +186,32 @@ export function ApifLinkPreview() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="apif-link-file" className="font-medium">
-              Optional video/audio upload
-            </label>
-            <Input
-              id="apif-link-file"
-              type="file"
+            <span className="font-medium">Optional video/audio upload</span>
+            <FileUpload
               accept=".wav,.mp3,.m4a,.flac,.ogg,.aac,.wma,.opus,.mp4,.mov,.mkv,.avi,.webm,.m4v"
-              onChange={(event) => {
-                setFile(event.target.files?.[0] ?? null);
-                setResult(null);
-                setError(null);
-              }}
+              maxSizeMB={100}
+              disabled={busy}
+              uploadProgress={uploadProgress}
+              onFilesChange={handleFilesChange}
+              title="Drop an audio or video file"
+              hint="Optional ∙ Up to 100MB"
+              selectLabel="Select media"
             />
             <p className="text-sm text-foreground/50">
               Optionally upload a video or audio file to analyse together with the extracted post text.
             </p>
           </div>
 
-          <div className="space-y-2">
-            <label className="inline-flex cursor-pointer items-center gap-2 text-sm text-foreground/70">
-              <input
-                type="checkbox"
-                checked={includeCoordination}
-                onChange={(event) => setIncludeCoordination(event.target.checked)}
-                className="h-4 w-4 rounded border-input text-primary focus-visible:ring-ring"
-              />
-              Include coordination analysis
-            </label>
-          </div>
+          <SwitchField
+            id="apif-link-coordination"
+            checked={includeCoordination}
+            onCheckedChange={setIncludeCoordination}
+            disabled={busy}
+            icon={Radar}
+            label="Include coordination analysis"
+            sublabel="slower"
+            description="Cross-checks the extracted post against known coordinated campaign clusters before the verdict is fused."
+          />
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm text-foreground/65">
