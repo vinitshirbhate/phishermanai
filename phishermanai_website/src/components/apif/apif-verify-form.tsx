@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { CheckCircle2, Radar, ShieldCheck, Upload } from "lucide-react";
 
 import { ApifAnalysisLoader } from "@/components/apif/apif-analysis-loader";
+import { ExpandableSignalCards } from "@/components/apif/expandable-signal-cards";
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/ui/file-upload";
 import { Input } from "@/components/ui/input";
@@ -13,12 +14,37 @@ import { ACCEPTED_MEDIA, kindForFile } from "@/lib/media-kind";
 import { postFormDataWithProgress } from "@/lib/upload";
 import { cn } from "@/lib/utils";
 
+type SignalItem = {
+  name: string;
+  score: number;
+  available: boolean;
+  summary: string;
+  evidence?: Record<string, unknown>;
+  error?: string | null;
+};
+
+/**
+ * Mirrors the Verdict model in apif/schemas.py — what POST /api/v1/verify really
+ * returns. It previously declared `confidence` and an `evidence` array, neither
+ * of which exists on the response, so the panel rendered a permanent em dash and
+ * never showed any per-signal detail.
+ */
 type VerdictResponse = {
+  risk_score: number;
   band: string;
-  confidence: number;
-  evidence?: Array<{ signal: string; result: string }>;
-  message?: string;
-  [key: string]: unknown;
+  headline: string;
+  explanation?: string;
+  signals?: SignalItem[];
+  override_applied?: string | null;
+};
+
+const VECTOR_LABELS: Record<string, string> = {
+  text_phishing: "Text phishing",
+  voice_spoof: "Audio spoof",
+  video_deepfake: "Video manipulation",
+  source_untrusted: "Source trust",
+  coordination: "Coordinated campaign",
+  market_anomaly: "Market anomaly",
 };
 
 export function ApifVerifyForm() {
@@ -193,7 +219,9 @@ export function ApifVerifyForm() {
                   <div
                     className={cn(
                       "grid h-11 w-11 place-items-center rounded-2xl",
-                      result.band === "low" ? "bg-verdict-fraud/10 text-verdict-fraud" : "bg-verdict-verified/10 text-verdict-verified",
+                      result.band === "Low"
+                        ? "bg-verdict-verified/10 text-verdict-verified"
+                        : "bg-verdict-fraud/10 text-verdict-fraud",
                     )}
                   >
                     <CheckCircle2 className="size-5" aria-hidden />
@@ -201,29 +229,34 @@ export function ApifVerifyForm() {
                   <div>
                     <p className="font-medium">Band: {result.band}</p>
                     <p className="text-sm text-foreground/65">
-                      Confidence {result.confidence?.toFixed?.(2) ?? "—"}
+                      Risk score {result.risk_score?.toFixed?.(2) ?? "—"}
                     </p>
                   </div>
                 </div>
 
-                {result.evidence?.length ? (
+                {result.headline ? <p className="font-medium">{result.headline}</p> : null}
+                {result.explanation ? (
+                  <p className="copy text-[0.9375rem]">{result.explanation}</p>
+                ) : null}
+
+                {result.signals?.length ? (
                   <div className="space-y-2">
-                    <p className="mono-label text-foreground/45">Evidence</p>
-                    <div className="space-y-2">
-                      {result.evidence.map((item, index) => (
-                        <div
-                          key={`${item.signal}-${index}`}
-                          className="rounded-2xl border border-border/80 bg-card p-3"
-                        >
-                          <p className="font-medium">{item.signal}</p>
-                          <p className="text-sm text-foreground/65">{item.result}</p>
-                        </div>
-                      ))}
-                    </div>
+                    <p className="mono-label text-foreground/45">Signals</p>
+                    <ExpandableSignalCards
+                      cards={result.signals.map((item) => ({
+                        id: item.name,
+                        label: VECTOR_LABELS[item.name] ?? item.name,
+                        score: item.score,
+                        available: item.available,
+                        summary: item.summary,
+                        error: item.error,
+                        evidence: item.evidence,
+                      }))}
+                    />
                   </div>
                 ) : (
                   <p className="text-sm text-foreground/65">
-                    If the backend returns no raw evidence array, check the full payload in the console.
+                    This verdict carried no per-signal breakdown.
                   </p>
                 )}
               </div>

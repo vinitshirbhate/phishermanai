@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { ArrowRight, FileText, Link2, Radar, ShieldCheck, Video, Music, ImageIcon } from "lucide-react";
 
 import { ApifAnalysisLoader } from "@/components/apif/apif-analysis-loader";
+import { ExpandableSignalCards } from "@/components/apif/expandable-signal-cards";
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/ui/file-upload";
 import { Input } from "@/components/ui/input";
@@ -316,20 +317,24 @@ export function ApifLinkPreview() {
 
                 <div className="rounded-3xl border border-border/80 bg-card p-4">
                   <p className="text-sm uppercase tracking-wide text-foreground/50">Attack vector signals</p>
-                  <div className="mt-4 grid gap-3">
-                    {VECTOR_ORDER.map((name) => {
-                      const signal = result.verdict.signals.find((item) => item.name === name);
-                      if (!signal) return null;
-                      return (
-                        <div key={name} className="rounded-2xl border border-border/80 bg-background p-3">
-                          <div className="flex items-center justify-between gap-3">
-                            <p className="font-medium">{VECTOR_LABELS[name] ?? name}</p>
-                            <span className="text-sm text-foreground/65">{signal.score.toFixed(2)}</span>
-                          </div>
-                          <p className="mt-1 text-sm text-foreground/70">{signal.summary || signal.error || "No additional details."}</p>
-                        </div>
-                      );
-                    })}
+                  <div className="mt-4">
+                    <ExpandableSignalCards
+                      cards={VECTOR_ORDER.flatMap((name) => {
+                        const signal = result.verdict.signals.find((item) => item.name === name);
+                        if (!signal) return [];
+                        return [
+                          {
+                            id: signal.name,
+                            label: VECTOR_LABELS[name] ?? name,
+                            score: signal.score,
+                            available: signal.available,
+                            summary: signal.summary,
+                            error: signal.error,
+                            evidence: signal.evidence,
+                          },
+                        ];
+                      })}
+                    />
                   </div>
                 </div>
               </div>
