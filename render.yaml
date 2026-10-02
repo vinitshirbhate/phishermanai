@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: phishermanai-engine
+    runtime: docker
+    plan: free
+    region: singapore
+    branch: deployment
+    dockerfilePath: ./email_detection/Dockerfile
+    dockerContext: ./email_detection
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PHISHERMANAI_DEMO_MODE
+        value: "1"
+      - key: WEB_CONCURRENCY
+        value: "1"
+      - key: PHISHERMANAI_CORS_ORIGINS
+        sync: false
+      - key: PHISHERMANAI_SKIP_LOAD
+        value: "0"
+      - key: GMAIL_TOKEN_JSON
+        sync: false
+      - key: GMAIL_REQUIRE_API_KEY
+        value: "0"
+      - key: GMAIL_FETCH_API_KEY
+        sync: false
+      - key: BODY_DETECT_URL
+        value: "https://fraud-detect-1-6er0.onrender.com/detect"

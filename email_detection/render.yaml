@@ -15,7 +15,7 @@ services:
     runtime: docker
     plan: free
     region: singapore          # closest to the Indian retail investors this serves
-    branch: deployment
+    branch: deployment-fix
 
     dockerfilePath: ./email_detection/Dockerfile
     dockerContext: ./email_detection
@@ -49,3 +49,19 @@ services:
       # in serve.py finds it immediately and skips the loader.
       - key: PHISHERMANAI_SKIP_LOAD
         value: "0"
+
+      # Private Gmail integration. Set both secret values in the Render dashboard.
+      # GMAIL_TOKEN_JSON is the complete renewable token JSON, including refresh_token.
+      - key: GMAIL_TOKEN_JSON
+        sync: false
+
+      # Browser clients can call /gmail/* without exposing a shared secret.
+      # Set this to "1" only when every caller can attach X-API-Key securely.
+      - key: GMAIL_REQUIRE_API_KEY
+        value: "0"
+
+      - key: GMAIL_FETCH_API_KEY
+        sync: false
+
+      - key: BODY_DETECT_URL
+        value: "https://fraud-detect-1-6er0.onrender.com/detect"

@@ -50,7 +50,7 @@ COPY . .
 # no request pays to build the database on a cold start.
 RUN python -m data.load_all
 
-# Non-root, but data/ stays writable: each verdict is appended to the SQLite
+# Non-ro  ot, but data/ stays writable: each verdict is appended to the SQLite
 # database as it is served. /var/lib/phishermanai exists so that pointing
 # DATABASE_URL at a mounted volume works without a root-owned-directory fight;
 # core.db.init_db only creates the default path's parent, not a custom one.
