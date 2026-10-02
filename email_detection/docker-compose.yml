@@ -19,6 +19,11 @@ services:
       PHISHERMANAI_DEMO_MODE: "1"
       # Add the deployed front-end origin here; localhost:3000 is already allowed.
       PHISHERMANAI_CORS_ORIGINS: ""
+      # The Next.js server proxy supplies this; it is never exposed to browsers.
+      GMAIL_REQUIRE_API_KEY: "${GMAIL_REQUIRE_API_KEY:-0}"
+      GMAIL_FETCH_API_KEY: "${GMAIL_FETCH_API_KEY:-local-development-key}"
+      GMAIL_TOKEN_FILE: "/run/secrets/gmail-token.json"
+      BODY_DETECT_URL: "https://fraud-detect-1-6er0.onrender.com/detect"
 
       # Verdicts are written to the database baked into the image, so they are
       # lost when the container is replaced. To keep them, point the database at
@@ -29,7 +34,10 @@ services:
     # Uncomment together with DATABASE_URL above. Do NOT mount over /app/data --
     # that directory holds the loader and the reference corpus, not just the
     # database, and a stale volume would shadow both.
-    # volumes:
+    volumes:
+      # Read the developer OAuth token without baking it into the image.
+      - ../../token.json:/run/secrets/gmail-token.json:ro
+    # To persist verdicts, add this entry under volumes as well:
     #   - phishermanai-data:/var/lib/phishermanai
 
     restart: unless-stopped

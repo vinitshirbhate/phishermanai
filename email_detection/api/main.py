@@ -5,6 +5,7 @@
 Endpoints
     POST /verify           text and/or file -> Verdict
     POST /verify/email     .eml upload -> Verdict
+    POST /gmail/latest/verify  fetch latest Gmail message -> both verdicts
     GET  /entity/{name}    entity lookup + verified official channels
     GET  /stats            aggregate verdicts, spoofed entities, fraud clusters
     GET  /warning-card/{h} the shareable PNG for a verification
@@ -24,13 +25,20 @@ from __future__ import annotations
 import json
 import logging
 import os
+import base64
+import hmac
+import re
 from contextlib import asynccontextmanager
 from datetime import datetime, timedelta
+from email import policy
+from email.parser import BytesParser
+from pathlib import Path
 from typing import Any
 
-from fastapi import Depends, FastAPI, File, Form, HTTPException, Query, UploadFile
+import requests
+from fastapi import Depends, FastAPI, File, Form, HTTPException, Query, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, Response
+from fastapi.responses import FileResponse, JSONResponse, Response
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
@@ -55,6 +63,24 @@ log = logging.getLogger("phishermanai.api")
 
 DEMO_MODE = os.environ.get("PHISHERMANAI_DEMO_MODE", "1") == "1"
 MAX_UPLOAD_BYTES = 12 * 1024 * 1024
+GMAIL_API_BASE = "https://gmail.googleapis.com/gmail/v1/users/me"
+BODY_DETECT_URL = os.environ.get(
+    "BODY_DETECT_URL",
+    "https://fraud-detect-1-6er0.onrender.com/detect",
+)
+OUTBOUND_HTTP_TIMEOUT = 180
+APP_ROOT = Path(__file__).resolve().parent.parent
+TEST_EMAIL_PAGE = APP_ROOT / "test_email.html"
+_GMAIL_TOKEN_CACHE: dict[str, Any] | None = None
+
+
+def _default_gmail_token_path() -> Path:
+    """Find the local token without assuming the host's directory depth."""
+    candidates = (
+        APP_ROOT / "token.json",              # Docker: /app/token.json
+        APP_ROOT.parent.parent / "token.json",  # Repository development layout
+    )
+    return next((path for path in candidates if path.is_file()), candidates[0])
 
 # Origins that always work: local dev for the Next.js UI, and WhatsApp Web for
 # the extension's content script.
@@ -172,6 +198,225 @@ def _cache_card(content_hash: str, verdict, claimed_entity: str | None) -> None:
         log.warning("warning card render failed: %s", exc)
 
 
+def _gmail_token_data() -> dict[str, Any]:
+    """Load Gmail OAuth data from a deployment secret or local token file."""
+    global _GMAIL_TOKEN_CACHE
+    if _GMAIL_TOKEN_CACHE is not None:
+        return _GMAIL_TOKEN_CACHE
+
+    raw_token = os.environ.get("GMAIL_TOKEN_JSON")
+    if raw_token:
+        try:
+            _GMAIL_TOKEN_CACHE = json.loads(raw_token)
+            return _GMAIL_TOKEN_CACHE
+        except json.JSONDecodeError as exc:
+            raise HTTPException(status_code=500, detail="GMAIL_TOKEN_JSON is not valid JSON.") from exc
+
+    token_path = Path(os.environ.get("GMAIL_TOKEN_FILE", _default_gmail_token_path()))
+    if not token_path.is_file():
+        raise HTTPException(
+            status_code=503,
+            detail="Gmail is not configured. Set GMAIL_TOKEN_JSON or GMAIL_TOKEN_FILE.",
+        )
+    try:
+        _GMAIL_TOKEN_CACHE = json.loads(token_path.read_text(encoding="utf-8"))
+        return _GMAIL_TOKEN_CACHE
+    except (OSError, json.JSONDecodeError) as exc:
+        raise HTTPException(status_code=500, detail="Unable to read the Gmail token.") from exc
+
+
+def _refresh_gmail_token(token_data: dict[str, Any]) -> str:
+    """Refresh an expired Gmail access token using the OAuth refresh token."""
+    refresh_token = token_data.get("refresh_token")
+    if not refresh_token:
+        raise HTTPException(
+            status_code=401,
+            detail="Gmail token expired and has no refresh_token. Re-authorize Gmail with offline access.",
+        )
+
+    try:
+        response = requests.post(
+            token_data.get("token_uri", "https://oauth2.googleapis.com/token"),
+            data={
+                "client_id": token_data.get("client_id"),
+                "client_secret": token_data.get("client_secret"),
+                "refresh_token": refresh_token,
+                "grant_type": "refresh_token",
+            },
+            timeout=30,
+        )
+        response.raise_for_status()
+        refreshed = response.json()
+        access_token = refreshed["access_token"]
+        token_data["token"] = access_token
+        return access_token
+    except (requests.RequestException, KeyError, ValueError) as exc:
+        raise HTTPException(status_code=502, detail=f"Unable to refresh Gmail token: {exc}") from exc
+
+
+def _gmail_get(path: str, token_data: dict[str, Any], **params) -> dict[str, Any]:
+    """Call Gmail, refreshing the access token once after a 401 response."""
+    token = token_data.get("token")
+    if not token:
+        raise HTTPException(status_code=500, detail="Gmail token is missing the access token.")
+
+    url = f"{GMAIL_API_BASE}/{path.lstrip('/')}"
+    try:
+        response = requests.get(
+            url,
+            headers={"Authorization": f"Bearer {token}"},
+            params=params,
+            timeout=30,
+        )
+        if response.status_code == 401:
+            token = _refresh_gmail_token(token_data)
+            response = requests.get(
+                url,
+                headers={"Authorization": f"Bearer {token}"},
+                params=params,
+                timeout=30,
+            )
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as exc:
+        status = exc.response.status_code if exc.response is not None else 502
+        detail = exc.response.text if exc.response is not None else str(exc)
+        raise HTTPException(status_code=status, detail=f"Gmail API request failed: {detail}") from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=502, detail="Gmail returned invalid JSON.") from exc
+
+
+def _decode_base64url(value: str) -> bytes:
+    return base64.urlsafe_b64decode(value + "=" * (-len(value) % 4))
+
+
+def _email_body(raw_email: bytes) -> tuple[str, dict[str, str]]:
+    """Extract the preferred plain-text body and basic headers from an EML."""
+    message = BytesParser(policy=policy.default).parsebytes(raw_email)
+    plain_parts: list[str] = []
+    html_parts: list[str] = []
+
+    for part in message.walk():
+        if part.is_multipart() or part.get_content_disposition() == "attachment":
+            continue
+        if part.get_content_type() not in {"text/plain", "text/html"}:
+            continue
+        try:
+            content = part.get_content()
+        except (LookupError, UnicodeError):
+            payload = part.get_payload(decode=True) or b""
+            content = payload.decode("utf-8", errors="replace")
+        if part.get_content_type() == "text/plain":
+            plain_parts.append(str(content))
+        else:
+            html_parts.append(str(content))
+
+    body = "\n".join(plain_parts).strip()
+    if not body and html_parts:
+        body = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", "\n".join(html_parts))).strip()
+
+    headers = {
+        "subject": str(message.get("subject", "")),
+        "from": str(message.get("from", "")),
+        "to": str(message.get("to", "")),
+        "date": str(message.get("date", "")),
+        "message_id": str(message.get("message-id", "")),
+    }
+    return body, headers
+
+
+def _require_gmail_api_key(provided_key: str | None) -> None:
+    require_key = os.environ.get("GMAIL_REQUIRE_API_KEY", "1").strip().lower()
+    if require_key in {"0", "false", "no", "off"}:
+        return
+
+    expected_key = os.environ.get("GMAIL_FETCH_API_KEY")
+    if not expected_key:
+        raise HTTPException(
+            status_code=503,
+            detail="Gmail verification is not configured on this deployment.",
+        )
+    if not provided_key or not hmac.compare_digest(provided_key, expected_key):
+        raise HTTPException(status_code=401, detail="Invalid or missing X-API-Key.")
+
+
+def _load_gmail_message(
+    gmail_message_id: str,
+    token_data: dict[str, Any],
+) -> tuple[bytes, str, dict[str, str]]:
+    """Download and parse one Gmail message by its Gmail ID."""
+    raw_result = _gmail_get(
+        f"messages/{gmail_message_id}",
+        token_data,
+        format="raw",
+    )
+    raw_email = _decode_base64url(raw_result.get("raw", ""))
+    if not raw_email:
+        raise HTTPException(status_code=502, detail="Gmail returned an empty raw message.")
+    if len(raw_email) > MAX_UPLOAD_BYTES:
+        raise HTTPException(status_code=413, detail="Email is larger than 12 MB.")
+    body, headers = _email_body(raw_email)
+    return raw_email, body, headers
+
+
+def _verify_gmail_message(
+    gmail_message_id: str,
+    token_data: dict[str, Any],
+    session: Session,
+) -> dict[str, Any]:
+    """Run both detectors for one selected Gmail message."""
+    raw_email, body, headers = _load_gmail_message(gmail_message_id, token_data)
+
+    try:
+        verdict, parsed, timings = run_verification(
+            raw_email,
+            f"{gmail_message_id}.eml",
+            source_type="EMAIL",
+        )
+    except Exception as exc:  # noqa: BLE001
+        log.exception("Gmail message verification failed")
+        raise HTTPException(status_code=500, detail=f"Email verification failed: {exc}") from exc
+
+    _persist(session, verdict, parsed, timings, "API")
+    _cache_card(parsed.content_hash, verdict, verdict.evidence_summary.get("claimed_entity"))
+    email_verification = _to_response(verdict, parsed, timings).model_dump(mode="json")
+
+    if not body:
+        body_detection: dict[str, Any] = {"error": "The selected email has no text body."}
+    else:
+        try:
+            response = requests.post(
+                BODY_DETECT_URL,
+                json={"text": body},
+                timeout=OUTBOUND_HTTP_TIMEOUT,
+            )
+            if response.ok:
+                body_detection = response.json()
+            else:
+                try:
+                    error_response: Any = response.json()
+                except ValueError:
+                    error_response = response.text
+                body_detection = {
+                    "error": f"Body detection endpoint returned HTTP {response.status_code}",
+                    "response": error_response,
+                }
+        except requests.RequestException as exc:
+            body_detection = {"error": f"Body detection endpoint failed: {exc}"}
+        except ValueError:
+            body_detection = {"error": "Body detection endpoint returned invalid JSON."}
+
+    return {
+        "email": {
+            "gmail_message_id": gmail_message_id,
+            **headers,
+            "body": body,
+        },
+        "email_verification": email_verification,
+        "body_detection": body_detection,
+    }
+
+
 @app.post("/verify", response_model=VerdictResponse, summary="Verify a message, file or link")
 async def verify_endpoint(
     text: str | None = Form(default=None, description="Pasted message text or a URL"),
@@ -224,6 +469,77 @@ async def verify_email_endpoint(
     _persist(session, verdict, parsed, timings, channel)
     _cache_card(parsed.content_hash, verdict, verdict.evidence_summary.get("claimed_entity"))
     return _to_response(verdict, parsed, timings)
+
+
+@app.post(
+    "/gmail/latest/verify",
+    summary="Fetch and verify the latest Gmail inbox message",
+)
+def verify_latest_gmail_endpoint(
+    request: Request,
+    session: Session = Depends(get_session),
+) -> dict[str, Any]:
+    """Fetch the newest inbox email and return both detection results.
+
+    The raw message and body remain in memory and are not saved by this route.
+    Configure Gmail with ``GMAIL_TOKEN_JSON`` (recommended for deployment) or
+    ``GMAIL_TOKEN_FILE``. API-key protection is controlled by
+    ``GMAIL_REQUIRE_API_KEY``; when enabled, clients must send the configured
+    ``GMAIL_FETCH_API_KEY`` value in the ``X-API-Key`` header.
+    """
+    _require_gmail_api_key(request.headers.get("X-API-Key"))
+    token_data = _gmail_token_data()
+    listing = _gmail_get(
+        "messages",
+        token_data,
+        labelIds="INBOX",
+        maxResults=1,
+    )
+    messages = listing.get("messages", [])
+    if not messages:
+        raise HTTPException(status_code=404, detail="No emails found in the inbox.")
+
+    return _verify_gmail_message(messages[0]["id"], token_data, session)
+
+
+@app.get("/gmail/emails", summary="List recent Gmail inbox messages")
+def list_gmail_emails(
+    request: Request,
+    limit: int = Query(default=2, ge=1, le=10),
+) -> dict[str, Any]:
+    """Return safe preview data for the most recent inbox messages."""
+    _require_gmail_api_key(request.headers.get("X-API-Key"))
+    token_data = _gmail_token_data()
+    listing = _gmail_get("messages", token_data, labelIds="INBOX", maxResults=limit)
+    previews = []
+    for item in listing.get("messages", []):
+        _raw, body, headers = _load_gmail_message(item["id"], token_data)
+        previews.append({
+            "gmail_message_id": item["id"],
+            **headers,
+            "preview": re.sub(r"\s+", " ", body)[:240],
+        })
+    return {"emails": previews, "count": len(previews)}
+
+
+@app.post(
+    "/gmail/messages/{gmail_message_id}/verify",
+    summary="Run both detectors for a selected Gmail message",
+)
+def verify_selected_gmail_endpoint(
+    gmail_message_id: str,
+    request: Request,
+    session: Session = Depends(get_session),
+) -> dict[str, Any]:
+    _require_gmail_api_key(request.headers.get("X-API-Key"))
+    return _verify_gmail_message(gmail_message_id, _gmail_token_data(), session)
+
+
+@app.get("/test-email", include_in_schema=False)
+def test_email_page() -> FileResponse:
+    if not TEST_EMAIL_PAGE.is_file():
+        raise HTTPException(status_code=404, detail="test_email.html is missing.")
+    return FileResponse(TEST_EMAIL_PAGE, media_type="text/html")
 
 
 @app.get("/warning-card/{content_hash}", summary="Shareable warning card PNG")
@@ -498,5 +814,8 @@ def root() -> JSONResponse:
     return JSONResponse({
         "name": "PhishermanAI",
         "docs": "/docs",
-        "endpoints": ["/verify", "/verify/email", "/entity/{name}", "/stats", "/health"],
+        "endpoints": [
+            "/verify", "/verify/email", "/gmail/latest/verify",
+            "/entity/{name}", "/stats", "/health",
+        ],
     })
