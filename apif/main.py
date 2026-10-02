@@ -19,7 +19,8 @@ from fastapi.responses import JSONResponse
 from . import __version__
 from .api import analyze, feed, registry
 from .config import get_settings
-from .detectors import llm_analyst, text_phishing, voice
+from . import detectors
+from .detectors import asr, llm_analyst, text_phishing, video, voice
 from .ingest import firecrawl, store
 from .pipeline import MediaTooLongError
 from .schemas import HealthStatus
@@ -45,6 +46,11 @@ async def lifespan(app: FastAPI):
     settings = get_settings()
     store.init_db()
     settings.upload_dir.mkdir(parents=True, exist_ok=True)
+    # Serialise the heavy imports here, on one thread, before any request can
+    # race them across worker threads. See detectors/__init__.py for the failure
+    # this prevents. Runs in a thread so a slow import cannot block the loop
+    # during startup.
+    await asyncio.to_thread(detectors.warm_imports)
     yield
 
 
@@ -98,13 +104,22 @@ async def health() -> HealthStatus:
     being down degrades one signal, it does not take the service offline. Hence
     'degraded' rather than a non-200.
     """
-    phishing, llm, spoof, (firecrawl_ok, firecrawl_err) = await asyncio.gather(
-        text_phishing.health(), llm_analyst.health(), voice.health(), firecrawl.check_key()
+    phishing, llm, spoof, transcription, deepfake, (firecrawl_ok, firecrawl_err) = (
+        await asyncio.gather(
+            text_phishing.health(),
+            llm_analyst.health(),
+            voice.health(),
+            asr.health(),
+            video.health(),
+            firecrawl.check_key(),
+        )
     )
     dependencies = {
         "phishing_classifier": phishing,
         "openrouter": llm,
         "voice_spoof": spoof,
+        "transcription": transcription,
+        "video_deepfake": deepfake,
         "firecrawl": "ok" if firecrawl_ok else (firecrawl_err or "unavailable"),
         "database": "ok",
     }

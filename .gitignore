@@ -16,3 +16,4 @@ apif/data/uploads/
 
 # Sample media used for local testing (any depth)
 samples/
+/deepfake_detection/video_detection/ffpp_efficientnet_best.pth

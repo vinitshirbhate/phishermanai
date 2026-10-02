@@ -6,6 +6,7 @@ import {
   JetBrains_Mono,
   Source_Serif_4,
 } from "next/font/google";
+import NextTopLoader from 'nextjs-toploader';
 
 import { QuickCheckWidget } from "@/components/site/quick-check-widget";
 import { SiteFooter } from "@/components/site/site-footer";
@@ -75,6 +76,7 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${inter.variable} ${sourceSerif.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} ${archivo.variable} bg-background text-foreground`}
       >
+        <NextTopLoader color="#E4572E" />
         <TooltipProvider delayDuration={200}>
           <a
             href="#main"

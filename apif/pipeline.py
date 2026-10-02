@@ -2,13 +2,14 @@
 and fuses the results into one Verdict.
 
 Ordering matters here and is not arbitrary:
-  1. Media is reduced to text first (Whisper), because the transcript is what the
+  1. Media is reduced to text first (ASR), because the transcript is what the
      phishing classifier consumes -- a vishing call and a phishing email then travel the
      same path.
   2. Entity extraction runs before the registry and market engines, because it supplies
      their inputs (claimed_issuer, tickers). Those two cannot start earlier.
-  3. Everything that has its inputs runs concurrently. On CPU-only torch the audio models
-     dominate wall time, so overlapping them with network-bound calls matters.
+  3. Everything that has its inputs runs concurrently. Transcription and the spoof check
+     are both remote calls of a few seconds each, so overlapping them rather than
+     chaining them is most of the latency budget.
 """
 
 from __future__ import annotations
@@ -199,18 +200,29 @@ async def analyze_video(
 async def analyze_image(
     image_path: str | Path, caption: str = "", source: str | None = None
 ) -> tuple[Verdict, ExtractedEntities]:
-    """Still images reuse the frame-based video detector via a 1-second clip."""
-    staging = await _staging_dir()
-    clip_path = staging / f"{Path(image_path).stem}_clip.mp4"
-    error = await media.image_to_clip(image_path, clip_path)
-    if error:
-        signals = [Signal.unavailable("video_deepfake", error)]
-        entities = ExtractedEntities()
-        if caption:
-            caption_verdict, entities = await analyze_text(caption, source=source)
-            signals.extend(caption_verdict.signals)
-        return fusion.fuse(signals), entities
-    return await analyze_video(clip_path, caption=caption, source=source)
+    """Still images go straight to the deepfake detector.
+
+    This used to wrap the image in a 1-second H.264 clip so the remote Space
+    would accept it. The local detector scores a single frame natively, so that
+    round trip through ffmpeg -- and the re-encoding artefacts it introduced
+    into the very pixels being judged -- is gone.
+    """
+    video_task = asyncio.create_task(video_detector.analyze(Path(image_path)))
+
+    entities = ExtractedEntities()
+    other_signals: list[Signal] = []
+    if caption:
+        caption_verdict, entities = await analyze_text(caption, source=source)
+        other_signals.extend(caption_verdict.signals)
+    elif source:
+        other_signals.append(
+            await asyncio.to_thread(trust_registry.analyze, source, None, None)
+        )
+
+    video_signal = await video_task
+    verdict = fusion.fuse([video_signal, *other_signals])
+    verdict.explanation, _ = await llm_analyst.explain(verdict, content_excerpt=caption)
+    return verdict, entities
 
 
 async def add_coordination_signal(verdict: Verdict, content_excerpt: str = "") -> Verdict:

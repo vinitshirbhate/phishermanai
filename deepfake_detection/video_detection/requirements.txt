@@ -1,0 +1,18 @@
+# Serving dependencies for test.py. Deliberately small: this is the whole
+# reason the model was converted to ONNX -- torch's CPU wheel does not fit in a
+# 512 MB free-tier container, and these three do.
+#
+#   pip install -r requirements.txt
+
+onnxruntime>=1.17,<2
+numpy>=1.24,<3
+
+# headless, not plain opencv-python: a server has no display, and the GUI build
+# drags in GTK/X11 shared libraries that add weight and break slim base images.
+opencv-python-headless>=4.8,<5
+
+# Rebuilding ffpp_efficientnet_b0.onnx from the original .pth needs torch and
+# timm as well. That is a one-time, dev-machine job -- do not install these in
+# the deployed image:
+#
+#   pip install torch timm onnx

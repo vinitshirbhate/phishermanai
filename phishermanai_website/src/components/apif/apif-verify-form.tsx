@@ -1,51 +1,50 @@
 "use client";
 
-import { useCallback, useState } from "react";
-import { CheckCircle2, Radar, ShieldCheck, Upload } from "lucide-react";
+import { useState } from "react";
+import {
+  CheckCircle2,
+  FileText,
+  ShieldCheck,
+  Upload,
+  Video,
+} from "lucide-react";
 
-import { ApifAnalysisLoader } from "@/components/apif/apif-analysis-loader";
-import { ExpandableSignalCards } from "@/components/apif/expandable-signal-cards";
 import { Button } from "@/components/ui/button";
-import { FileUpload } from "@/components/ui/file-upload";
 import { Input } from "@/components/ui/input";
-import { SwitchField } from "@/components/ui/switch-field";
 import { Textarea } from "@/components/ui/textarea";
-import { ACCEPTED_MEDIA, kindForFile } from "@/lib/media-kind";
-import { postFormDataWithProgress } from "@/lib/upload";
 import { cn } from "@/lib/utils";
+import { FileUpload } from "../ui/file-upload";
 
-type SignalItem = {
-  name: string;
-  score: number;
-  available: boolean;
-  summary: string;
-  evidence?: Record<string, unknown>;
-  error?: string | null;
-};
-
-/**
- * Mirrors the Verdict model in apif/schemas.py — what POST /api/v1/verify really
- * returns. It previously declared `confidence` and an `evidence` array, neither
- * of which exists on the response, so the panel rendered a permanent em dash and
- * never showed any per-signal detail.
- */
 type VerdictResponse = {
-  risk_score: number;
   band: string;
-  headline: string;
-  explanation?: string;
-  signals?: SignalItem[];
-  override_applied?: string | null;
+  confidence: number;
+  evidence?: Array<{ signal: string; result: string }>;
+  message?: string;
+  [key: string]: unknown;
 };
 
-const VECTOR_LABELS: Record<string, string> = {
-  text_phishing: "Text phishing",
-  voice_spoof: "Audio spoof",
-  video_deepfake: "Video manipulation",
-  source_untrusted: "Source trust",
-  coordination: "Coordinated campaign",
-  market_anomaly: "Market anomaly",
-};
+const ACCEPTED_MEDIA = [
+  ".wav",
+  ".mp3",
+  ".m4a",
+  ".flac",
+  ".ogg",
+  ".aac",
+  ".wma",
+  ".opus",
+  ".mp4",
+  ".mov",
+  ".mkv",
+  ".avi",
+  ".webm",
+  ".m4v",
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".webp",
+  ".bmp",
+  ".gif",
+].join(",");
 
 export function ApifVerifyForm() {
   const [text, setText] = useState("");
@@ -55,14 +54,17 @@ export function ApifVerifyForm() {
   const [result, setResult] = useState<VerdictResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
 
-  const handleFilesChange = useCallback((files: File[]) => {
+  const handleFileChange = (filesOrEvent: File[] | React.ChangeEvent<HTMLInputElement>) => {
     setResult(null);
     setError(null);
-    setUploadProgress(null);
-    setFile(files[0] ?? null);
-  }, []);
+
+    const selected = Array.isArray(filesOrEvent)
+      ? filesOrEvent
+      : Array.from(filesOrEvent.target.files ?? []);
+
+    setFile(selected[0] ?? null);
+  };
 
   const apiBase = process.env.NEXT_PUBLIC_APIF_BASE_URL ?? "http://localhost:8000";
 
@@ -87,33 +89,29 @@ export function ApifVerifyForm() {
     form.append("include_coordination", String(includeCoordination));
 
     setBusy(true);
-    setUploadProgress(file ? 0 : null);
 
     try {
-      const body = await postFormDataWithProgress(
-        `${apiBase}/api/v1/verify`,
-        form,
-        file ? setUploadProgress : undefined,
-      );
+      const response = await fetch(`${apiBase}/api/v1/verify`, {
+        method: "POST",
+        body: form,
+      });
 
-      setResult(JSON.parse(body) as VerdictResponse);
+      if (!response.ok) {
+        const body = await response.text();
+        throw new Error(body || "APIF request failed.");
+      }
+
+      const data = (await response.json()) as VerdictResponse;
+      setResult(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setBusy(false);
-      setUploadProgress(null);
     }
   };
 
   return (
     <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-      <ApifAnalysisLoader
-        loading={busy}
-        hasLink={false}
-        kind={kindForFile(file)}
-        includeCoordination={includeCoordination}
-      />
-
       <div className="space-y-6 rounded-3xl border border-border bg-card p-6 shadow-sm">
         <div className="flex items-center gap-3">
           <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/10 text-primary">
@@ -157,34 +155,26 @@ export function ApifVerifyForm() {
           </div>
 
           <div className="space-y-2">
-            <span className="font-medium">Audio / video / image file</span>
-            <FileUpload
-              accept={ACCEPTED_MEDIA}
-              maxSizeMB={100}
-              disabled={busy}
-              uploadProgress={uploadProgress}
-              onFilesChange={handleFilesChange}
-              title="Drop your media here"
-              hint="Audio, video or image ∙ Up to 100MB"
-              selectLabel="Select media"
-            />
+            <label htmlFor="file-upload-handle" className="font-medium">
+              Audio / video / image file
+            </label>
+
+            <FileUpload onChange={handleFileChange} />
             <p className="text-sm text-foreground/50">
               Supported formats: audio, video, and image files. Text is optional when a file is present.
             </p>
           </div>
 
-          <SwitchField
-            id="apif-coordination"
-            checked={includeCoordination}
-            onCheckedChange={setIncludeCoordination}
-            disabled={busy}
-            icon={Radar}
-            label="Include coordination analysis"
-            sublabel="slower"
-            description="Cross-checks the submission against known coordinated campaign clusters before the verdict is fused."
-          />
-
-          <div className="flex justify-end">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <label className="inline-flex cursor-pointer items-center gap-2 text-sm text-foreground/70">
+              <input
+                type="checkbox"
+                checked={includeCoordination}
+                onChange={(event) => setIncludeCoordination(event.target.checked)}
+                className="h-4 w-4 rounded border-input text-primary focus-visible:ring-ring"
+              />
+              Include coordination analysis
+            </label>
             <Button type="submit" disabled={busy} className="h-11 rounded-full px-6">
               {busy ? "Verifying…" : "Verify now"}
             </Button>
@@ -219,9 +209,7 @@ export function ApifVerifyForm() {
                   <div
                     className={cn(
                       "grid h-11 w-11 place-items-center rounded-2xl",
-                      result.band === "Low"
-                        ? "bg-verdict-verified/10 text-verdict-verified"
-                        : "bg-verdict-fraud/10 text-verdict-fraud",
+                      result.band === "low" ? "bg-verdict-fraud/10 text-verdict-fraud" : "bg-verdict-verified/10 text-verdict-verified",
                     )}
                   >
                     <CheckCircle2 className="size-5" aria-hidden />
@@ -229,34 +217,29 @@ export function ApifVerifyForm() {
                   <div>
                     <p className="font-medium">Band: {result.band}</p>
                     <p className="text-sm text-foreground/65">
-                      Risk score {result.risk_score?.toFixed?.(2) ?? "—"}
+                      Confidence {result.confidence?.toFixed?.(2) ?? "—"}
                     </p>
                   </div>
                 </div>
 
-                {result.headline ? <p className="font-medium">{result.headline}</p> : null}
-                {result.explanation ? (
-                  <p className="copy text-[0.9375rem]">{result.explanation}</p>
-                ) : null}
-
-                {result.signals?.length ? (
+                {result.evidence?.length ? (
                   <div className="space-y-2">
-                    <p className="mono-label text-foreground/45">Signals</p>
-                    <ExpandableSignalCards
-                      cards={result.signals.map((item) => ({
-                        id: item.name,
-                        label: VECTOR_LABELS[item.name] ?? item.name,
-                        score: item.score,
-                        available: item.available,
-                        summary: item.summary,
-                        error: item.error,
-                        evidence: item.evidence,
-                      }))}
-                    />
+                    <p className="mono-label text-foreground/45">Evidence</p>
+                    <div className="space-y-2">
+                      {result.evidence.map((item, index) => (
+                        <div
+                          key={`${item.signal}-${index}`}
+                          className="rounded-2xl border border-border/80 bg-card p-3"
+                        >
+                          <p className="font-medium">{item.signal}</p>
+                          <p className="text-sm text-foreground/65">{item.result}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ) : (
                   <p className="text-sm text-foreground/65">
-                    This verdict carried no per-signal breakdown.
+                    If the backend returns no raw evidence array, check the full payload in the console.
                   </p>
                 )}
               </div>
