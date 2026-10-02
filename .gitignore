@@ -16,3 +16,6 @@ apif/data/uploads/
 
 # Sample media used for local testing (any depth)
 samples/
+/phishing_detection/visualizations/
+*.ipynb
+*.pth
