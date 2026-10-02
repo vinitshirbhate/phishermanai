@@ -13,7 +13,12 @@ import { NextResponse } from "next/server";
  *   cd email_detection && uvicorn api.main:app --reload
  */
 
-const ENGINE_URL = (process.env.PHISHERMANAI_API_URL ?? "http://127.0.0.1:8000").replace(/\/$/, "");
+const ENGINE_URL = (
+  process.env.PHISHERMANAI_API_URL ??
+  (process.env.NODE_ENV === "production"
+    ? "https://phishermanai.onrender.com"
+    : "http://127.0.0.1:8000")
+).replace(/\/$/, "");
 
 /**
  * Long enough for a cold screenshot path (~3 s) against a local engine, and for

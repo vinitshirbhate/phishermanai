@@ -2,6 +2,8 @@ import type {
   EngineDemoExample,
   EngineHealth,
   EngineVerdictResponse,
+  GmailEmailPreview,
+  GmailVerificationResponse,
 } from "./engine-types";
 
 /**
@@ -94,6 +96,28 @@ export async function verifyFile(
 
   return json<EngineVerdictResponse>(
     await fetch(`${BASE}/verify`, { method: "POST", body: form }),
+  );
+}
+
+/** Fetch safe preview data for the newest Gmail inbox messages. */
+export async function fetchRecentGmailEmails(
+  limit = 4,
+): Promise<GmailEmailPreview[]> {
+  const body = await json<{ emails: GmailEmailPreview[]; count: number }>(
+    await fetch(`${BASE}/gmail/emails?limit=${limit}`, { cache: "no-store" }),
+  );
+  return body.emails ?? [];
+}
+
+/** Run both the raw-email verifier and body classifier for one Gmail message. */
+export async function verifyGmailMessage(
+  gmailMessageId: string,
+): Promise<GmailVerificationResponse> {
+  return json<GmailVerificationResponse>(
+    await fetch(
+      `${BASE}/gmail/messages/${encodeURIComponent(gmailMessageId)}/verify`,
+      { method: "POST" },
+    ),
   );
 }
 

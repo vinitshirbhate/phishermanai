@@ -3,10 +3,13 @@
 import { useCallback, useEffect, useState } from "react";
 import {
   AlertTriangle,
+  ArrowRight,
   Download,
   FileJson,
   Image as ImageIcon,
+  Inbox,
   Loader2,
+  Mail,
   Plug,
   RefreshCw,
   ShieldCheck,
@@ -21,12 +24,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import {
   EngineError,
+  fetchRecentGmailEmails,
   fetchHealth,
   verifyFile,
+  verifyGmailMessage,
   verifyText,
   warningCardUrl,
 } from "@/lib/engine-client";
-import type { EngineHealth, EngineVerdictResponse } from "@/lib/engine-types";
+import type {
+  BodyDetectionResult,
+  EngineHealth,
+  EngineVerdictResponse,
+  GmailEmailPreview,
+} from "@/lib/engine-types";
 import { PREVIEW_HANDOFF_KEY } from "@/lib/handoff";
 import { downloadPdfReport } from "@/lib/verification-pdf";
 import {
@@ -48,6 +58,12 @@ export function VerifyWorkbench() {
   const [pdfBusy, setPdfBusy] = useState(false);
   const [result, setResult] = useState<EngineVerdictResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [gmailEmails, setGmailEmails] = useState<GmailEmailPreview[] | null>(null);
+  const [gmailLoading, setGmailLoading] = useState(false);
+  const [gmailVerifyingId, setGmailVerifyingId] = useState<string | null>(null);
+  const [gmailError, setGmailError] = useState<string | null>(null);
+  const [selectedGmailEmail, setSelectedGmailEmail] = useState<GmailEmailPreview | null>(null);
+  const [bodyDetection, setBodyDetection] = useState<BodyDetectionResult | null>(null);
 
   /** Used by the "Check again" button, where setting state is an event, not an effect. */
   const probe = useCallback(async () => {
@@ -86,13 +102,62 @@ export function VerifyWorkbench() {
   }, []);
 
   const ready = mode === "file" ? file !== null : text.trim().length > 0;
-  const inputLabel = mode === "file" ? (file?.name ?? "file") : "pasted text";
+  const inputLabel = selectedGmailEmail
+    ? `Gmail: ${selectedGmailEmail.subject || "No subject"}`
+    : mode === "file"
+      ? (file?.name ?? "file")
+      : "pasted text";
+
+  const loadGmailEmails = useCallback(async () => {
+    if (gmailLoading || gmailVerifyingId) return;
+    setGmailLoading(true);
+    setGmailError(null);
+    try {
+      setGmailEmails(await fetchRecentGmailEmails(4));
+    } catch (caught) {
+      const message =
+        caught instanceof Error ? caught.message : "Could not fetch your inbox.";
+      setGmailError(message);
+      if (caught instanceof EngineError && caught.unreachable) setHealth(null);
+    } finally {
+      setGmailLoading(false);
+    }
+  }, [gmailLoading, gmailVerifyingId]);
+
+  const verifyInboxEmail = useCallback(
+    async (email: GmailEmailPreview) => {
+      if (gmailVerifyingId || busy) return;
+      setGmailVerifyingId(email.gmail_message_id);
+      setGmailError(null);
+      setError(null);
+      setResult(null);
+      setBodyDetection(null);
+      setSelectedGmailEmail(email);
+      try {
+        const verification = await verifyGmailMessage(email.gmail_message_id);
+        setResult(verification.email_verification);
+        setBodyDetection(verification.body_detection);
+      } catch (caught) {
+        const message =
+          caught instanceof Error
+            ? caught.message
+            : "Could not verify this email.";
+        setGmailError(message);
+        if (caught instanceof EngineError && caught.unreachable) setHealth(null);
+      } finally {
+        setGmailVerifyingId(null);
+      }
+    },
+    [busy, gmailVerifyingId],
+  );
 
   const submit = useCallback(async () => {
     if (!ready || busy) return;
     setBusy(true);
     setError(null);
     setResult(null);
+    setSelectedGmailEmail(null);
+    setBodyDetection(null);
     try {
       const verdict =
         mode === "file" && file
@@ -174,6 +239,110 @@ uvicorn api.main:app --reload`}
           </span>
         </div>
       )}
+
+      <section className="border border-border bg-card">
+        <div className="flex flex-col gap-5 border-b border-border p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-3">
+              <span className="flex size-9 items-center justify-center bg-primary text-primary-foreground">
+                <Inbox className="size-4" aria-hidden />
+              </span>
+              <h2 className="text-xl font-semibold tracking-[-0.02em]">
+                Check an email from your inbox
+              </h2>
+            </div>
+            <p className="mt-3 font-serif text-sm leading-relaxed text-foreground/65 sm:ml-12">
+              Load your four newest messages, then choose one. The email and its
+              text are checked by both detection systems.
+            </p>
+          </div>
+          <Button
+            onClick={() => void loadGmailEmails()}
+            disabled={gmailLoading || Boolean(gmailVerifyingId) || engineDown}
+            className="h-11 shrink-0 px-5"
+          >
+            {gmailLoading ? (
+              <Loader2 className="size-4 animate-spin" aria-hidden />
+            ) : gmailEmails ? (
+              <RefreshCw className="size-4" aria-hidden />
+            ) : (
+              <Mail className="size-4" aria-hidden />
+            )}
+            {gmailLoading
+              ? "Fetching emails"
+              : gmailEmails
+                ? "Refresh latest 4"
+                : "Fetch latest 4 emails"}
+          </Button>
+        </div>
+
+        {gmailError ? (
+          <div className="flex items-start gap-3 border-b border-verdict-fraud/30 bg-verdict-fraud/8 px-5 py-4 text-verdict-fraud sm:px-6">
+            <AlertTriangle className="mt-0.5 size-4 shrink-0" aria-hidden />
+            <p className="font-serif text-sm leading-relaxed">{gmailError}</p>
+          </div>
+        ) : null}
+
+        {gmailEmails ? (
+          gmailEmails.length > 0 ? (
+            <div className="divide-y divide-border" aria-label="Latest Gmail messages">
+              {gmailEmails.map((email) => {
+                const isVerifying = gmailVerifyingId === email.gmail_message_id;
+                const isSelected = selectedGmailEmail?.gmail_message_id === email.gmail_message_id;
+                return (
+                  <button
+                    key={email.gmail_message_id}
+                    type="button"
+                    onClick={() => void verifyInboxEmail(email)}
+                    disabled={Boolean(gmailVerifyingId) || busy}
+                    aria-pressed={isSelected}
+                    className="group grid w-full gap-3 px-5 py-5 text-left transition-colors hover:bg-muted/55 focus-visible:bg-muted/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset disabled:cursor-wait disabled:opacity-65 sm:grid-cols-[minmax(0,1fr)_auto] sm:px-6"
+                  >
+                    <span className="min-w-0">
+                      <span className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <span className="truncate text-[0.9375rem] font-semibold">
+                          {email.subject || "No subject"}
+                        </span>
+                        <span className="font-mono text-[0.6875rem] text-foreground/45">
+                          {email.date}
+                        </span>
+                      </span>
+                      <span className="mt-1 block truncate font-serif text-sm text-foreground/65">
+                        From {email.from}
+                      </span>
+                      <span className="mt-2 line-clamp-2 block max-w-3xl font-serif text-sm leading-relaxed text-foreground/50">
+                        {email.preview || "No text preview available."}
+                      </span>
+                    </span>
+                    <span className="flex items-center gap-2 self-center font-mono text-[0.6875rem] tracking-[0.08em] text-primary uppercase">
+                      {isVerifying ? (
+                        <>
+                          <Loader2 className="size-3.5 animate-spin" aria-hidden />
+                          Checking
+                        </>
+                      ) : isSelected && result ? (
+                        <>
+                          <ShieldCheck className="size-3.5" aria-hidden />
+                          Checked
+                        </>
+                      ) : (
+                        <>
+                          Check email
+                          <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
+                        </>
+                      )}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            <p className="px-5 py-8 text-center font-serif text-sm text-foreground/55 sm:px-6">
+              No messages were found in the inbox.
+            </p>
+          )
+        ) : null}
+      </section>
 
       <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
         <div className="space-y-5">
@@ -281,6 +450,8 @@ uvicorn api.main:app --reload`}
                   setError(null);
                   setFile(null);
                   setText("");
+                  setSelectedGmailEmail(null);
+                  setBodyDetection(null);
                 }}
                 disabled={busy}
               >
@@ -344,6 +515,26 @@ uvicorn api.main:app --reload`}
                 showReasons={false}
                 showActions={false}
               />
+
+              {bodyDetection ? (
+                <div className="border border-border bg-card p-5">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <h2 className="text-base font-semibold">Body-text check</h2>
+                    <span
+                      className={`font-mono text-[0.6875rem] tracking-[0.1em] uppercase ${
+                        bodyDetection.is_phishing
+                          ? "text-verdict-fraud"
+                          : "text-verdict-verified"
+                      }`}
+                    >
+                      {bodyDetection.label} · {Math.round(bodyDetection.confidence * 100)}%
+                    </span>
+                  </div>
+                  <p className="mt-3 font-serif text-sm leading-relaxed text-foreground/65">
+                    {bodyDetection.message}
+                  </p>
+                </div>
+              ) : null}
 
               <div className="rounded-xl border border-border bg-card p-5">
                 <h2 className="mono-label text-foreground/45">
