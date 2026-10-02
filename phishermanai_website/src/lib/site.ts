@@ -4,7 +4,9 @@ import {
   FileCheck2,
   Globe,
   MailSearch,
+  MessageSquareWarning,
   PlayCircle,
+  Radar,
   Puzzle,
   ShieldCheck,
   SlidersHorizontal,
@@ -60,11 +62,13 @@ export const channelNav: NavLink[] = [
       label: shortLabel[channel.id],
       icon: channel.icon,
     })),
+  { href: "/sms-detection", label: "SMS", icon: MessageSquareWarning },
   { href: "/extension", label: "Extension", icon: Puzzle },
 ];
 
 /** Everything that isn't a channel, tucked under "More". */
 export const moreNav: NavLink[] = [
+  { href: "/honeypot", label: "AI Honeypot", description: "Run a contained deception simulation.", icon: Radar },
   {
     href: "/verify",
     label: "Check an email",
@@ -124,6 +128,7 @@ export const footerNav: { title: string; links: NavLink[] }[] = [
     title: "Verification",
     links: [
       { href: "/verify", label: "Check an email" },
+      { href: "/sms-detection", label: "SMS detection" },
       { href: "/#authenticity", label: "Authenticity framework" },
       { href: "/#authenticity", label: "Official-channel registry" },
       { href: "/#channel-email", label: "Filing cross-check" },
