@@ -8,6 +8,18 @@
   if (window.__phishermanInjected) return;
   window.__phishermanInjected = true;
 
+  async function sendRuntime(message) {
+    try {
+      if (!chrome.runtime?.id) throw new Error('Extension context invalidated');
+      return await chrome.runtime.sendMessage(message);
+    } catch (error) {
+      if (/context invalidated/i.test(error.message) || !chrome.runtime?.id) {
+        removeOverlay(); hideHoverCard();
+      }
+      return { error: 'Extension unavailable. Refresh this page after reloading the extension.' };
+    }
+  }
+
   // --- Signal Extraction ---
 
   function extractSignals() {
@@ -21,6 +33,7 @@
     let hasLoginForm = false;
     let hasPaymentForm = false;
     const formActionHosts = [];
+    const credentialFormActionHosts = [];
 
     inputs.forEach(input => {
       const type = (input.type || '').toLowerCase();
@@ -41,6 +54,9 @@
           const pageHost = window.location.hostname;
           if (actionHost !== pageHost) {
             formActionHosts.push(actionHost);
+            if (form.querySelector('input[type="password"], input[autocomplete="cc-number"]')) {
+              credentialFormActionHosts.push(actionHost);
+            }
           }
         } catch {}
       }
@@ -91,6 +107,7 @@
       hasLoginForm,
       hasPaymentForm,
       formActionHosts: [...new Set(formActionHosts)],
+      credentialFormActionHosts: [...new Set(credentialFormActionHosts)],
       visibleLinkHosts: [...visibleLinkHostsSet].slice(0, 20),
       externalLinkCount
     };
@@ -742,12 +759,14 @@
 
   function createOverlay(assessment, settings) {
     removeOverlay();
+    if (assessment.quietWarning || (settings?.quietBrowsing !== false
+        && ['SAFE', 'CAUTION'].includes(assessment.riskLevel) && !assessment.canRemember)) return;
 
     const score = Math.round(assessment.trustScore);
     const level = assessment.riskLevel;
     const color = getTrustColor(score);
-    const position = settings?.overlayPosition || 'bottom-right';
-    const autoHide = settings?.overlayAutoHide ?? 10000;
+    const position = assessment.canRemember ? 'bottom-right' : settings?.overlayPosition || 'bottom-right';
+    const autoHide = assessment.canRemember ? 10000 : settings?.overlayAutoHide ?? 10000;
 
     // Risks first, most severe first; protective facts last. Same classifier the
     // side panel uses, so the two surfaces cannot disagree about a signal.
@@ -790,7 +809,7 @@
       <div class="head">
         <div class="score">${score}</div>
         <div class="meta">
-          <div class="badge">${escapeHtml(level)}</div>
+          <div class="badge">${escapeHtml(level === 'SAFE' ? 'No strong signals' : level)}</div>
           <div class="headline">${escapeHtml(riskCopy)}</div>
           <div class="brand">Phisherman AI Trust</div>
         </div>
@@ -799,9 +818,24 @@
       ${sigHTML ? `<div class="signals">${sigHTML}</div>` : ''}
       <div class="actions">
         ${assessment.isNewsArticle ? '<button class="btn btn-ghost" data-act="factcheck" type="button">Fact Check</button>' : ''}
+        ${assessment.canRemember ? '<button class="btn btn-ghost" data-act="remember" type="button">Recognize this site?</button>' : ''}
+        <button class="btn btn-ghost" data-act="report" type="button">Incorrect warning?</button>
         <button class="btn btn-primary" data-act="details" type="button">Details</button>
       </div>
     `;
+
+    if (assessment.canRemember) {
+      card.innerHTML = `
+        <div class="head"><div class="meta">
+          <div class="brand">Phisherman AI · Personal whitelist</div>
+          <div class="headline">Do you trust this website?</div>
+          <div class="badge">${escapeHtml(new URL(assessment.url).hostname)}</div>
+        </div><button class="close" type="button" aria-label="Dismiss">&times;</button></div>
+        <div class="signals">Remember this exact site for 30 days to reduce weak warnings. Strong warnings still appear. This does not verify the site.</div>
+        <div class="actions"><button class="btn btn-ghost" data-act="dismiss" type="button">Not now</button>
+          <button class="btn btn-primary" data-act="remember" type="button">Add to my whitelist</button></div>
+        <div class="brand" style="margin-top:8px">Closes automatically in 10 seconds · Manage in Settings</div>`;
+    }
 
     islandRoot.append(style, card);
     document.body.appendChild(islandHost);
@@ -811,8 +845,21 @@
     // Handlers bind to nodes inside OUR shadow root. The previous version used
     // document.getElementById, which searches the page and can be shadowed by it.
     card.querySelector('.close').addEventListener('click', () => removeOverlay());
-    card.querySelector('[data-act="details"]').addEventListener('click', () => {
-      chrome.runtime.sendMessage({ action: 'openSidePanel' });
+    card.querySelector('[data-act="dismiss"]')?.addEventListener('click', () => removeOverlay());
+    card.querySelector('[data-act="details"]')?.addEventListener('click', () => {
+      sendRuntime({ action: 'openSidePanel' });
+    });
+    card.querySelector('[data-act="remember"]')?.addEventListener('click', async (event) => {
+      event.target.disabled = true;
+      try {
+        const result = await sendRuntime({ action: 'rememberSite', url: assessment.url });
+        event.target.textContent = result?.ok ? 'Added for 30 days' : result?.error || 'Could not save';
+      } catch { event.target.textContent = 'Could not save. Try again in Settings.'; }
+    });
+    card.querySelector('[data-act="report"]')?.addEventListener('click', async (event) => {
+      const result = await sendRuntime({ action: 'reportWarning' });
+      event.target.textContent = result?.ok ? 'Saved locally' : 'Could not save';
+      event.target.disabled = !!result?.ok;
     });
     const fcBtn = card.querySelector('[data-act="factcheck"]');
     if (fcBtn) {
@@ -820,7 +867,7 @@
         fcBtn.textContent = 'Checking…';
         fcBtn.disabled = true;
         const snapshot = buildSnapshot();
-        const result = await chrome.runtime.sendMessage({
+        const result = await sendRuntime({
           action: 'factCheck',
           payload: {
             url: snapshot.url, title: snapshot.title,
@@ -1146,103 +1193,23 @@
     const v = HOVER_VERDICTS[res.verdict] || HOVER_VERDICTS.L0_NO_SIGNALS;
     refs.card.style.setProperty('--accent', v.c);
     refs.card.style.setProperty('--accent-wash', v.c + '1f');
-
-    const parts = [];
-    parts.push(`<div class="row"><span class="tag">${escapeHtml(v.t)}</span>`
-      + `<span class="host">${escapeHtml(res.host || res.url || '')}</span></div>`);
-
-    if (res.summary) parts.push(`<div class="summary">${escapeHtml(res.summary)}</div>`);
-
-    // What was actually checked.
-    //
-    // "NO SIGNALS" on its own is true and tells the user nothing. A clean result
-    // is only worth something if they can see its basis and its limits - which
-    // lists, how many entries, refreshed when, and what that does not cover.
-    // This block is the difference between a shrug and an answer.
-    const rep = res.reputation;
-    if (rep && !rep.error) {
-      const ev = [];
-      if ((rep.listed || []).length) {
-        rep.listed.forEach((l) => {
-          ev.push(`<div class="sig sev-high"><span class="dot">!</span>`
-            + `<span>Listed on ${escapeHtml(l.list)} as ${escapeHtml(l.kind)}`
-            + (l.matched && l.matched !== rep.host ? ` (via ${escapeHtml(l.matched)})` : '')
-            + `</span></div>`);
-        });
-      } else if (rep.rbi_namespace || rep.whitelisted) {
-        // A licence-gated or explicitly-verified host gets a short green
-        // line, not a paragraph of provenance. The user hovering a link is
-        // deciding whether to click, and at that moment 'verified' is the
-        // whole message.
-        ev.push('<div class="sig pol-protective"><span class="dot">\u2713</span>'
-          + `<span>${escapeHtml(rep.verified_label || 'Verified official domain')}</span></div>`);
-      } else if (rep.coverage_note) {
-        ev.push(`<div class="checked">${escapeHtml(rep.coverage_note)}</div>`);
-      }
-
-      const intel = rep.intel || {};
-      (intel.signals || []).forEach((s) => {
-        const cls = PhishermanSignalPolarity.classify(s);
-        const dot = cls.polarity === 'protective' ? '✓'
-          : cls.severity === 'high' ? '!' : cls.severity === 'medium' ? '~' : 'i';
-        ev.push(`<div class="sig ${cls.polarity === 'protective'
-          ? 'pol-protective' : 'sev-' + cls.severity}">`
-          + `<span class="dot">${dot}</span><span>${escapeHtml(s)}</span></div>`);
-      });
-
-      if (intel.https === false) {
-        ev.push('<div class="sig sev-medium"><span class="dot">~</span>'
-          + '<span>Not encrypted — anything you type here travels in the clear</span></div>');
-      }
-      if (ev.length) parts.push(`<div class="chain">${ev.join('')}</div>`);
-    } else if (rep === undefined && res.verdict === 'L0_NO_SIGNALS') {
-      // Backend asleep. Say which check did NOT run rather than implying the
-      // clean result covered more than it did.
-      parts.push('<div class="checked">Address checked on this device only. '
-        + 'Blocklist lookup needs the local backend, which is not running.</div>');
+    const clean = !res.verdict || res.verdict === 'L0_NO_SIGNALS';
+    const title = pending ? 'Checking' : res.unavailable ? 'Not checked' : clean ? 'No obvious warning' : v.t;
+    const parts = [`<div class="row"><span class="tag">${escapeHtml(title)}</span><span class="host">${escapeHtml(res.host || res.url || '')}</span></div>`];
+    if (pending || res.unavailable) {
+      parts.push(`<div class="summary">${pending ? 'Checking this link…' : 'Could not check this link. Try again.'}</div>`);
+    } else {
+      if (!clean && res.summary) parts.push(`<div class="summary">${escapeHtml(res.summary)}</div>`);
+      if (res.reputation?.listed?.length) parts.push('<div class="summary">Reported as harmful. Avoid opening.</div>');
+      const risks = [...(res.destination?.signals || [])].filter(s => ['high', 'medium'].includes(s.severity));
+      if (risks.length) parts.push(`<div class="summary">${escapeHtml(risks[0].label)}</div>`);
+      const finalHop = res.destination?.hops?.at(-1);
+      if (finalHop?.host && finalHop.host !== res.host) parts.push(`<div class="checked">Redirects to ${escapeHtml(finalHop.host)}</div>`);
+      try {
+        if (new URL(res.url).protocol === 'http:') parts.push('<div class="summary">Unencrypted link. Avoid entering passwords or payment details.</div>');
+      } catch { /* Invalid links are handled by preflight. */ }
+      if (!res.reputation || res.reputation.error) parts.push('<div class="checked">Basic address check only</div>');
     }
-
-    const d = res.destination;
-    if (d) {
-      const chain = [];
-      if (pending) {
-        chain.push('<div class="pending">Checking where this link goes…</div>');
-      } else if (d.refused) {
-        chain.push(`<div class="muted">${escapeHtml(d.reason || 'Destination not checked.')}</div>`);
-      } else if (d.hops && d.hops.length > 1) {
-        d.hops.forEach((h, i) => {
-          const last = i === d.hops.length - 1;
-          chain.push(`<div class="hop${last ? ' final' : ''}">`
-            + `<span class="n">${last ? '→' : i + 1 + '.'}</span>`
-            + `<span class="h">${escapeHtml(h.host || '')}</span></div>`);
-        });
-        if (d.truncated) chain.push('<div class="muted">Chain continues further.</div>');
-      } else if (d.resolved) {
-        chain.push('<div class="muted">No redirect — this link goes where it says.</div>');
-      }
-      (d.signals || []).forEach((s) => {
-        chain.push(`<div class="sig sev-${s.severity || 'none'}">`
-          + `<span class="dot">${s.severity === 'high' ? '!' : s.severity === 'medium' ? '~' : 'i'}</span>`
-          + `<span>${escapeHtml(s.label)}</span></div>`);
-      });
-      if (chain.length) parts.push(`<div class="chain">${chain.join('')}</div>`);
-    }
-
-    // Real, one-click paths to genuine .gov.in reporting/verification
-    // surfaces for verdicts a user would actually act on. These are the
-    // same official sources the backend directory tracks in
-    // engines/official_gov_verify.py - kept identical here so the hover
-    // card and the side panel never point to two different lists.
-    const HIGH_RISK = new Set(['L5_KNOWN_BAD', 'L4_IDENTITY_MISMATCH', 'L3_PAYMENT_RISK']);
-    if (HIGH_RISK.has(res.verdict)) {
-      parts.push(
-        '<div class="chain govlinks">' +
-        '<a href="https://www.cybercrime.gov.in/" target="_blank" rel="noopener">Report on cybercrime.gov.in ↗</a>' +
-        ' · <a href="https://scores.gov.in/" target="_blank" rel="noopener">SEBI SCORES ↗</a>' +
-        '</div>'
-      );
-    }
-
     refs.card.innerHTML = parts.join('');
   }
 
@@ -1250,15 +1217,24 @@
     const token = ++hoverToken;
     hoverAnchor = anchor;
 
+    renderHoverCard({url: href, host: new URL(href).hostname, verdict: 'L0_NO_SIGNALS', summary: 'Checking this link…'}, true);
+    positionHoverCard(anchor);
+    requestAnimationFrame(() => hoverRefs?.card.classList.add('in'));
+
     let res;
     try {
-      res = await chrome.runtime.sendMessage({
-        action: 'preflightLink', url: href, pageHost: window.location.hostname,
+      res = await sendRuntime({
+        action: 'preflightLink', url: href, pageHost: window.location.hostname, anchorText: anchor.textContent?.trim().slice(0, 500),
       });
     } catch {
-      return;                       // worker asleep or extension reloading
+      if (token === hoverToken) renderHoverCard({url:href, verdict:'L0_NO_SIGNALS', unavailable:true, summary:'Could not complete the check. Reload the extension and try again.'}, false);
+      return;
     }
-    if (token !== hoverToken || !res || res.error) return;
+    if (token !== hoverToken) return;
+    if (!res || res.error) {
+      renderHoverCard({url:href, verdict:'L0_NO_SIGNALS', unavailable:true, summary:'The link check is unavailable. Try again shortly.'}, false);
+      return;
+    }
 
     renderHoverCard(res, res.destination && !res.destination.refused && !res.destination.hops?.length);
     const refs = ensureHoverCard();
@@ -1281,6 +1257,10 @@
   // --- Message Listeners ---
 
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.action === 'clearAssessment') {
+      window.__phishermanLastAssessment = null;
+      removeOverlay(); sendResponse({ ok: true }); return false;
+    }
     if (message.action === 'snapshotPage') {
       try {
         const snapshot = buildSnapshot();
@@ -1357,7 +1337,7 @@
       // Tell the panel to drop its cached assessment rather than keep
       // rendering it beside a different conversation.
       try {
-        chrome.runtime.sendMessage({
+        sendRuntime({
           action: 'chatContextChanged',
           url: window.location.href,
           chatTitle: key.split('|')[0] || '',
@@ -1407,7 +1387,7 @@
         const localSummary = mergeLocalWhatsAppAssessments(flaggedRecords);
         showWhatsAppWarningV2(localSummary);
 
-        chrome.runtime.sendMessage({
+        sendRuntime({
           action: 'scanText',
           text: combinedText,
           url: window.location.href,
@@ -1661,7 +1641,8 @@
     const s = result?.phisherman_settings || {};
     if (s.submitGuard !== false) installSubmitGuard();
     if (s.linkHoverTooltips !== false) installLinkHoverTooltips();
-    installWhatsAppObserver(); // always on for WhatsApp Web
+    // The modular adapter is bootstrapped after all WhatsApp dependencies load.
+    // WhatsApp has one manifest-loaded modular observer, not the legacy observer.
   });
 
   let selectionScanTimer = null;
@@ -1680,7 +1661,7 @@
       try {
         const snapshot = await buildSelectionSnapshot(selectedText);
         if (!snapshot) return;
-        await chrome.runtime.sendMessage({
+        await sendRuntime({
           action: 'scanSelectionContext',
           payload: snapshot,
         });

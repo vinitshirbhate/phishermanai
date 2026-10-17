@@ -44,3 +44,4 @@ models/*.pth
 demo/
 tests/
 .venv
+eval/ui-chrome-profile/

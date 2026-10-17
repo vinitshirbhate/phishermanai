@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1332" height="1630" viewBox="0 0 1332 1630"><title>Phisherman AI — extension workflow</title><desc>Source-backed extension workflow with local checks, optional network enhancement, financial verification, storage and safeguards.</desc><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="#495057" stroke-width="1.5"/></marker></defs><rect width="1332" height="1630" fill="white"/><g font-family="Arial, Helvetica, sans-serif"><text x="36" y="62" font-size="38" fill="#343a40"><tspan x="36" dy="0">Phisherman AI — Extension Workflow</tspan></text>
+<text x="36" y="102" font-size="20" fill="#495057"><tspan x="36" dy="0">Chrome MV3 · on-device by default · optional server enhancement</tspan></text>
+<text x="36" y="164" font-size="24" fill="#1971c2"><tspan x="36" dy="0">1 · WHERE WE WATCH</tspan></text>
+<rect x="36" y="184" width="300" height="110" rx="14" fill="#a5d8ff" stroke="#1971c2" stroke-width="2" />
+<text x="54" y="219" font-size="21" fill="#1971c2"><tspan x="54" dy="0">Link hover</tspan></text>
+<text x="54" y="249" font-size="14" fill="#343a40"><tspan x="54" dy="0">Check links before clicking</tspan></text>
+<rect x="356" y="184" width="300" height="110" rx="14" fill="#a5d8ff" stroke="#1971c2" stroke-width="2" />
+<text x="374" y="219" font-size="21" fill="#1971c2"><tspan x="374" dy="0">Page / email</tspan></text>
+<text x="374" y="249" font-size="14" fill="#343a40"><tspan x="374" dy="0">Page signals or open email</tspan></text>
+<rect x="676" y="184" width="300" height="110" rx="14" fill="#a5d8ff" stroke="#1971c2" stroke-width="2" />
+<text x="694" y="219" font-size="21" fill="#1971c2"><tspan x="694" dy="0">Chats</tspan></text>
+<text x="694" y="249" font-size="14" fill="#343a40"><tspan x="694" dy="0">WhatsApp / Telegram messages</tspan></text>
+<rect x="996" y="184" width="300" height="110" rx="14" fill="#a5d8ff" stroke="#1971c2" stroke-width="2" />
+<text x="1014" y="219" font-size="21" fill="#1971c2"><tspan x="1014" dy="0">Selected input</tspan></text>
+<text x="1014" y="249" font-size="14" fill="#343a40"><tspan x="1014" dy="0">Quick check or verification</tspan></text>
+<path d="M 186 302 L 186 336" fill="none" stroke="#495057" stroke-width="2" marker-end="url(#arrow)" />
+<path d="M 506 302 L 506 336" fill="none" stroke="#495057" stroke-width="2" marker-end="url(#arrow)" />
+<path d="M 826 302 L 826 336" fill="none" stroke="#495057" stroke-width="2" marker-end="url(#arrow)" />
+<path d="M 1146 302 L 1146 336" fill="none" stroke="#495057" stroke-width="2" marker-end="url(#arrow)" />
+<rect x="36" y="348" width="1260" height="120" rx="14" fill="#f1f3f5" stroke="#495057" stroke-width="2" />
+<text x="54" y="383" font-size="21" fill="#495057"><tspan x="54" dy="0">2 · EXTRACT THE RIGHT CONTENT</tspan></text>
+<text x="54" y="415" font-size="16" fill="#343a40"><tspan x="54" dy="0">content_script.js + WhatsApp modules</tspan><tspan x="54" dy="21.6">Judge the message, not the whole inbox. No isolated email → no verdict.</tspan></text>
+<path d="M 666 476 L 666 516" fill="none" stroke="#495057" stroke-width="2" marker-end="url(#arrow)" />
+<text x="681" y="498" font-size="14" fill="#495057"><tspan x="681" dy="0">Snapshot</tspan></text>
+<rect x="36" y="530" width="1260" height="300" rx="14" fill="#ebfbee" stroke="#2f9e44" stroke-width="2" />
+<text x="60" y="576" font-size="26" fill="#2f9e44"><tspan x="60" dy="0">3 · ON-DEVICE CHECKS — background.js</tspan></text>
+<text x="60" y="612" font-size="19" fill="#343a40"><tspan x="60" dy="0">Local checks run first. Results appear immediately.</tspan></text>
+<rect x="60" y="635" width="288" height="146" rx="14" fill="#a5d8ff" stroke="#1971c2" stroke-width="2" />
+<text x="78" y="670" font-size="21" fill="#1971c2"><tspan x="78" dy="0">LINKS</tspan></text>
+<text x="78" y="700" font-size="14" fill="#343a40"><tspan x="78" dy="0">Real domain / lookalikes</tspan><tspan x="78" dy="18.900000000000002">Deceptive URLs</tspan></text>
+<rect x="368" y="635" width="288" height="146" rx="14" fill="#e5dbff" stroke="#6741d9" stroke-width="2" />
+<text x="386" y="670" font-size="21" fill="#6741d9"><tspan x="386" dy="0">IDENTITY</tspan></text>
+<text x="386" y="700" font-size="14" fill="#343a40"><tspan x="386" dy="0">Registration + UPI checks</tspan><tspan x="386" dy="18.900000000000002">Bundled URL model</tspan></text>
+<rect x="676" y="635" width="288" height="146" rx="14" fill="#ffec99" stroke="#e67700" stroke-width="2" />
+<text x="694" y="670" font-size="21" fill="#e67700"><tspan x="694" dy="0">SCAM CUES</tspan></text>
+<text x="694" y="700" font-size="14" fill="#343a40"><tspan x="694" dy="0">Money / urgency tactics</tspan><tspan x="694" dy="18.900000000000002">Credential-form risks</tspan></text>
+<rect x="984" y="635" width="288" height="146" rx="14" fill="#ffc9c9" stroke="#e03131" stroke-width="2" />
+<text x="1002" y="670" font-size="21" fill="#e03131"><tspan x="1002" dy="0">FILES</tspan></text>
+<text x="1002" y="700" font-size="14" fill="#343a40"><tspan x="1002" dy="0">Suspicious APK offers</tspan><tspan x="1002" dy="18.900000000000002">Filename + context only</tspan></text>
+<text x="60" y="812" font-size="17" fill="#2f9e44"><tspan x="60" dy="0">Output: score + signals + source + coverage</tspan></text>
+<path d="M 356 838 L 356 884" fill="none" stroke="#495057" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="8 6"/>
+<text x="371" y="860" font-size="14" fill="#495057"><tspan x="371" dy="0">Optional enhancement</tspan></text>
+<path d="M 1026 838 L 1026 884" fill="none" stroke="#495057" stroke-width="2" marker-end="url(#arrow)" />
+<text x="1041" y="860" font-size="14" fill="#495057"><tspan x="1041" dy="0">Local result</tspan></text>
+<rect x="36" y="896" width="620" height="224" rx="14" fill="#f1f3f5" stroke="#495057" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="56" y="940" font-size="24" fill="#495057"><tspan x="56" dy="0">4 · OPTIONAL SERVER</tspan></text>
+<text x="56" y="983" font-size="18" fill="#343a40"><tspan x="56" dy="0">On-device: no analysis network requests.</tspan><tspan x="56" dy="24.3">Local server: 127.0.0.1:8000.</tspan><tspan x="56" dy="24.3">Remote mode: backend → cloud fallback.</tspan><tspan x="56" dy="24.3">Remote checks can send page / message text.</tspan><tspan x="56" dy="24.3">Network failure keeps the local result.</tspan></text>
+<rect x="696" y="896" width="600" height="224" rx="14" fill="#ffec99" stroke="#e67700" stroke-width="2" />
+<text x="714" y="931" font-size="21" fill="#e67700"><tspan x="714" dy="0">5 · WHAT THE USER SEES</tspan></text>
+<text x="714" y="963" font-size="16" fill="#343a40"><tspan x="714" dy="0">Hover card: link findings</tspan><tspan x="714" dy="21.6">Trust island + badge: quick warning</tspan><tspan x="714" dy="21.6">Popup / side panel: score + evidence</tspan><tspan x="714" dy="21.6">Settings: mode + personal preferences</tspan></text>
+<rect x="36" y="1156" width="1260" height="152" rx="14" fill="#e5dbff" stroke="#6741d9" stroke-width="2" />
+<text x="60" y="1200" font-size="24" fill="#6741d9"><tspan x="60" dy="0">6 · FINANCIAL VERIFICATION</tspan></text>
+<text x="60" y="1244" font-size="19" fill="#343a40"><tspan x="60" dy="0">Selected input + consent → redact phone / email → server /verify → verdict + reasons</tspan><tspan x="60" dy="25.650000000000002">Requires local-server or remote mode. Result stays in memory, separate from the trust score.</tspan></text>
+<rect x="36" y="1344" width="620" height="174" rx="14" fill="#a5d8ff" stroke="#1971c2" stroke-width="2" />
+<text x="54" y="1379" font-size="21" fill="#1971c2"><tspan x="54" dy="0">LOCAL STORAGE</tspan></text>
+<text x="54" y="1411" font-size="16" fill="#343a40"><tspan x="54" dy="0">Settings · last 50 scan summaries</tspan><tspan x="54" dy="21.6">Personal site preferences · review queue</tspan><tspan x="54" dy="21.6">Financial verification results are not persisted.</tspan></text>
+<rect x="696" y="1344" width="600" height="174" rx="14" fill="#ffc9c9" stroke="#e03131" stroke-width="2" />
+<text x="714" y="1379" font-size="21" fill="#e03131"><tspan x="714" dy="0">SAFEGUARDS</tspan></text>
+<text x="714" y="1411" font-size="16" fill="#343a40"><tspan x="714" dy="0">Reject stale results after page / chat changes.</tspan><tspan x="714" dy="21.6">Preferences never hide strong evidence.</tspan><tspan x="714" dy="21.6">A score is not proof of safety.</tspan></text>
+<text x="36" y="1568" font-size="16" fill="#495057"><tspan x="36" dy="0">Solid arrows: normal flow · dashed: optional network path</tspan></text>
+<text x="36" y="1599" font-size="16" fill="#495057"><tspan x="36" dy="0">Based on extension source + docs/MVP.md · 3 October 2026</tspan></text></g></svg>

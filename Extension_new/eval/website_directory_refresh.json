@@ -1,0 +1,20 @@
+{
+  "fetchedAt": "2026-10-03",
+  "sources": [
+    {
+      "url": "https://igod.gov.in/",
+      "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1018)>"
+    },
+    {
+      "url": "https://www.india.gov.in/",
+      "hosts": 6
+    },
+    {
+      "url": "https://www.usa.gov/agency-index",
+      "hosts": 41
+    }
+  ],
+  "added": 45,
+  "reviewed": 47,
+  "total": 953
+}

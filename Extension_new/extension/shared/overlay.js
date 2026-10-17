@@ -121,7 +121,14 @@
         el.setAttribute("tabindex", "0");
         el.textContent = LABEL[verdict.verdict] || "Check";
         el.title = (verdict.codes || []).map((c) => c.summary).filter(Boolean).join(" ");
-        if (onClick) el.addEventListener("click", () => onClick(verdict));
+        if (onClick) {
+          el.addEventListener("click", () => onClick(verdict));
+          el.addEventListener("keydown", event => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault(); onClick(verdict);
+            }
+          });
+        }
         layer.appendChild(el);
         badges.set(id, { el: el, node: messageNode });
         schedule();

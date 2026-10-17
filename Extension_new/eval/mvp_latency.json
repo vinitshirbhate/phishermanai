@@ -1,0 +1,7 @@
+{
+  "scope": "30 warm scans in Node VM with mocked browser storage and snapshots; not live-browser latency",
+  "samples": 30,
+  "p50_ms": 0.578200000000038,
+  "p95_ms": 1.6961000000000013,
+  "max_ms": 2.05580000000009
+}

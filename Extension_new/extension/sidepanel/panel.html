@@ -19,11 +19,21 @@
           <p class="logo-tagline">Trust by Design</p>
         </div>
       </div>
+      <div class="workspace-actions">
+        <button type="button" class="btn-ghost" id="open-side-panel">Open side panel</button>
+        <button type="button" class="btn-ghost" id="workspace-settings">Settings</button>
+      </div>
       <div id="connection-status" class="connection-status offline">
         <span class="status-dot"></span>
         <span class="status-text">Checking...</span>
       </div>
     </header>
+
+    <section class="card workspace-overview" aria-label="Available checks">
+      <div class="feature-chips"><span>Websites</span><span>Links</span><span>Messages</span><span>Financial claims</span></div>
+      <p class="muted-text">Page protection and selected-input verification in one workspace.</p>
+      <p id="workspace-mode" class="muted-text">Loading analysis mode…</p>
+    </section>
 
     <section class="card" id="trust-section">
       <h2 class="card-title">Current Page</h2>
@@ -43,6 +53,46 @@
         </div>
       </div>
       <button class="btn-primary" id="scan-btn">Scan This Page</button>
+      <p id="coverage-notice" class="muted-text" role="status"></p>
+    </section>
+
+    <section class="card" id="input-workspace">
+      <h2 class="card-title">Check a message, claim, or link</h2>
+      <p class="muted-text">Paste text from an email, chat, website, or investment offer. Local checks work without a server.</p>
+      <label class="input-label" for="check-input">Selected input</label>
+      <textarea id="check-input" rows="4" maxlength="15000" placeholder="Paste a suspicious message or website link…"></textarea>
+      <div class="workspace-actions">
+        <button type="button" class="btn-ghost" id="use-selection">Use selected text</button>
+        <button type="button" class="btn-primary" id="check-input-local">Check on device</button>
+      </div>
+      <div id="input-local-result" class="workspace-result" hidden aria-live="polite"></div>
+      <div class="verifier-controls">
+        <h3>Verify against financial records</h3>
+        <p class="muted-text">Optional deeper verification using the financial API and its exchange-filing corpus. This is separate from the browser trust score.</p>
+        <label class="consent-label"><input type="checkbox" id="verify-consent"> Send only this input to my configured verifier, with phone numbers and email addresses redacted.</label>
+        <div class="workspace-actions">
+          <button type="button" class="btn-ghost" id="check-verifier">Check verifier</button>
+          <button type="button" class="btn-primary" id="verify-input">Verify financial claim</button>
+        </div>
+        <p id="verifier-status" class="muted-text" role="status">Not contacted. Choose Local server or Remote mode to use the verifier.</p>
+      </div>
+      <p id="workspace-feedback" class="muted-text" role="status"></p>
+    </section>
+
+    <section class="card" id="financial-result-section" hidden>
+      <h2 class="card-title">Financial verification</h2>
+      <div id="financial-result" aria-live="polite"></div>
+    </section>
+
+    <section class="card" id="pdf-workspace">
+      <h2 class="card-title">Check a PDF</h2>
+      <p class="muted-text">Choose a PDF to check its text and links. Chrome's PDF viewer cannot be scanned directly.</p>
+      <label class="input-label" for="pdf-file">PDF document (up to 12 MB)</label>
+      <input id="pdf-file" type="file" accept=".pdf,application/pdf">
+      <label class="consent-label"><input type="checkbox" id="pdf-consent"> Send this PDF to my configured server for extraction. The full document is sent, without redaction.</label>
+      <button type="button" class="btn-primary" id="check-pdf">Check PDF and links</button>
+      <p id="pdf-status" class="muted-text" role="status"></p>
+      <div id="pdf-results" aria-live="polite"></div>
     </section>
 
     <section class="card" id="signals-section" style="display: none;">
@@ -112,12 +162,13 @@
     <footer class="panel-footer">
       <button class="btn-ghost" id="copy-evidence-btn" style="display: none;">Copy Evidence</button>
       <a href="#" id="settings-link" class="settings-link">Settings</a>
-      <span class="version-text">v6.0.0</span>
+      <span class="version-text">v6.3.0</span>
     </footer>
   </div>
 
   <!-- signal_polarity must load first: panel.js calls it at render time. -->
   <script src="../shared/signal_polarity.js"></script>
   <script src="panel.js"></script>
+  <script src="workspace.js"></script>
 </body>
 </html>

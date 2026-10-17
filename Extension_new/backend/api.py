@@ -13,7 +13,7 @@ Endpoints:
     GET  /api/stats            - analysis statistics
     GET  /api/history          - recent analysis results
 
-Runs on port 8798.
+Included by main.py in the unified API on port 8000.
 """
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ from typing import Optional
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from engines import trust_engine
 from engines import fact_checker
@@ -62,7 +62,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Chrome extensions use chrome-extension:// origins
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -81,7 +81,9 @@ _stats = {
 }
 
 _boot_time = time.time()
-_scamgate = ScamGate(auto_escalate=True, max_tier=2)
+_scamgate = ScamGate(auto_escalate=True,
+                     max_tier=int(os.environ.get('SCAMGATE_MAX_TIER', '0')),
+                     skip_l1=False)
 
 # --- Local SQLite store + bundled reference data (F-B1 collision substrate) ---
 _DATA_DIR = Path(__file__).resolve().parent / "data"
@@ -137,6 +139,7 @@ class PageAnalysisRequest(BaseModel):
     title: str = ""
     meta_description: str = ""
     form_fields: Optional[list[str]] = None
+    signals: dict = Field(default_factory=dict)
 
     model_config = {"json_schema_extra": {
         "examples": [{
@@ -296,7 +299,9 @@ async def analyze_page(req: PageAnalysisRequest):
         text=req.text,
         title=req.title,
         meta_description=req.meta_description,
-        form_fields=req.form_fields,
+        form_fields=req.form_fields or [name for key, name in
+            [('hasPassword', 'password'), ('hasEmail', 'email'), ('hasCc', 'credit card')]
+            if req.signals.get(key)],
     )
     result = verdict.to_dict()
     result["securities"] = _securities_block(
@@ -806,6 +811,36 @@ async def verify_official_sources(category: Optional[str] = None):
 
 
 # --- Main ---
+
+class WebsiteReviewRequest(BaseModel):
+    hostname: str = Field(min_length=3, max_length=253)
+    reasons: list[str] = Field(default_factory=list, max_length=5)
+
+    @field_validator('hostname')
+    @classmethod
+    def valid_hostname(cls, value):
+        import re
+        value = value.lower().rstrip('.')
+        if not re.fullmatch(r'[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?', value) or '..' in value or '.' not in value:
+            raise ValueError('Provide a hostname without a URL, path, or credentials')
+        return value
+
+    @field_validator('reasons')
+    @classmethod
+    def limited_reasons(cls, value):
+        if any(len(reason) > 300 for reason in value):
+            raise ValueError('Each warning reason must be at most 300 characters')
+        return value
+
+
+@app.post('/api/reviews', status_code=202)
+async def submit_website_review(req: WebsiteReviewRequest):
+    if _store is None:
+        raise HTTPException(status_code=503, detail='Review storage unavailable')
+    payload = json.dumps(req.model_dump(), sort_keys=True)
+    review_id = hashlib.sha256(payload.encode('utf-8')).hexdigest()
+    return _store.submit_review(review_id, req.hostname, req.reasons)
+
 
 def main():
     """Run the server directly."""

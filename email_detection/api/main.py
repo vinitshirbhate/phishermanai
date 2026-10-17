@@ -34,7 +34,7 @@ from fastapi.responses import JSONResponse, Response
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from api.schemas import (
+from .schemas import (
     EntityResponse,
     FraudCluster,
     HealthResponse,

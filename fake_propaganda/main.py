@@ -6,8 +6,7 @@ from unittest import result
 import requests
 
 
-FIRECRAWL_API_KEY="fc-cd6353d1f44f49859f853bdd9de00363"
-
+FIRECRAWL_API_KEY = os.environ.get("FIRECRAWL_API_KEY", "")
 FIRECRAWL_SCRAPE_URL = "https://api.firecrawl.dev/v2/scrape"
 FIRECRAWL_SEARCH_URL = "https://api.firecrawl.dev/v2/search"
 

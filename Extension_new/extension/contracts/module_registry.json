@@ -4,7 +4,7 @@
     "name": "Core Guard",
     "tier": "free",
     "default_enabled": true,
-    "description": "Baseline browser scam detection, page review, and evidence export.",
+    "description": "Local-first browser checks, exact-host preferences, optional enhanced analysis, and explicit pending feedback submission.",
     "capabilities": [
       "page.context.read",
       "scan.quick",
@@ -15,14 +15,17 @@
       "page_text_snapshot",
       "url",
       "domain",
-      "risk_result"
+      "risk_result",
+      "personal_website_preference",
+      "website_review_request"
     ],
     "approval_required": false,
     "network_hosts": [
-      "http://127.0.0.1:8799/*",
+      "http://127.0.0.1:8000/*",
       "https://phishermanai-1.onrender.com/*"
     ],
-    "integrity_sha256": "4992970232bcb583592bc907335db0a2c98bc7c8996c6042fe401e2cacfdec33"
+    "integrity_sha256": "780faa8b341c262730b89005708073a563c5f5b84ecadaa3ada7d65a81fcf27b",
+    "network_policy": "No analysis requests in default local mode; modes gate backend/cloud requests. Feedback submission is initiated in settings."
   },
   {
     "id": "factcheck_lane",
@@ -43,10 +46,10 @@
     ],
     "approval_required": true,
     "network_hosts": [
-      "http://127.0.0.1:8799/*",
+      "http://127.0.0.1:8000/*",
       "https://phishermanai-1.onrender.com/*"
     ],
-    "integrity_sha256": "e2a63747a1d8c5f1b80173c7fa61e629ea5fde4acba4b5b622f60846fd0af382"
+    "integrity_sha256": "386be4d81904979252d9e5bf73df2ace73ca50f6ebf5a267381c47eb08776853"
   },
   {
     "id": "family_guardian",
@@ -67,10 +70,10 @@
     ],
     "approval_required": true,
     "network_hosts": [
-      "http://127.0.0.1:8799/*",
+      "http://127.0.0.1:8000/*",
       "https://phishermanai-1.onrender.com/*"
     ],
-    "integrity_sha256": "cdb5ee25dfa7444f28d7cfb0f96ac7ce1ccbdc0fb98337310efae1b6f1ab8f65"
+    "integrity_sha256": "a06da05683095f438d066d3462c224f067b54971429b40e85f59deeeb3254aeb"
   },
   {
     "id": "glass_console",
@@ -88,10 +91,10 @@
     ],
     "approval_required": true,
     "network_hosts": [
-      "http://127.0.0.1:8799/*",
+      "http://127.0.0.1:8000/*",
       "https://phishermanai-1.onrender.com/*"
     ],
-    "integrity_sha256": "779c6f4cacdcea68b508b394697b20c598c93fd7903f85a84ecfe611a3f72b26"
+    "integrity_sha256": "efc69c45f0790ac8850c4da4298e9e6b6f51000271153a9cbea123746e40245d"
   },
   {
     "id": "recovery_rail",
@@ -115,10 +118,10 @@
     ],
     "approval_required": false,
     "network_hosts": [
-      "http://127.0.0.1:8799/*",
+      "http://127.0.0.1:8000/*",
       "https://phishermanai-1.onrender.com/*"
     ],
-    "integrity_sha256": "6d61770b6497a4d1145fe11630c13f0b0644f11cb5f344fe25d2cacc9a4fb6c1"
+    "integrity_sha256": "343f7632ed91754a7780ab23571f9e3af1746487ceb44df8fefe8a0f55bf2121"
   },
   {
     "id": "channel_identity",
@@ -141,10 +144,10 @@
     ],
     "approval_required": true,
     "network_hosts": [
-      "http://127.0.0.1:8799/*",
+      "http://127.0.0.1:8000/*",
       "https://phishermanai-1.onrender.com/*"
     ],
-    "integrity_sha256": "2b67eee7c6cfda4a336e769d7e200c85d6e1976c24ea63b2110aaa7fb02f7eb8"
+    "integrity_sha256": "f4fd9b18a1ee6ee2e76d67a42db94ac0a0c5381862b250054406f23f84653266"
   },
   {
     "id": "provenance_lane",
@@ -166,10 +169,10 @@
     ],
     "approval_required": true,
     "network_hosts": [
-      "http://127.0.0.1:8799/*",
+      "http://127.0.0.1:8000/*",
       "https://phishermanai-1.onrender.com/*"
     ],
-    "integrity_sha256": "3eb1edc06f860ce3ad26edb64be5c914305919c069cc4e56a0b65846b1d90da6"
+    "integrity_sha256": "4b42d2580afe4c1b6df1e671b90ea2feed560e02f2aaca1dd6221a705ff77871"
   },
   {
     "id": "telegram_companion",
@@ -189,10 +192,10 @@
     ],
     "approval_required": true,
     "network_hosts": [
-      "http://127.0.0.1:8799/*",
+      "http://127.0.0.1:8000/*",
       "https://phishermanai-1.onrender.com/*"
     ],
-    "integrity_sha256": "50929c42b06e82f5077507978ae582905a6fd4eb841eab4e12b1e7b1f439df7b"
+    "integrity_sha256": "f38f5e13112b5f95a0112f72bc7c7433b908fe386105dfc4977d84a7fd7fd3ac"
   },
   {
     "id": "securities_identity",
@@ -220,9 +223,29 @@
     ],
     "approval_required": false,
     "network_hosts": [
-      "http://127.0.0.1:8799/*",
+      "http://127.0.0.1:8000/*",
       "https://phishermanai-1.onrender.com/*"
     ],
-    "integrity_sha256": "f6fb21c10005c324376679d680fdaefee0a533c501c7e6e5d4ef856ef4eb9333"
+    "integrity_sha256": "221fa8270d0f3f54b3d6475152e6e35195ab670c437d2e01b146ad2e6bca8048"
+  },
+  {
+    "id": "selected_financial_verifier",
+    "name": "Selected Financial Verifier",
+    "tier": "mvp",
+    "default_enabled": false,
+    "description": "Explicit selected-input verification against the separate financial filing API.",
+    "capabilities": [
+      "factcheck.lookup"
+    ],
+    "approval_required": true,
+    "data_classes": [
+      "selected_text_redacted",
+      "filing_verification_result"
+    ],
+    "network_hosts": [
+      "http://127.0.0.1:8000/*"
+    ],
+    "network_policy": "Per-input opt-in; analysis mode and endpoint validation; no credentials or redirects.",
+    "integrity_sha256": "d070d2ce900435bc8e6ab74097acd17a1f7b1aa262c5483ed2f641cbe015475a"
   }
 ]

@@ -112,6 +112,7 @@
         }
         const ms = now() - t0;
         timings.messages.push(Number(ms.toFixed(3)));
+        if (timings.messages.length > 1000) timings.messages.shift();
         if (ms > BUDGET_MESSAGE_MS) timings.over_message_budget++;
 
         if (v && v.badge && overlay) overlay.addBadge(row, v, deps.onBadgeClick);
@@ -120,6 +121,7 @@
 
       const batchMs = now() - batchStart;
       timings.batches.push(Number(batchMs.toFixed(3)));
+      if (timings.batches.length > 100) timings.batches.shift();
       if (batchMs > BUDGET_BATCH_MS) timings.over_batch_budget++;
     }
 
@@ -161,7 +163,10 @@
       if (typeof IntersectionObserver !== "undefined") {
         io = new IntersectionObserver((entries) => {
           for (const e of entries) {
-            if (e.isIntersecting) visible.add(e.target); else visible.delete(e.target);
+            if (e.isIntersecting) {
+              visible.add(e.target); pending.add(e.target);
+              if (debounce === null) debounce = setTimeout(processBatch, DEBOUNCE_MS);
+            } else visible.delete(e.target);
           }
         }, { root: scroll, threshold: 0.01 });
       }
@@ -175,6 +180,10 @@
 
       mo = new MutationObserver((muts) => {
         for (const m of muts) {
+          // Edits/deletions often replace text inside an existing row.
+          const target = m.target?.nodeType === 1 ? m.target : m.target?.parentElement;
+          const changedRow = target?.closest?.('[role="row"], div[data-id]');
+          if (changedRow) pending.add(changedRow);
           for (const n of m.addedNodes) for (const row of _rowsIn(n)) {
             if (io) io.observe(row);
             pending.add(row);
@@ -191,7 +200,7 @@
       // subtree + childList only. NOT attributes: WhatsApp rewrites attributes
       // constantly for presence and read receipts, and observing them would fire
       // continuously while telling us nothing about new messages.
-      mo.observe(scroll, { childList: true, subtree: true });
+      mo.observe(scroll, { childList: true, subtree: true, characterData: true });
 
       if (scroll && overlay) scroll.addEventListener("scroll", overlay.reposition, { passive: true });
       return h;

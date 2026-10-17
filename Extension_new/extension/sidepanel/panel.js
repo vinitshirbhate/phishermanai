@@ -80,7 +80,7 @@ function renderTrustScore(score) {
 
 function renderRiskBadge(level) {
   const badge = document.getElementById('risk-badge');
-  badge.textContent = level;
+  badge.textContent = level === 'SAFE' ? 'No strong signals' : level;
   badge.className = 'risk-badge ' + level.toLowerCase();
 }
 
@@ -341,6 +341,15 @@ function renderDeepAnalysis(details) {
 
 function renderAssessment(assessment) {
   if (!assessment) return;
+  if (assessment.suppressed) {
+    clearAssessment(assessment.verdict || 'This message could not be isolated for checking.');
+    document.getElementById('coverage-notice').textContent = 'Not checked: insufficient message context.';
+    return;
+  }
+  document.getElementById('coverage-notice').textContent = [assessment.coverage,
+    assessment.processingMs != null ? 'Local scoring: ' + assessment.processingMs + ' ms' : '',
+    assessment.ml?.available ? 'URL model available (supporting evidence)' : 'URL model unavailable',
+    assessment.personalException ? 'Personal website preference active' : ''].filter(Boolean).join(' · ');
   currentAssessment = assessment;
 
   renderTrustScore(assessment.trustScore);
@@ -644,7 +653,7 @@ async function checkConnection() {
     text.textContent = 'Backend Online';
   } else {
     status.className = 'connection-status offline';
-    text.textContent = 'Backend Offline';
+    text.textContent = result?.analysisMode === 'local' ? 'On-device checks' : 'Local checks available; server unavailable';
   }
 }
 
@@ -796,9 +805,16 @@ function clearAssessment(notice) {
 }
 
 chrome.runtime.onMessage.addListener((message) => {
+  if (message?.action === 'assessmentUpdated') {
+    getActiveTab().then(tab => {
+      if (tab?.id === message.tabId && tab.url === message.assessment.url) renderAssessment(message.assessment);
+    });
+  }
   if (message?.action === 'panelClearAssessment') {
     const who = message.chatTitle ? ` — ${message.chatTitle}` : '';
-    clearAssessment(`Conversation changed${who}. Scan to assess this chat.`);
+    getActiveTab().then(tab => {
+      if (!message.tabId || tab?.id === message.tabId) clearAssessment(`Conversation changed${who}. Scan to assess this chat.`);
+    });
   }
 });
 

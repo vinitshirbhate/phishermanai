@@ -10,6 +10,7 @@ manipulation detection + form analysis. Fail-open on all sub-engines.
 from __future__ import annotations
 
 import logging
+import os
 import time
 from dataclasses import dataclass, field
 from typing import Optional
@@ -30,7 +31,9 @@ _scamgate: ScamGate | None = None
 def _get_scamgate() -> ScamGate:
     global _scamgate
     if _scamgate is None:
-        _scamgate = ScamGate(auto_escalate=True, max_tier=2)
+        _scamgate = ScamGate(auto_escalate=True,
+                            max_tier=int(os.environ.get('SCAMGATE_MAX_TIER', '0')),
+                            skip_l1=False)
     return _scamgate
 
 

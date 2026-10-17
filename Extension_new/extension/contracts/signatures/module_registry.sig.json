@@ -4,7 +4,7 @@
   "algorithm": "ecdsa-p256-sha256",
   "key_id": "phisherman-sandbox-dev-2026-08",
   "key_fingerprint_sha256": "3227b46e5504abc5f53ef2df56904f6ed6777b741f7d4dffcf06ac1bf912a141",
-  "payload_sha256": "53b6260830465223cc6e97934325133b5adbb42197916fc5bba6e453b0e8945d",
-  "signature_b64": "MEUCIQC9Xe9M6+ElOcGbrRkuIgkdUT6zqF72Fp9b0Gl9LAk/3AIgaanQ2Wi7TgUAPvzyXKRPDwk8hFoLDsxQGJHtWTZaLgI=",
-  "signed_at": "2026-08-03T20:06:40.497302+00:00"
+  "payload_sha256": "ecc365898bc1e602983c01f7de5071bca5908a5089cf429ff159dffb5947ea28",
+  "signature_b64": "MEUCIB/LImt+oaSyaLjK2mO8TFWg9MdbKPwR/WsTj4qbzpwtAiEAt0KKEZpYBM/RjgUffxMQK1pDAFK+OwGe4tBsUpNf7Ng=",
+  "signed_at": "2026-10-02T18:50:15.258590+00:00"
 }

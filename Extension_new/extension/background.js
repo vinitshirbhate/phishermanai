@@ -15,6 +15,9 @@
 //   securities_check     -> preflight/identity
 importScripts(
   'shared/normalise.js',
+  'shared/user_policy.js',
+  'shared/financial_verifier.js',
+  'data/website_allowlist.js',
   'shared/signal_polarity.js',
   'shared/apk_check.js',
   'preflight/psl.js',
@@ -310,7 +313,10 @@ async function scoreUrlML(url) {
 }
 
 const DEFAULT_SETTINGS = {
-  backendUrl: 'https://phishermanai-1.onrender.com',
+  backendUrl: 'http://127.0.0.1:8000',
+  verifierUrl: 'http://127.0.0.1:8000',
+  analysisMode: 'local',
+  quietBrowsing: true,
   autoScan: true,
   submitGuard: true,
   overlayPosition: 'bottom-right',
@@ -332,6 +338,7 @@ const CLOUD_API_ORIGIN = 'https://chetana.activemirror.ai';
 const CLOUD_API = `${CLOUD_API_ORIGIN}/api/scan/full`;
 
 const tabCache = new Map();
+const financialResults = new Map(); // ephemeral; no selected input is written to storage
 const autoScanTimers = new Map();
 let backendOnline = false;
 let settings = { ...DEFAULT_SETTINGS };
@@ -399,7 +406,7 @@ const LOCAL_GATE_RULES = [
   { re: /digital.{0,10}arrest|cbi.{0,20}notice|arrest.{0,10}warrant|customs.{0,20}seize|police.{0,20}case.{0,20}your/i,
     signal: 'Digital arrest scam pattern', score: -38 },
   // OTP theft
-  { re: /(?:share|send|give|enter|tell).{0,30}otp|otp.{0,30}(?:share|send|give)|one.time.password/i,
+  { re: /\b(?:share|send|give|tell)\b.{0,30}\b(?:otp|one[ -]time password)\b|\botp\b.{0,30}\b(?:share|send|give)\b/i,
     signal: 'OTP solicitation', score: -25 },
   // Investment / task scam
   { re: /guaranteed.{0,15}return|daily.{0,10}profit|(?:easy|simple).{0,15}earn|task.{0,15}earn.{0,15}(?:\$|₹|rs\.?)/i,
@@ -426,13 +433,13 @@ const LOCAL_GATE_RULES = [
   { re: /scan.{0,20}(?:qr|code).{0,20}(?:receive|credit|refund|payment)|qr.{0,20}(?:refund|collect|receive)/i,
     signal: 'QR code payment redirection', score: -28 },
   // Deepfake / video verification lure
-  { re: /deepfake|ai.{0,10}video|video.{0,15}verify|video.{0,15}kyc|face.{0,15}verify|live.{0,10}video.{0,10}call/i,
+  { re: /\b(?:join|start|attend)\b.{0,25}\bvideo call\b.{0,30}\b(?:kyc|verification)\b|\bvideo\b.{0,15}\bkyc\b.{0,20}\b(?:now|required|mandatory)\b/i,
     signal: 'Deepfake or video-verification lure', score: -18 },
   // WhatsApp / Telegram fraud recruitment
   { re: /whatsapp.{0,20}(?:job|part.?time|investment|trading|task)|telegram.{0,20}(?:group|channel|investment|signal|trading)/i,
     signal: 'Messaging-platform scam funnel', score: -22 },
   // Fake authority / regulator pressure
-  { re: /ed.{0,15}notice|cbi.{0,15}summons|income.tax.{0,20}notice|rbi.{0,20}freeze|cyber.?cell.{0,20}case/i,
+  { re: /\bed\b.{0,15}\bnotice\b|\bcbi\b.{0,15}\bsummons\b|\bincome[ -]tax\b.{0,20}\bnotice\b|\brbi\b.{0,20}\bfreeze\b|\bcyber[ -]?cell\b.{0,20}\bcase\b/i,
     signal: 'Government or regulator impersonation', score: -35 },
   // SIM / mobile block scam
   { re: /sim.{0,15}block|mobile.{0,15}number.{0,15}suspend|reactivate.{0,15}sim/i,
@@ -453,1044 +460,7 @@ const LOCAL_GATE_RULES = [
 // banking, and financial infrastructure domains. Matching is done as
 // host === base || host.endsWith('.' + base) so typosquats such as
 // google.com.phish.ru do not pass.
-const TRUSTED_HOSTS = [
-  // Local / development
-  'localhost',
-  'localhost.localdomain',
-  '127.0.0.1',
-  '0.0.0.0',
-  '::1',
-
-  // Your own deployment targets
-  'onrender.com',
-  'render.com',
-  'vercel.app',
-  'vercel.com',
-  'github.dev',
-
-  // Indian government & regulators
-  'gov.in',
-  'nic.in',
-  'india.gov.in',
-  'mygov.in',
-  'pib.gov.in',
-  'digilocker.gov.in',
-  'uidai.gov.in',
-  'incometax.gov.in',
-  'incometaxindia.gov.in',
-  'gst.gov.in',
-  'gstn.org.in',
-  'epfindia.gov.in',
-  'esic.gov.in',
-  'parivahan.gov.in',
-  'passportindia.gov.in',
-  'indiapost.gov.in',
-  'mca.gov.in',
-  'eci.gov.in',
-  'nvsp.in',
-  'cbic.gov.in',
-  'dgft.gov.in',
-  'trai.gov.in',
-  'dot.gov.in',
-  'meity.gov.in',
-  'sancharsaathi.gov.in',
-  'cybercrime.gov.in',
-  'cert-in.org.in',
-  'mohfw.gov.in',
-  'nha.gov.in',
-  'abdm.gov.in',
-  'pmjay.gov.in',
-  'maharashtra.gov.in',
-  'mahaonline.gov.in',
-  'pcmcindia.gov.in',
-  'punecorporation.org',
-
-  // Financial regulators & market infrastructure
-  'sebi.gov.in',
-  'rbi.org.in',
-  'rbiretaildirect.org.in',
-  'irdai.gov.in',
-  'pfrda.gov.in',
-  'npstrust.org.in',
-  'dicgc.org.in',
-  'ibbi.gov.in',
-  'nabard.org',
-  'sidbi.in',
-  'nseindia.com',
-  'bseindia.com',
-  'msei.in',
-  'mcxindia.com',
-  'ncdex.com',
-  'nsdl.co.in',
-  'nsdl.com',
-  'cdslindia.com',
-  'amfiindia.com',
-  'camsonline.com',
-  'kfintech.com',
-  'mfcentral.com',
-  'mfuindia.com',
-  'protean-tinpan.com',
-  'tin-nsdl.com',
-  'cra-nsdl.com',
-  'utiitsl.com',
-  'npci.org.in',
-  'bhimupi.org.in',
-
-  // Credit bureaus
-  'cibil.com',
-  'transunioncibil.com',
-  'experian.in',
-  'equifax.co.in',
-  'crifhighmark.com',
-
-  // Indian banks
-  'sbi.co.in',
-  'onlinesbi.sbi',
-  'onlinesbi.com',
-  'sbicard.com',
-  'hdfcbank.com',
-  'icicibank.com',
-  'axisbank.com',
-  'kotak.com',
-  'bankofbaroda.in',
-  'bankofbaroda.co.in',
-  'pnbindia.in',
-  'canarabank.com',
-  'unionbankofindia.co.in',
-  'bankofindia.co.in',
-  'centralbankofindia.co.in',
-  'indianbank.in',
-  'iob.in',
-  'ucobank.com',
-  'bankofmaharashtra.in',
-  'psbindia.com',
-  'idbibank.in',
-  'indusind.com',
-  'yesbank.in',
-  'idfcfirstbank.com',
-  'federalbank.co.in',
-  'rblbank.com',
-  'southindianbank.com',
-  'karurvysyabank.com',
-  'cityunionbank.com',
-  'dcbbank.com',
-  'csb.co.in',
-  'tmb.in',
-  'jkbank.com',
-  'aubank.in',
-  'bandhanbank.com',
-  'equitasbank.com',
-  'ujjivansfb.in',
-  'suryodaybank.com',
-  'esafbank.com',
-  'janabank.com',
-  'finobank.com',
-  'paytmbank.com',
-  'standardchartered.co.in',
-  'hsbc.co.in',
-  'citibank.co.in',
-  'dbs.com',
-
-  // Payments & fintech
-  'paytm.com',
-  'phonepe.com',
-  'razorpay.com',
-  'billdesk.com',
-  'ccavenue.com',
-  'payu.in',
-  'cashfree.com',
-  'instamojo.com',
-  'juspay.in',
-  'pinelabs.com',
-  'mobikwik.com',
-  'freecharge.in',
-  'cred.club',
-  'bharatpe.com',
-  'navi.com',
-  'visa.com',
-  'mastercard.com',
-  'americanexpress.com',
-  'rupay.co.in',
-  'paypal.com',
-  'stripe.com',
-  'wise.com',
-
-  // Broking, investing & market data
-  'zerodha.com',
-  'groww.in',
-  'upstox.com',
-  'angelone.in',
-  'icicidirect.com',
-  '5paisa.com',
-  'motilaloswal.com',
-  'hdfcsec.com',
-  'kotaksecurities.com',
-  'sharekhan.com',
-  'iifl.com',
-  'iiflsecurities.com',
-  'dhan.co',
-  'fyers.in',
-  'paytmmoney.com',
-  'indmoney.com',
-  'smallcase.com',
-  'kuvera.in',
-  'etmoney.com',
-  'tradingview.com',
-  'screener.in',
-  'tickertape.in',
-  'moneycontrol.com',
-  'valueresearchonline.com',
-  'chittorgarh.com',
-  'morningstar.in',
-  'investopedia.com',
-
-  // Insurance
-  'licindia.in',
-  'sbilife.co.in',
-  'hdfclife.com',
-  'iciciprulife.com',
-  'maxlifeinsurance.com',
-  'tataaia.com',
-  'icicilombard.com',
-  'bajajallianz.com',
-  'hdfcergo.com',
-  'tataaig.com',
-  'godigit.com',
-  'acko.com',
-  'starhealth.in',
-  'nivabupa.com',
-  'careinsurance.com',
-  'policybazaar.com',
-  'newindia.co.in',
-  'orientalinsurance.org.in',
-  'uiic.co.in',
-
-  // Google
-  'google.com',
-  'google.co.in',
-  'googleapis.com',
-  'gstatic.com',
-  'googleusercontent.com',
-  'youtube.com',
-  'youtu.be',
-  'gmail.com',
-  'android.com',
-  'chromium.org',
-
-  // Microsoft
-  'microsoft.com',
-  'microsoftonline.com',
-  'office.com',
-  'office365.com',
-  'live.com',
-  'outlook.com',
-  'msn.com',
-  'bing.com',
-  'sharepoint.com',
-  'skype.com',
-  'xbox.com',
-  'windows.com',
-  'azure.com',
-  'visualstudio.com',
-  'linkedin.com',
-  'licdn.com',
-
-  // Apple / Amazon / Meta
-  'apple.com',
-  'icloud.com',
-  'me.com',
-  'amazon.in',
-  'amazon.com',
-  'primevideo.com',
-  'audible.in',
-  'meta.com',
-  'facebook.com',
-  'fb.com',
-  'messenger.com',
-  'instagram.com',
-  'threads.net',
-  'threads.com',
-  'whatsapp.com',
-  'whatsapp.net',
-  'web.whatsapp.com',
-
-  // Other major platforms
-  'x.com',
-  'twitter.com',
-  'telegram.org',
-  'web.telegram.org',
-  'signal.org',
-  'reddit.com',
-  'quora.com',
-  'pinterest.com',
-  'snapchat.com',
-  'tumblr.com',
-  'medium.com',
-  'substack.com',
-  'wikipedia.org',
-  'wikimedia.org',
-  'wiktionary.org',
-  'archive.org',
-  'britannica.com',
-  'goodreads.com',
-  'imdb.com',
-
-  // Browsers, CDNs & internet infrastructure
-  'mozilla.org',
-  'firefox.com',
-  'brave.com',
-  'opera.com',
-  'vivaldi.com',
-  'duckduckgo.com',
-  'cloudflare.com',
-  'akamai.com',
-  'fastly.com',
-  'jsdelivr.net',
-  'unpkg.com',
-  'letsencrypt.org',
-  'w3.org',
-  'ietf.org',
-  'iana.org',
-
-  // Email & cloud storage
-  'yahoo.com',
-  'rediff.com',
-  'rediffmail.com',
-  'proton.me',
-  'protonmail.com',
-  'tutanota.com',
-  'zoho.com',
-  'zoho.in',
-  'dropbox.com',
-  'box.com',
-  'wetransfer.com',
-  'mega.nz',
-
-  // Work & collaboration
-  'zoom.us',
-  'zoom.com',
-  'webex.com',
-  'slack.com',
-  'discord.com',
-  'notion.so',
-  'notion.com',
-  'figma.com',
-  'canva.com',
-  'miro.com',
-  'atlassian.com',
-  'atlassian.net',
-  'trello.com',
-  'asana.com',
-  'monday.com',
-  'clickup.com',
-  'airtable.com',
-  'calendly.com',
-  'docusign.com',
-  'salesforce.com',
-  'hubspot.com',
-  'shopify.com',
-  'wordpress.org',
-
-  // Developer & package ecosystems
-  'github.com',
-  'githubusercontent.com',
-  'gitlab.com',
-  'bitbucket.org',
-  'stackoverflow.com',
-  'stackexchange.com',
-  'superuser.com',
-  'serverfault.com',
-  'npmjs.com',
-  'pypi.org',
-  'pythonhosted.org',
-  'rubygems.org',
-  'packagist.org',
-  'crates.io',
-  'docker.com',
-  'kubernetes.io',
-  'apache.org',
-  'python.org',
-  'nodejs.org',
-  'go.dev',
-  'rust-lang.org',
-  'java.com',
-  'oracle.com',
-  'ibm.com',
-  'sap.com',
-  'jetbrains.com',
-  'postman.com',
-  'swagger.io',
-  'mongodb.com',
-  'postgresql.org',
-  'mysql.com',
-  'redis.io',
-  'elastic.co',
-  'supabase.com',
-  'digitalocean.com',
-  'linode.com',
-  'vultr.com',
-  'hetzner.com',
-  'w3schools.com',
-  'freecodecamp.org',
-  'geeksforgeeks.org',
-  'leetcode.com',
-  'hackerrank.com',
-  'codechef.com',
-  'codeforces.com',
-  'kaggle.com',
-
-  // AI
-  'openai.com',
-  'chatgpt.com',
-  'anthropic.com',
-  'claude.ai',
-  'deepmind.com',
-  'perplexity.ai',
-  'huggingface.co',
-  'midjourney.com',
-  'stability.ai',
-  'mistral.ai',
-  'cohere.com',
-  'x.ai',
-  'ollama.com',
-
-  // Hardware & consumer electronics
-  'samsung.com',
-  'mi.com',
-  'oneplus.in',
-  'oppo.com',
-  'vivo.com',
-  'realme.com',
-  'nothing.tech',
-  'dell.com',
-  'hp.com',
-  'lenovo.com',
-  'asus.com',
-  'acer.com',
-  'intel.com',
-  'nvidia.com',
-  'amd.com',
-  'qualcomm.com',
-  'sony.com',
-  'lg.com',
-
-  // E-commerce & retail
-  'flipkart.com',
-  'myntra.com',
-  'ajio.com',
-  'nykaa.com',
-  'meesho.com',
-  'snapdeal.com',
-  'tatacliq.com',
-  'jiomart.com',
-  'bigbasket.com',
-  'blinkit.com',
-  'zeptonow.com',
-  'dmart.in',
-  'firstcry.com',
-  'pepperfry.com',
-  'urbanladder.com',
-  'croma.com',
-  'reliancedigital.in',
-  'vijaysales.com',
-  'lenskart.com',
-  'titan.co.in',
-  'tanishq.co.in',
-  'shoppersstop.com',
-  'westside.com',
-  'decathlon.in',
-  'ikea.com',
-  'ebay.com',
-  'aliexpress.com',
-  'alibaba.com',
-  'etsy.com',
-  'walmart.com',
-
-  // Food & local services
-  'swiggy.com',
-  'zomato.com',
-  'dominos.co.in',
-  'mcdelivery.co.in',
-  'bookmyshow.com',
-  'urbancompany.com',
-  'justdial.com',
-  'magicbricks.com',
-  '99acres.com',
-  'housing.com',
-  'nobroker.in',
-  'olx.in',
-  'cars24.com',
-  'cardekho.com',
-  'carwale.com',
-  'bikewale.com',
-  'spinny.com',
-
-  // Travel & transport
-  'irctc.co.in',
-  'indianrail.gov.in',
-  'makemytrip.com',
-  'goibibo.com',
-  'cleartrip.com',
-  'yatra.com',
-  'ixigo.com',
-  'easemytrip.com',
-  'redbus.in',
-  'abhibus.com',
-  'oyorooms.com',
-  'booking.com',
-  'airbnb.com',
-  'agoda.com',
-  'expedia.com',
-  'trivago.in',
-  'tripadvisor.com',
-  'airindia.com',
-  'airindiaexpress.com',
-  'goindigo.in',
-  'spicejet.com',
-  'akasaair.com',
-  'emirates.com',
-  'qatarairways.com',
-  'lufthansa.com',
-  'uber.com',
-  'olacabs.com',
-  'rapido.bike',
-  'pmpml.org',
-
-  // Telecom & utilities
-  'jio.com',
-  'airtel.in',
-  'myvi.in',
-  'vodafoneidea.com',
-  'bsnl.co.in',
-  'mtnl.net.in',
-  'tatapower.com',
-  'adanielectricity.com',
-  'mahadiscom.in',
-  'torrentpower.com',
-  'mahanagargas.com',
-  'indianoil.in',
-  'hpcl.co.in',
-  'bharatpetroleum.in',
-
-  // Education
-  'nptel.ac.in',
-  'swayam.gov.in',
-  'ncert.nic.in',
-  'cbse.gov.in',
-  'nta.ac.in',
-  'ugc.gov.in',
-  'aicte-india.org',
-  'nios.ac.in',
-  'unipune.ac.in',
-  'mu.ac.in',
-  'iitb.ac.in',
-  'iitm.ac.in',
-  'iitd.ac.in',
-  'iisc.ac.in',
-  'coursera.org',
-  'udemy.com',
-  'edx.org',
-  'khanacademy.org',
-  'byjus.com',
-  'unacademy.com',
-  'vedantu.com',
-  'pw.live',
-  'testbook.com',
-  'duolingo.com',
-  'brilliant.org',
-  'arxiv.org',
-  'doi.org',
-  'ieee.org',
-  'acm.org',
-  'springer.com',
-  'sciencedirect.com',
-  'nature.com',
-  'researchgate.net',
-
-  // News & media
-  'indiatimes.com',
-  'timesofindia.com',
-  'ndtv.com',
-  'thehindu.com',
-  'hindustantimes.com',
-  'indianexpress.com',
-  'livemint.com',
-  'business-standard.com',
-  'financialexpress.com',
-  'news18.com',
-  'indiatoday.in',
-  'aajtak.in',
-  'india.com',
-  'thewire.in',
-  'scroll.in',
-  'theprint.in',
-  'bbc.com',
-  'bbc.co.uk',
-  'reuters.com',
-  'apnews.com',
-  'cnn.com',
-  'aljazeera.com',
-  'theguardian.com',
-  'nytimes.com',
-  'wsj.com',
-  'bloomberg.com',
-  'ft.com',
-  'economist.com',
-  'forbes.com',
-  'techcrunch.com',
-  'theverge.com',
-  'wired.com',
-  'arstechnica.com',
-
-  // Streaming & music
-  'netflix.com',
-  'hotstar.com',
-  'jiohotstar.com',
-  'jiocinema.com',
-  'sonyliv.com',
-  'zee5.com',
-  'mxplayer.in',
-  'spotify.com',
-  'jiosaavn.com',
-  'gaana.com',
-  'wynk.in',
-  'soundcloud.com',
-  'twitch.tv',
-  'vimeo.com',
-
-  // Health
-  'who.int',
-  'nih.gov',
-  'cdc.gov',
-  'nhs.uk',
-  'mayoclinic.org',
-  'webmd.com',
-  'apollo247.com',
-  'practo.com',
-  'tata1mg.com',
-  '1mg.com',
-  'netmeds.com',
-  'pharmeasy.in',
-
-  // Jobs & freelancing
-  'naukri.com',
-  'indeed.com',
-  'foundit.in',
-  'shine.com',
-  'glassdoor.com',
-  'internshala.com',
-  'timesjobs.com',
-  'apna.co',
-  'upwork.com',
-  'fiverr.com',
-  'freelancer.com',
-
-  // Common genuine portals & support sites used across all sectors
-  'accounts.google.com',
-  'myaccount.google.com',
-  'mail.google.com',
-  'drive.google.com',
-  'docs.google.com',
-  'meet.google.com',
-  'classroom.google.com',
-  'photos.google.com',
-  'support.google.com',
-  'login.microsoftonline.com',
-  'account.microsoft.com',
-  'login.live.com',
-  'support.microsoft.com',
-  'help.apple.com',
-  'support.apple.com',
-  'help.instagram.com',
-  'help.x.com',
-  'help.twitter.com',
-  'help.facebook.com',
-  'login.yahoo.com',
-  'secure.paypal.com',
-  'www.paypal.com',
-  'www.spotify.com',
-  'www.netflix.com',
-  'www.amazon.in',
-  'www.amazon.com',
-  'www.flipkart.com',
-  'www.myntra.com',
-  'www.ajio.com',
-  'www.swiggy.com',
-  'www.zomato.com',
-  'www.irctc.co.in',
-  'www.razorpay.com',
-  'dashboard.razorpay.com',
-  'www.hdfcbank.com',
-  'www.sbi.co.in',
-  'www.axisbank.com',
-  'www.icicibank.com',
-  'www.kotak.com',
-  'www.onlinesbi.com',
-  'www.nseindia.com',
-  'www.bseindia.com',
-  'www.upstox.com',
-  'www.groww.in',
-  'www.zerodha.com',
-  'www.unacademy.com',
-  'www.coursera.org',
-  'www.udemy.com',
-  'www.edx.org',
-  'www.khanacademy.org',
-  'www.nptel.ac.in',
-  'www.swayam.gov.in',
-  'portal.mygov.in',
-  'www.mygov.in',
-  'www.ncert.nic.in',
-  'www.ugc.gov.in',
-  'www.aicte-india.org',
-  'www.nih.gov',
-  'www.who.int',
-  'www.cdc.gov',
-  'www.mayoclinic.org',
-  'www.indiatimes.com',
-  'www.thehindu.com',
-  'www.ndtv.com',
-  'www.reuters.com',
-  'www.bbc.com',
-  'www.nytimes.com',
-  'www.forbes.com',
-
-  // India-specific: State & UT Government Portals
-  'ap.gov.in',
-  'arunachal.gov.in',
-  'assam.gov.in',
-  'bih.nic.in',
-  'bihar.gov.in',
-  'chhattisgarh.gov.in',
-  'goa.gov.in',
-  'gujaratindia.gov.in',
-  'haryana.gov.in',
-  'hp.gov.in',
-  'himachalpradesh.gov.in',
-  'jharkhand.gov.in',
-  'karnataka.gov.in',
-  'kerala.gov.in',
-  'manipur.gov.in',
-  'meghalaya.gov.in',
-  'mizoram.gov.in',
-  'nagaland.gov.in',
-  'odisha.gov.in',
-  'punjab.gov.in',
-  'raj.gov.in',
-  'rajasthan.gov.in',
-  'sikkim.gov.in',
-  'tamil.gov.in',
-  'telangana.gov.in',
-  'tr.gov.in',
-  'tripura.gov.in',
-  'up.gov.in',
-  'uttarpradesh.gov.in',
-  'uttarakhand.gov.in',
-  'wb.gov.in',
-  'westbengal.gov.in',
-  'delhi.gov.in',
-  'delhigovt.nic.in',
-  'admin.ch',
-  'puducherry.gov.in',
-  'ladakh.gov.in',
-  'andaman.nic.in',
-
-  // India-specific: Railways & Transport
-  'indianrail.gov.in',
-  'irctc.co.in',
-  'railyatri.in',
-  'rail.gov.in',
-  'rrsk.gov.in',
-  'rrc-indianrailways.gov.in',
-  'consumercomplaints.in',
-  'railink.railtel.in',
-  'enquiry.indianrailways.gov.in',
-  'metros.co.in',
-  'delhi-metro.co.in',
-  'mmrchyderabad.com',
-  'kmrl.info',
-  'kochi-metro.org',
-  'bmrcl.gov.in',
-  'punemetrorail.org',
-  'jmrc.org.in',
-  'nammametro.com',
-  'amaartransport.com',
-  'ktcl.in',
-  'avvnl.com',
-  'dksrtc.in',
-  'bmtc.karnataka.gov.in',
-
-  // India-specific: Electricity & Utilities
-  'tatapower.com',
-  'adanielectricity.com',
-  'mahadiscom.in',
-  'brpl.com',
-  'torrentpower.com',
-  'tpddl.com',
-  'delhipower.org',
-  'apepdcl.gov.in',
-  'bspdcl.in',
-  'guvnl.com',
-  'jvvnl.com',
-  'bescom.org',
-  'kptcl.karnataka.gov.in',
-  'tangedco.gov.in',
-  'tneb.gov.in',
-  'mahanagargas.com',
-  'igl.co.in',
-  'gsecl.org',
-  'ujvn.nic.in',
-  'himachal.nic.in',
-  'jseb.co.in',
-  'purvanchal-powerdist.com',
-
-  // India-specific: Government Service Portals
-  'aadhaar.gov.in',
-  'eaadhaar.uidai.gov.in',
-  'myaadhaar.uidai.gov.in',
-  'portal.uidai.gov.in',
-  'pmjdy.gov.in',
-  'nrega.nic.in',
-  'mgnrega.nic.in',
-  'rtidrishti.gov.in',
-  'cris.org.in',
-  'pnrd.gov.in',
-  'pgportal.gov.in',
-  'services.india.gov.in',
-  'eservices.nic.in',
-  'sso.rajasthan.gov.in',
-  'districtadmin.maharashtra.gov.in',
-  'bharatportal.gov.in',
-  'ntpc.co.in',
-  'powermin.gov.in',
-  'petroleum.nic.in',
-  'steel.gov.in',
-  'coal.gov.in',
-  'mines.gov.in',
-  'agriculture.gov.in',
-  'dst.gov.in',
-  'dsir.gov.in',
-  'fssai.gov.in',
-  'bis.gov.in',
-  'bnhb.nic.in',
-  'pmay-urban.gov.in',
-
-  // India-specific: Telecom & Internet
-  'airtel.in',
-  'airteldigital.in',
-  'myvi.in',
-  'vodafoneidea.com',
-  'vodafoneideaonline.com',
-  'bsnl.co.in',
-  'bsnlportal.nic.in',
-  'mtnl.net.in',
-  'mtnl.gov.in',
-  'jio.com',
-  'jio.nic.in',
-  'myji.in',
-  'sify.com',
-  'excelsoftcomm.in',
-  'tatacommunications.com',
-  'tti.com',
-  'nvindia.net',
-  'dataone.in',
-  'railwire.in',
-  'airtelfiber.in',
-  'jiofiber.com',
-  'bhartiairtel.com',
-  'vi.com',
-  'vodafone.in',
-  'idea.com',
-  'reliancebroadband.in',
-
-  // India-specific: Regional E-commerce & Shopping
-  'shopclues.com',
-  'infibeam.com',
-  'craftsvilla.com',
-  'kraftly.com',
-  'funskool.co.in',
-  'indigo.com',
-  'spicejet.com',
-  'vistara.com',
-  'airindigo.in',
-  'goindigo.in',
-  'trustedshop.co.in',
-  'homecentre.com',
-  'fab.com',
-  'lgshop.in',
-  'samsungshop.in',
-  'mistore.in',
-  'oneplus.in',
-  'appleprice.in',
-  'iprice.my',
-
-  // India-specific: Automotive & Services
-  'maruti.co.in',
-  'hyundai.co.in',
-  'tatamotors.com',
-  'bmwindia.co.in',
-  'audiindia.com',
-  'mercedesbenzindia.in',
-  'volvocars.in',
-  'volvopenta.in',
-  'mahindrasuv.com',
-  'skoda-auto.in',
-  'toyotabharat.com',
-  'ford.co.in',
-  'renault.co.in',
-  'citroen.in',
-  'kia.co.in',
-  'motorcars.co.in',
-  'olx.in',
-  'quickr.com',
-  'quikr.com',
-  'carwale.com',
-  'bikewale.com',
-  'cardekho.com',
-  'cars24.com',
-  'spinny.com',
-  'vrooom.co.in',
-  'shriram.co.in',
-  'heromotocorp.com',
-  'bsautos.co.in',
-  'bajajauto.com',
-  'tvsmotor.com',
-  'royalenfield.com',
-  'hero.co.in',
-
-  // India-specific: Real Estate & Property
-  'magicbricks.com',
-  '99acres.com',
-  'housing.com',
-  'nobroker.in',
-  'makaan.com',
-  'houseforsale.in',
-  'propequity.in',
-  'propertyshala.com',
-  'property.sulekha.com',
-  'ibsindia.com',
-  'homesfy.com',
-  'residentia.co.in',
-  'theconstructionindex.co.in',
-  'proptiger.com',
-  'commonfloor.com',
-  'real4sure.com',
-  'property.co.in',
-  'jll.co.in',
-  'cushwakewakeindia.com',
-  'sothebys.com',
-  'knightfrank.co.in',
-
-  // India-specific: Food & Beverages
-  'faasos.com',
-  'oven-story.com',
-  'chefkunda.com',
-  'biryani.com',
-  'eatsure.com',
-  'freshmenu.com',
-  'rainforest.in',
-  'budgetsuneats.com',
-  'suneats.com',
-  'milkbasket.com',
-  'grofers.com',
-  'jiomart.com',
-  'bigbasket.com',
-  'indiangrocery.com',
-  'natureskart.com',
-  'greenbasket.in',
-  'vegepicky.com',
-  'farmdidi.com',
-  'phalon.co.in',
-  'haldiram.com',
-  'britannia.co.in',
-  'tastybit.com',
-  'tastykhana.in',
-
-  // India-specific: Fashion & Beauty
-  'indiamensfashion.com',
-  'fabindia.com',
-  'fbb.co.in',
-  'firstcry.com',
-  'zivame.com',
-  'clovia.com',
-  'beardo.in',
-  'dressbazzar.com',
-  'yebhi.com',
-  'trendin.com',
-  'zouk.com',
-  'forever.com',
-  'oriflame.com',
-  'beautyplus.co.in',
-  'beautycircus.com',
-  'thebodyshop.co.in',
-  'olay.co.in',
-  'loreal.co.in',
-  'lakme.com',
-
-  // India-specific: Professional & Business
-  'icai.org',
-  'icsi.edu',
-  'icwai.org',
-  'bar-council-india.org',
-  'lsindia.org',
-  'rbi-india.org',
-  'icc-india.org',
-  'ficci.com',
-  'assocham.org',
-  'phdcci.org',
-  'confederation-indian-industry.org',
-  'exportsindia.gov.in',
-  'indianchamber.com',
-  'indiachamber.org',
-  'chamber-commerce.com',
-  'imrbint.com',
-  'indiastat.com',
-  'arthikamaabhiyanta.in',
-  'industry.gov.in',
-  'msme.gov.in',
-
-  // India-specific: Healthcare & Medical
-  'medlineplus.gov',
-  'aiims.edu',
-  'pgimer.edu.in',
-  'maulanaazadmedicalcollege.ac.in',
-  'aiimsbpl.edu.in',
-  'amrita.edu',
-  'sbmcbangalore.ac.in',
-  'manipaluniversities.edu.in',
-  'vit.ac.in',
-  'srmuniversity.ac.in',
-  'mahatma.org.in',
-  'rajasthanhealth.gov.in',
-  'tnjkhealth.tn.gov.in',
-  'karnataka-health.gov.in',
-
-  // India-specific: Insurance & Finance
-  'lici.co.in',
-  'licindia.in',
-  'universalinsurance.co.in',
-  'cholamandalam.com',
-  'shriraminsurance.com',
-  'sbiinsurance.com',
-  'tataaig.com',
-  'bajajallianz.com',
-  'icicilombard.com',
-  'hdfcergo.com',
-  'godigit.com',
-  'acko.com',
-  'starhealth.in',
-  'nivabupa.in',
-  'careinsurance.in',
-  'reliance-general.com',
-  'orientalinsurance.co.in',
-  'nationalinsurance.nic.co.in',
-  'uiic.co.in',
-  'hdfc.bank',
-  'axisbank.com',
-  'indusindbank.com',
-  'federalbank.co.in',
-  'southindianbank.com',
-];
+const TRUSTED_HOSTS = self.PhishermanWebsiteAllowlist.entries.map(x => x.hostname);
 
 const USER_CONTENT_HOSTS = [
   'onrender.com',
@@ -1577,7 +547,7 @@ function isTrustedHost(input, opts = {}) {
   if (rejectShorteners && URL_SHORTENERS.some((base) => matchesBase(host, base))) return false;
   if (rejectUserContent && USER_CONTENT_HOSTS.some((base) => matchesBase(host, base))) return false;
 
-  return list.some((base) => matchesBase(host, base));
+  return list.some(base => host === base || host === 'www.' + base);
 }
 
 if (typeof module !== 'undefined' && module.exports) {
@@ -1692,7 +662,18 @@ function localGateCheck(payload) {
   const signals = [];
   let scoreDelta = 0;
 
+  // Repository pages often discuss attack techniques. Bare tool/topic names
+  // are not a request to execute them; selected messages still get full checks.
+  let repositoryPage = false;
+  try {
+    const page = new URL(payload.url);
+    repositoryPage = page.hostname === 'github.com' && page.pathname.split('/').filter(Boolean).length >= 2
+      && !payload.selection?.text && !payload.messaging && !payload.signals?.hasPassword && !payload.signals?.hasCc;
+  } catch { /* Non-page input uses the usual checks. */ }
+
   for (const rule of LOCAL_GATE_RULES) {
+    if (repositoryPage && rule.signal === 'Remote-access takeover attempt'
+        && !/\b(?:install|download|allow|enable)\b.{0,40}\b(?:anydesk|teamviewer|remote access|screen shar)/i.test(text)) continue;
     if (rule.re.test(combined)) {
       signals.push(rule.signal);
       scoreDelta += rule.score;
@@ -1733,7 +714,7 @@ function localGateCheck(payload) {
     }
   } catch {}
 
-  if (/(?:click|tap).{0,15}(?:here|link).{0,15}(?:now|urgent)|limited.{0,10}time|act.{0,10}now|immediately/i.test(combined)) {
+  if (/\b(?:click|tap)\b.{0,15}\b(?:here|link)\b.{0,15}\b(?:now|urgent)\b|\bact\b.{0,10}\bnow\b/i.test(combined)) {
     signals.push('High-pressure action language');
     scoreDelta -= 12;
   }
@@ -2100,12 +1081,39 @@ async function loadSettings() {
   const stored = await chrome.storage.local.get('phisherman_settings');
   if (stored.phisherman_settings) {
     settings = { ...DEFAULT_SETTINGS, ...stored.phisherman_settings };
+    for (const key of ['backendUrl', 'verifierUrl']) {
+      if (/^http:\/\/(?:127\.0\.0\.1|localhost):879[89]\/?$/.test(settings[key] || '')) {
+        settings[key] = 'http://127.0.0.1:8000';
+        await chrome.storage.local.set({ phisherman_settings: settings });
+      }
+    }
   }
   return settings;
 }
 
 async function saveSettings(newSettings) {
-  settings = { ...DEFAULT_SETTINGS, ...newSettings };
+  const next = { ...DEFAULT_SETTINGS, ...newSettings };
+  if (!['local', 'local-server', 'remote'].includes(next.analysisMode)) next.analysisMode = 'local';
+  const backend = new URL(next.backendUrl);
+  const verifier = new URL(next.verifierUrl);
+  if (!['http:', 'https:'].includes(verifier.protocol) || verifier.username || verifier.password || verifier.search || verifier.hash) {
+    throw new Error('Use a verifier URL without credentials, query parameters, or fragments.');
+  }
+  if (next.analysisMode === 'local-server' && !['localhost', '127.0.0.1', '[::1]'].includes(verifier.hostname)) {
+    throw new Error('Local server mode requires a loopback financial verifier.');
+  }
+  if (!['http:', 'https:'].includes(backend.protocol) || backend.username || backend.password) {
+    throw new Error('Use an HTTP or HTTPS server URL without credentials.');
+  }
+  if (next.analysisMode === 'local-server' && !['localhost', '127.0.0.1', '[::1]'].includes(backend.hostname)) {
+    throw new Error('Local server mode requires a loopback server address.');
+  }
+  settings = next;
+  backendOnline = false;
+  lastHealthCheck = 0;
+  tabCache.clear();
+  financialResults.clear();
+  scanGeneration.clear();
   await chrome.storage.local.set({ phisherman_settings: settings });
   return settings;
 }
@@ -2142,11 +1150,24 @@ async function getFocusedPageTab() {
 }
 
 // --- Backend Communication ---
+function backendAllowed() {
+  if (settings.analysisMode === 'remote') return true;
+  if (settings.analysisMode !== 'local-server') return false;
+  try {
+    const u = new URL(settings.backendUrl);
+    return ['localhost', '127.0.0.1', '[::1]'].includes(u.hostname);
+  } catch { return false; }
+}
+let lastHealthCheck = 0;
 async function checkBackendHealth() {
+  if (!backendAllowed()) { backendOnline = false; return false; }
+  if (lastHealthCheck && Date.now() - lastHealthCheck < 30000) return backendOnline;
+  lastHealthCheck = Date.now();
   try {
     const resp = await fetch(`${settings.backendUrl}/health`, {
+      redirect: 'error',
       method: 'GET',
-      signal: AbortSignal.timeout(5000)
+      signal: AbortSignal.timeout(750)
     });
     backendOnline = resp.ok;
   } catch {
@@ -2158,7 +1179,8 @@ async function checkBackendHealth() {
 let cloudAvailable = true;
 
 async function analyzeWithCloud(payload) {
-  if (!cloudAvailable) return null;
+  if (settings.analysisMode !== 'remote' || !cloudAvailable) return null;
+  const modeAtStart = settings.analysisMode;
   try {
     // Map extension snapshot to the cloud API format
     const body = {
@@ -2170,9 +1192,10 @@ async function analyzeWithCloud(payload) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-      signal: AbortSignal.timeout(12000)
+      signal: AbortSignal.timeout(1500)
     });
     if (!resp.ok) { cloudAvailable = false; return null; }
+    if (settings.analysisMode !== modeAtStart) return null;
     const data = await resp.json();
     // Normalize to extension format
     const score = data.risk_score !== undefined ? (100 - data.risk_score) : 50;
@@ -2196,10 +1219,12 @@ async function analyzeWithCloud(payload) {
 setInterval(() => { cloudAvailable = true; }, 5 * 60 * 1000);
 
 async function analyzeWithBackend(payload) {
+  if (!backendAllowed()) return null;
   if (!backendOnline) {
     await checkBackendHealth();
     if (!backendOnline) return null;
   }
+  if (!backendAllowed()) return null;
   try {
     const endpoint = payload.messaging ? '/api/scamgate/scan' : '/api/analyze/page';
     const body = payload.messaging
@@ -2221,10 +1246,11 @@ async function analyzeWithBackend(payload) {
           },
         };
     const resp = await fetch(`${settings.backendUrl}${endpoint}`, {
+      redirect: 'error',
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-      signal: AbortSignal.timeout(15000)
+      signal: AbortSignal.timeout(2500)
     });
     if (!resp.ok) return null;
     const data = await resp.json();
@@ -2375,13 +1401,13 @@ async function preflightLink(url, opts) {
   // Backend state is part of the key: a result cached while the backend was
   // asleep says "blocklist lookup did not run", and replaying that for 10
   // minutes after it comes up would be a stale claim about our own coverage.
-  const key = (o.resolve ? 'R' : 'L') + (backendOnline ? 'B' : '-') + '|' + url;
+  const key = JSON.stringify([settings.analysisMode, settings.backendUrl, o.pageHost || '', o.anchorText || '', !!o.resolve, backendOnline, url]);
   const cached = _cacheGet(key);
   if (cached) return { ...cached, cached: true };
 
   let out;
   try {
-    out = preflightLocal(url, { pageHost: o.pageHost });
+    out = preflightLocal(url, { pageHost: o.pageHost, anchorText: o.anchorText });
   } catch (e) {
     return { error: 'Link could not be read.', url };
   }
@@ -2412,9 +1438,10 @@ async function preflightLink(url, opts) {
   // Never triggers a health probe: hovering a link must not wake a sleeping
   // backend or stall the card. If it is not already known-online, we skip it and
   // the card renders the local analysis alone.
-  if (backendOnline) {
+  if (backendAllowed() && backendOnline) {
     try {
       const rep = await fetch(`${settings.backendUrl}/api/link/inspect`, {
+      redirect: 'error',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url }),
@@ -2496,7 +1523,7 @@ try {
   PhishermanPreflightAdapter.initBackground({
     runPipeline: (url, ctx) => preflightLink(url, {
       pageHost: (ctx && ctx.pageHost) || '',
-      resolve: settings.resolveRedirects === true,
+      resolve: settings.analysisMode === 'remote' && settings.resolveRedirects === true,
     }),
   });
 } catch (e) {
@@ -2504,12 +1531,14 @@ try {
 }
 
 async function factCheckWithBackend(payload) {
+  if (!backendAllowed()) return null;
   if (!backendOnline) {
     await checkBackendHealth();
     if (!backendOnline) return null;
   }
   try {
     const resp = await fetch(`${settings.backendUrl}/api/fact-check`, {
+      redirect: 'error',
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -2525,6 +1554,8 @@ async function factCheckWithBackend(payload) {
 
 // --- Page Scanning ---
 async function scanTab(tabId) {
+  const generation = Symbol('scan');
+  scanGeneration.set(tabId, generation);
   let snapshot;
   try {
     snapshot = await requestSnapshot(tabId);
@@ -2546,7 +1577,7 @@ async function scanTab(tabId) {
   // to whatever message the user has open. That produced "Lottery/prize scam" on
   // a genuine internship email. No verdict is the correct output here.
   if (snapshot.scannable === false) {
-    return {
+    const suppressed = {
       url: snapshot.url,
       title: snapshot.title,
       trustScore: 50,
@@ -2560,27 +1591,38 @@ async function scanTab(tabId) {
       timestamp: Date.now(),
       source: 'suppressed',
     };
+    tabCache.set(tabId, suppressed);
+    await chrome.action.setBadgeText({ tabId, text: '?' });
+    await chrome.tabs.sendMessage(tabId, { action: 'clearAssessment' }).catch(() => {});
+    chrome.runtime.sendMessage({ action: 'assessmentUpdated', tabId, assessment: suppressed }).catch(() => {});
+    return suppressed;
   }
 
-  // Check persistent domain cache first - EXCEPT on messaging surfaces, where
-  // one hostname serves unrelated conversations and a cached score would be
-  // returned for content it was never computed from.
-  const messagingSurface = isMessagingSurface(snapshot);
-  let cachedResult = null;
-  if (!messagingSurface) {
-    try {
-      const hostname = new URL(snapshot.url).hostname;
-      cachedResult = await getCachedDomain(hostname);
-    } catch {}
+  if (scanGeneration.get(tabId) !== generation) return { error: 'A newer scan replaced this request.' };
+  const started = performance.now();
+  const result = localGateCheck(snapshot);
+  await ensureSecuritiesSnapshot();
+  const securities = self.PhishermanSecurities.quickCheck(snapshot.visibleText || '', snapshot.url, null);
+  const ml = await scoreUrlML(snapshot.url);
+  if (['invalid', 'collision'].includes(securities.state)) {
+    result.trustScore = Math.min(result.trustScore, 24);
+    for (const reason of securities.reasons || []) {
+      if (!['registration_invalid', 'registration_collision'].includes(reason.code)) continue;
+      result.signals.push({ label: reason.text, code: reason.code, polarity: 'risk', severity: 'high' });
+    }
   }
-
-  // Fallback chain: cache -> Ollama -> cloud API -> local gate
-  let result = cachedResult
-    || await analyzeWithBackend(snapshot)
-    || await analyzeWithCloud(snapshot)
-    || localGateCheck(snapshot);
-
+  if (snapshot.signals?.hasPassword || snapshot.signals?.hasCreditCard) {
+    const pageHost = new URL(snapshot.url).hostname;
+    const pageSite = PhishermanPSL.registrableDomain(pageHost).domain;
+    const destinations = snapshot.signals.credentialFormActionHosts || [];
+    if (destinations.some(host => PhishermanPSL.registrableDomain(host).domain !== pageSite)) {
+      result.signals.push({ label: 'Password or card form sends details to a different website; confirm the destination before submitting', severity: 'medium', polarity: 'risk', code: 'FORM_DESTINATION_MISMATCH' });
+      result.trustScore = Math.min(result.trustScore, 49);
+    }
+  }
   const assessment = {
+    securities,
+    ml: ml ? { ...ml, available: true, scope: 'URL features only; supporting evidence, not a verdict' } : { available: false },
     url: snapshot.url,
     title: snapshot.title,
     trustScore: result.trustScore ?? result.trust_score ?? 50,
@@ -2590,7 +1632,7 @@ async function scanTab(tabId) {
     isNewsArticle: snapshot.isNewsArticle || false,
     factCheck: result.factCheck || result.fact_check || null,
     timestamp: Date.now(),
-    backendOnline: result.source !== 'local-gate',
+    backendOnline: false,
     source: result.source || 'backend',
     messaging: snapshot.messaging || null,
     behavior: result.behavior || null,
@@ -2601,23 +1643,26 @@ async function scanTab(tabId) {
 
   // Ensure riskLevel is consistent with score
   assessment.riskLevel = getRiskLevel(assessment.trustScore);
+  assessment.signals = assessment.signals.map(PhishermanSignalPolarity.normalise);
   assessment.analysisDetails = buildDeepAnalysis(snapshot, result, assessment);
-
-  // Persist to domain cache if backend answered (not local gate).
-  // Never write from a messaging surface: that verdict describes ONE conversation,
-  // and storing it under the hostname would poison every other chat on that host.
-  if (!messagingSurface && assessment.backendOnline && assessment.trustScore !== 50) {
-    try {
-      const hostname = new URL(snapshot.url).hostname;
-      await setCachedDomain(hostname, {
-        trustScore: assessment.trustScore,
-        riskLevel: assessment.riskLevel,
-        signals: assessment.signals,
-      });
-    } catch {}
+  const prefs = await chrome.storage.local.get('phisherman_personal_sites');
+  Object.assign(assessment, PhishermanUserPolicy.apply(assessment, prefs.phisherman_personal_sites || {}));
+  if (assessment.canRemember) {
+    const host = PhishermanUserPolicy.hostname(snapshot.url);
+    const stored = await chrome.storage.local.get('phisherman_prompt_dates');
+    const prompts = stored.phisherman_prompt_dates || {};
+    if (Date.now() - (prompts[host] || 0) < 7 * 86400000) assessment.canRemember = false;
+    else {
+      prompts[host] = Date.now();
+      await chrome.storage.local.set({ phisherman_prompt_dates: Object.fromEntries(
+        Object.entries(prompts).sort((a,b) => b[1]-a[1]).slice(0,500)) });
+    }
   }
-
+  assessment.processingMs = Math.round(performance.now() - started);
+  assessment.coverage = 'Local rules; no live reputation lookup';
+  if (scanGeneration.get(tabId) !== generation) return { error: 'A newer scan replaced this request.' };
   tabCache.set(tabId, assessment);
+  chrome.runtime.sendMessage({ action: 'assessmentUpdated', tabId, assessment }).catch(() => {});
   await updateBadge(tabId, assessment.trustScore);
   await addToHistory(assessment);
 
@@ -2632,13 +1677,56 @@ async function scanTab(tabId) {
     // Content script may not be ready
   }
 
+  if (backendAllowed()) {
+    enhanceTab(tabId, snapshot, assessment, generation).catch(console.warn);
+  }
   return assessment;
+}
+
+const scanGeneration = new Map();
+const enhancementRequests = new Map();
+async function enhanceTab(tabId, snapshot, initial, generation) {
+  // The local result is already visible. Network failures never erase it.
+  const key = JSON.stringify([tabId, settings.analysisMode, settings.backendUrl, snapshot.url,
+    snapshot.title, snapshot.visibleText, snapshot.signals]);
+  if (!enhancementRequests.has(key)) {
+    const request = (async () => await analyzeWithBackend(snapshot) || await analyzeWithCloud(snapshot))();
+    enhancementRequests.set(key, request);
+    request.finally(() => enhancementRequests.delete(key));
+  }
+  const result = await enhancementRequests.get(key);
+  if (!result || scanGeneration.get(tabId) !== generation) return;
+  const tab = await chrome.tabs.get(tabId);
+  if (tab.url !== snapshot.url || !backendAllowed()) return;
+  // Re-snapshot to reject delayed responses after same-URL chat/content changes.
+  const current = await requestSnapshot(tabId);
+  if (current.visibleText !== snapshot.visibleText || current.url !== snapshot.url) return;
+  const merged = { ...initial, trustScore: Math.min(initial.trustScore, result.trustScore ?? 50),
+    signals: [...initial.signals, ...(result.signals || []).map(PhishermanSignalPolarity.normalise)],
+    source: result.source || 'backend', backendOnline: true, coverage: 'Local and enhanced checks',
+    raw: result.raw || null, factCheck: result.factCheck || null };
+  merged.signals = merged.signals.filter((s, i, all) => all.findIndex(x => x.label === s.label) === i);
+  merged.riskLevel = getRiskLevel(merged.trustScore);
+  merged.analysisDetails = buildDeepAnalysis(snapshot, result, merged);
+  const prefs = await chrome.storage.local.get('phisherman_personal_sites');
+  Object.assign(merged, PhishermanUserPolicy.apply(merged, prefs.phisherman_personal_sites || {}));
+  merged.canRemember = initial.canRemember && merged.canRemember;
+  if (scanGeneration.get(tabId) !== generation) return;
+  tabCache.set(tabId, merged);
+  chrome.runtime.sendMessage({ action: 'assessmentUpdated', tabId, assessment: merged }).catch(() => {});
+  await updateBadge(tabId, merged.trustScore);
+  await chrome.tabs.sendMessage(tabId, { action: 'renderAssessment', assessment: merged, settings });
 }
 
 // --- Event Listeners ---
 
 // Tab navigation: auto-scan if enabled
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  if (changeInfo.url || changeInfo.status === 'loading') {
+    financialResults.delete(tabId);
+    scanGeneration.delete(tabId);
+    tabCache.delete(tabId);
+  }
   if (changeInfo.status !== 'complete') return;
   if (!isScannableUrl(tab.url)) return;
 
@@ -2663,6 +1751,8 @@ chrome.tabs.onActivated.addListener(async ({ tabId }) => {
 
 // Tab removal: cleanup cache
 chrome.tabs.onRemoved.addListener((tabId) => {
+  financialResults.delete(tabId);
+  scanGeneration.delete(tabId);
   tabCache.delete(tabId);
   const existingTimer = autoScanTimers.get(tabId);
   if (existingTimer) {
@@ -2699,6 +1789,7 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+  if (tab?.id) chrome.sidePanel.open({ tabId: tab.id }).catch(() => {});
   if (!tab?.id) return;
 
   if (info.menuItemId === 'phisherman-check-selection' || info.menuItemId === 'phisherman-check-page') {
@@ -2771,13 +1862,20 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     } catch {}
 
     // Open side panel to show result
-    await chrome.sidePanel.open({ tabId: tab.id });
+    // Panel opening occurs at the original context-menu gesture, before scanning.
   }
 });
 
 // --- Message Handlers ---
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  handleMessage(message, sender).then(sendResponse);
+  if (message.action === 'openSidePanel') {
+    const tabId = sender?.tab?.id || message.tabId;
+    if (!tabId) { sendResponse({ error: 'No tab available' }); return false; }
+    chrome.sidePanel.open({ tabId }).then(() => sendResponse({ ok: true }))
+      .catch(() => sendResponse({ error: 'Open the toolbar popup and choose Open side panel.' }));
+    return true;
+  }
+  handleMessage(message, sender).then(sendResponse).catch(error => sendResponse({ error: error.message }));
   return true; // async response
 });
 
@@ -2785,6 +1883,37 @@ async function handleMessage(message, sender) {
   await loadSettings();
 
   switch (message.action) {
+    case 'quickCheckText': {
+      const text = String(message.text || '').trim();
+      if (!text || text.length > 15000) return { error: 'Enter between 1 and 15,000 characters.' };
+      const url = /^https?:\/\/\S+$/i.test(text) ? text : '';
+      const result = localGateCheck({ url, visibleText: text, signals: {} });
+      await ensureSecuritiesSnapshot();
+      const securities = self.PhishermanSecurities.quickCheck(text, '', null);
+      if (['invalid', 'collision'].includes(securities.state)) {
+        result.trustScore = Math.min(result.trustScore, 24);
+        result.riskLevel = getRiskLevel(result.trustScore);
+      }
+      return { ...result, signals: result.signals.map(PhishermanSignalPolarity.normalise), securities,
+        coverage: 'On-device patterns and registration snapshot; no server request', source: 'local-gate' };
+    }
+    case 'financialVerifierHealth': {
+      return await PhishermanFinancialVerifier.inspectHealth(settings);
+    }
+    case 'verifyFinancialInput': {
+      const originalTab = message.tabId ? await chrome.tabs.get(message.tabId).catch(() => null) : null;
+      const originalSettings = JSON.stringify(settings);
+      const result = await PhishermanFinancialVerifier.verify(settings, message.text, message.consent);
+      const latestTab = message.tabId ? await chrome.tabs.get(message.tabId).catch(() => null) : null;
+      if (message.tabId && originalTab && latestTab?.url === originalTab.url && JSON.stringify(settings) === originalSettings) {
+        financialResults.set(message.tabId, result);
+        chrome.runtime.sendMessage({ action: 'financialVerificationUpdated', tabId: message.tabId, result }).catch(() => {});
+      }
+      return result;
+    }
+    case 'getFinancialResult': {
+      return financialResults.get(message.tabId) || null;
+    }
     case 'snapshotPage': {
       // Forwarded from panel - snapshot comes from content script
       const tabId = message.tabId;
@@ -2806,6 +1935,10 @@ async function handleMessage(message, sender) {
       }
       return await scanTab(tabId);
     }
+    case 'scanSenderTab': {
+      if (!sender?.tab?.id) return { error: 'No source tab.' };
+      return await scanTab(sender.tab.id);
+    }
 
     case 'getLastScan': {
       let tabId = message.tabId;
@@ -2825,6 +1958,10 @@ async function handleMessage(message, sender) {
       ml.routing = self.PhishermanML.route(ml.p_phishing, message.registrationState || 'not_applicable');
       return ml;
     }
+    case 'getSecuritiesSnapshot': {
+      await ensureSecuritiesSnapshot();
+      return self.PhishermanSecurities.snapshot();
+    }
 
     case 'liveVerifyOfficial': {
       // Explicit, user-clicked, rate-limited live cross-check against SEBI's
@@ -2832,15 +1969,16 @@ async function handleMessage(message, sender) {
       // automatically — this is a real network call to a government server,
       // gated the same way redirect-resolution is gated for preflightLink.
       if (!message.reg_number) return { error: 'reg_number required', checked: false, matched: false };
-      if (!backendOnline && !(await checkBackendHealth())) {
+      if (!backendAllowed() || (!backendOnline && !(await checkBackendHealth()))) {
         return { error: 'Local backend is not running — start it to use live verification.', checked: false, matched: false };
       }
       try {
         const resp = await fetch(`${settings.backendUrl}/api/verify/official`, {
+      redirect: 'error',
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ reg_number: message.reg_number }),
-          signal: AbortSignal.timeout(12000),   // live gov-site round trip, not a hover budget
+          signal: AbortSignal.timeout(1500),   // live gov-site round trip, not a hover budget
         });
         if (!resp.ok) return { error: `backend returned ${resp.status}`, checked: false, matched: false };
         return await resp.json();
@@ -2855,7 +1993,7 @@ async function handleMessage(message, sender) {
       // Authenticates the MESSAGE; securitiesCheck authenticates the SENDER.
       // A fabricated circular passes every sender check we have, because it
       // never claims to come from a registered intermediary at all.
-      if (!backendOnline && !(await checkBackendHealth())) {
+      if (!backendAllowed() || (!backendOnline && !(await checkBackendHealth()))) {
         return { state: 'index_unavailable', trust_delta: 0, reasons: [{
           code: 'COMMS_BACKEND_OFFLINE',
           text: 'The local backend is not running, so a cited official reference could not be checked either way.',
@@ -2863,6 +2001,7 @@ async function handleMessage(message, sender) {
       }
       try {
         const resp = await fetch(`${settings.backendUrl}/api/comms/verify`, {
+      redirect: 'error',
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ text: message.text || '', body: message.body || null }),
@@ -2887,11 +2026,12 @@ async function handleMessage(message, sender) {
       const offline = await matchContactOffline(reg, observed, kind);
       if (offline && offline.match !== 'unavailable') return offline;
 
-      if (!backendOnline && !(await checkBackendHealth())) {
+      if (!backendAllowed() || (!backendOnline && !(await checkBackendHealth()))) {
         return { match: 'unknown', kind, reason: 'No local data or backend available to compare against.' };
       }
       try {
         const resp = await fetch(`${settings.backendUrl}/api/registry/match-contact`, {
+      redirect: 'error',
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ reg_number: reg, observed, kind }),
@@ -2908,13 +2048,14 @@ async function handleMessage(message, sender) {
       // C2PA Content Credentials for one media asset. Reports provenance
       // STATES, never a synthetic-origin verdict — see
       // backend/engines/provenance_lane.py and the blocked-claims gate.
-      if (!backendOnline && !(await checkBackendHealth())) {
+      if (!backendAllowed() || (!backendOnline && !(await checkBackendHealth()))) {
         return { state: 'unsupported', trust_delta: 0, error: 'backend offline',
                  reasons: [{ code: 'PROV_BACKEND_OFFLINE',
                              text: 'Provenance checking needs the local backend, which is not running.' }] };
       }
       try {
         const resp = await fetch(`${settings.backendUrl}/api/provenance/inspect`, {
+      redirect: 'error',
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -2938,7 +2079,8 @@ async function handleMessage(message, sender) {
       // here, so the rule holds for every caller).
       return await preflightLink(message.url || '', {
         pageHost: message.pageHost || '',
-        resolve: settings.resolveRedirects === true,
+        anchorText: String(message.anchorText || '').slice(0, 500),
+        resolve: settings.analysisMode === 'remote' && settings.resolveRedirects === true,
       });
     }
 
@@ -2948,9 +2090,10 @@ async function handleMessage(message, sender) {
       const text = message.text || '';
       const poster = message.handle || message.url || '';
       const pageDate = message.pageDate || null;
-      if (backendOnline || (await checkBackendHealth())) {
+      if (backendAllowed() && (backendOnline || (await checkBackendHealth()))) {
         try {
           const resp = await fetch(`${settings.backendUrl}/api/securities/identity`, {
+      redirect: 'error',
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ text, url: message.url || '', handle: message.handle || '', page_date: pageDate }),
@@ -2969,6 +2112,7 @@ async function handleMessage(message, sender) {
     }
 
     case 'chatContextChanged': {
+      scanGeneration.delete(sender?.tab?.id);
       // A single-page messaging app switched conversation. The cached
       // assessment was computed about the PREVIOUS chat, so it must be
       // dropped rather than re-rendered beside a different one. Leaving it
@@ -2976,10 +2120,12 @@ async function handleMessage(message, sender) {
       // a family thread sits on screen while a stranger's opening pitch
       // arrives underneath it.
       const tabId = sender?.tab?.id;
-      if (tabId != null) tabCache.delete(tabId);
+        if (tabId != null) tabCache.delete(tabId);
+        if (tabId != null) chrome.tabs.sendMessage(tabId, { action: 'clearAssessment' }).catch(() => {});
       try {
         chrome.runtime.sendMessage({
-          action: 'panelClearAssessment',
+            action: 'panelClearAssessment',
+            tabId,
           reason: 'chat_changed',
           chatTitle: message.chatTitle || '',
         });
@@ -3092,6 +2238,65 @@ async function handleMessage(message, sender) {
       return { ok: true };
     }
 
+    case 'getPersonalSites': {
+      const data = await chrome.storage.local.get('phisherman_personal_sites');
+      return Object.values(data.phisherman_personal_sites || {}).filter(x => x.expiresAt > Date.now());
+    }
+    case 'removePersonalSite': {
+      const data = await chrome.storage.local.get('phisherman_personal_sites');
+      const entries = data.phisherman_personal_sites || {};
+      delete entries[message.hostname];
+      await chrome.storage.local.set({ phisherman_personal_sites: entries });
+      return { ok: true };
+    }
+    case 'rememberSite': {
+      const id = sender?.tab?.id;
+      const assessment = tabCache.get(id);
+      if (message.url && message.url !== assessment?.url) return { error: 'The page changed. Scan it again before remembering it.' };
+      if (!PhishermanUserPolicy.eligible(assessment)) return { error: 'This assessment is not eligible for a personal exception.' };
+      const entry = PhishermanUserPolicy.create(assessment.url);
+      const data = await chrome.storage.local.get('phisherman_personal_sites');
+      await chrome.storage.local.set({ phisherman_personal_sites: { ...(data.phisherman_personal_sites || {}), [entry.hostname]: entry } });
+      return { ok: true };
+    }
+    case 'reportWarning': {
+      const assessment = tabCache.get(sender?.tab?.id);
+      if (!assessment) return { error: 'Scan the page first.' };
+      const data = await chrome.storage.local.get('phisherman_review_requests');
+      const requests = data.phisherman_review_requests || [];
+      const hostname = PhishermanUserPolicy.hostname(assessment.url);
+      if (!requests.some(x => x.hostname === hostname && x.status === 'local-pending')) {
+        requests.unshift({ hostname, createdAt: Date.now(), status: 'local-pending',
+          reasons: assessment.signals.map(s => s.label).slice(0, 5) });
+      }
+      await chrome.storage.local.set({ phisherman_review_requests: requests.slice(0, 100) });
+      return { ok: true, message: 'Saved on this device. No report has been sent.' };
+    }
+    case 'submitReviewRequests': {
+      if (sender?.tab || sender?.url !== chrome.runtime.getURL('options/options.html')) {
+        return { error: 'Submit feedback from extension settings.' };
+      }
+      if (!backendAllowed()) return { error: 'Select local server or remote analysis before submitting.' };
+      const stored = await chrome.storage.local.get('phisherman_review_requests');
+      const requests = stored.phisherman_review_requests || [];
+      let submitted = 0;
+      for (const request of requests.filter(x => x.status === 'local-pending').slice(0, 10)) {
+        if (!backendAllowed()) break;
+        try {
+          const response = await fetch(`${settings.backendUrl}/api/reviews`, {
+      redirect: 'error',
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ hostname: request.hostname, reasons: request.reasons.map(x => x.slice(0,300)) }),
+            signal: AbortSignal.timeout(2500),
+          });
+          if (!response.ok) break;
+          const result = await response.json();
+          request.status = 'submitted-pending'; request.reviewId = result.id; submitted++;
+        } catch { break; }
+      }
+      await chrome.storage.local.set({ phisherman_review_requests: requests });
+      return { ok: true, submitted, message: `${submitted} request(s) submitted. Whitelist unchanged.` };
+    }
     case 'getSettings': {
       return settings;
     }
@@ -3115,7 +2320,7 @@ async function handleMessage(message, sender) {
 
     case 'checkHealth': {
       const online = await checkBackendHealth();
-      return { online };
+      return { online, analysisMode: settings.analysisMode, mlAvailable: _mlReady };
     }
 
     default:

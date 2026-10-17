@@ -1,7 +1,7 @@
 {
   "product": "Phisherman AI Browser Guard Sandbox",
-  "last_reviewed": "2026-03-09",
-  "_permissions_note": "Reviewed baseline that must match extension/manifest.json exactly. Enforced by scripts/validate_sandbox.py. Per-permission justifications are in permission_justifications below — widening this list without a justification entry is a review failure.",
+  "last_reviewed": "2026-10-02",
+  "_permissions_note": "Reviewed baseline that must match extension/manifest.json exactly. Enforced by scripts/validate_sandbox.py. Per-permission justifications are in permission_justifications below \u2014 widening this list without a justification entry is a review failure.",
   "permission_justifications": {
     "activeTab": {
       "justification": "Read the page the user is currently on in order to score it.",
@@ -26,12 +26,12 @@
     "tabs": {
       "justification": "Resolve the focused tab id for sidepanel/background correlation and badge updates.",
       "least_privilege_reviewed": "2026-08-04",
-      "review_outcome": "REVIEW_PENDING — activeTab may cover the sidepanel path; dropping `tabs` would be a citable least-privilege win under CSCRF. Owner: unassigned."
+      "review_outcome": "REVIEW_PENDING \u2014 activeTab may cover the sidepanel path; dropping `tabs` would be a citable least-privilege win under CSCRF. Owner: unassigned."
     },
     "alarms": {
       "justification": "Schedule periodic domain-cache pruning and backend health re-checks.",
       "least_privilege_reviewed": "2026-08-04",
-      "review_outcome": "REVIEW_PENDING — could plausibly be replaced by lazy pruning on read. Owner: unassigned."
+      "review_outcome": "REVIEW_PENDING \u2014 could plausibly be replaced by lazy pruning on read. Owner: unassigned."
     },
     "contextMenus": {
       "justification": "Provide the right-click 'Check with Phisherman AI' entry point on selections and media.",
@@ -40,11 +40,11 @@
     }
   },
   "host_permissions_rationale": {
-    "http://*/*, https://*/*": "Securities-market impersonation is not confined to a knowable domain set — a cloned broker site can appear on any host, which is precisely why an allowlist cannot work here. Mitigations: all analysis is local by default; no page content is transmitted off-device on the default path; every data class touched is declared per module in module_registry.json and shown in the options page.",
+    "http://*/*, https://*/*": "Read rendered website content for local checks. Default on-device mode sends no analysis requests. Remote transmission requires the enhanced mode; link expansion also requires its separate opt-in.",
     "https://web.whatsapp.com/*, https://web.telegram.org/*": "Live message-render hooks for the two messaging surfaces named in the requirements (CH2). Scoped explicitly rather than relying on the wildcard so the intent is auditable.",
-    "http://127.0.0.1:8799/*": "Loopback-only backend for local development. Never an external listener.",
-    "https://phishermanai-1.onrender.com/*": "Primary deployed backend for live scans and verification requests.",
-    "https://chetana.activemirror.ai/*": "Legacy cloud fallback (chain layer 3). REVIEW_PENDING — retained only for graceful degradation; the origin is a single constant (CLOUD_API_ORIGIN in background.js) and removing it degrades the chain to the offline gate rather than breaking it. Owner: unassigned."
+    "http://127.0.0.1:8000/*": "Loopback-only backend for local development. Never an external listener.",
+    "https://phishermanai-1.onrender.com/*": "Optional hosted backend when explicitly configured in remote mode; no longer the default.",
+    "https://chetana.activemirror.ai/*": "Cloud fallback in remote mode only; disabled in local and local-server modes."
   },
   "allowed_permissions": [
     "activeTab",
@@ -56,7 +56,7 @@
     "contextMenus"
   ],
   "allowed_host_permissions": [
-    "http://127.0.0.1:8799/*",
+    "http://127.0.0.1:8000/*",
     "https://phishermanai-1.onrender.com/*",
     "http://*/*",
     "https://*/*",
@@ -104,7 +104,9 @@
   "retention": {
     "extension_local_history": "manual delete by user",
     "sandbox_backend_request_logs": "none by default",
-    "evidence_export": "user initiated only"
+    "evidence_export": "user initiated only",
+    "personal_website_preferences": "30-day expiry; user removal in settings",
+    "website_feedback": "Up to 100 local records; user-initiated export/submission; up to 1000 pending backend records"
   },
   "blocked_claims": [
     "safe",
@@ -131,5 +133,23 @@
     "Production cutover requires encryption-at-rest for retained subscriber or evidence data outside the browser.",
     "Production cutover requires attested app-surface policy before trusted mobile escalation can be claimed.",
     "Production cutover requires explicit telecom-consent policy before any network-signal integration can be claimed."
+  ],
+  "analysis_modes": {
+    "default": "local",
+    "local": "No analysis network requests; bundled reference and URL-model checks only.",
+    "local-server": "Configured loopback backend only. Backend inference defaults to pattern-only; SCAMGATE_MAX_TIER controls optional local/cloud inference.",
+    "remote": "Explicitly selected mode permits page/message text and URL transmission to the configured backend and cloud fallback."
+  },
+  "selected_financial_verification": {
+    "automatic": false,
+    "default_endpoint": "http://127.0.0.1:8000",
+    "consent": "Per-input checkbox, cleared when input changes",
+    "modes": "Disabled in local mode; loopback only in local-server mode; configured destination in remote mode",
+    "data": "Selected text with phone/email redaction; UPI handles preserved",
+    "retention": "No input body written to extension storage; verdicts in service-worker memory only"
+  },
+  "allowed_data_classes": [
+    "selected_text_redacted",
+    "filing_verification_result"
   ]
 }

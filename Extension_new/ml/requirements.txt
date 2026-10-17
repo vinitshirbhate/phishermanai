@@ -1,0 +1,7 @@
+# Optional URL-model training dependencies.
+numpy>=2.0
+pandas>=2.2
+scikit-learn>=1.5
+pyarrow>=17.0
+# Required only when refreshing the bundled UCI dataset cache:
+ucimlrepo>=0.0.7

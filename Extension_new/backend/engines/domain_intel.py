@@ -24,7 +24,7 @@ _whitelist_cache: Optional[dict] = None
 def _load_whitelist() -> dict:
     global _whitelist_cache
     if _whitelist_cache is None:
-        p = DATA_DIR / "domain_whitelist.json"
+        p = Path(__file__).resolve().parents[2] / "extension" / "data" / "website_allowlist.json"
         _whitelist_cache = json.loads(p.read_text()) if p.exists() else {}
     return _whitelist_cache
 
@@ -99,13 +99,11 @@ class DomainIntelResult:
 
 def _check_whitelist(domain: str) -> bool:
     """Check if domain is in the trusted whitelist."""
-    wl = _load_whitelist()
-    all_allowed = set()
-    for domains in wl.values():
-        all_allowed.update(d.lower() for d in domains)
+    doc = _load_whitelist()
+    d = domain.lower().rstrip('.')
+    return any(d == entry['hostname'] or d == 'www.' + entry['hostname']
+               for entry in doc.get('entries', []))
 
-    d = domain.lower()
-    return any(d == a or d.endswith("." + a) for a in all_allowed)
 
 
 def _check_tld(domain: str) -> str:
@@ -124,10 +122,11 @@ def _check_typosquat(domain: str) -> tuple[bool, str]:
     """Check if domain is a typosquat of a known brand using Levenshtein distance."""
     d = domain.lower()
     # Extract the registrable part (before TLD)
-    parts = d.split(".")
+    from .rbi_domains import registrable_domain
+    parts = registrable_domain(d).split(".")
     if len(parts) >= 2:
         # Take the main domain part (second-level domain)
-        main_part = parts[-2] if len(parts) >= 2 else parts[0]
+        main_part = parts[0]
     else:
         main_part = parts[0]
 

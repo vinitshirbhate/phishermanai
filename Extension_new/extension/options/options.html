@@ -172,13 +172,26 @@
     <p class="subtitle">Trust by Design - v6.0.0</p>
 
     <div class="setting-group">
-      <h2>Connection</h2>
+      <h2>Analysis and privacy</h2>
+      <label for="analysisMode">Analysis mode</label>
+      <select id="analysisMode">
+        <option value="local">On-device checks</option>
+        <option value="local-server">Local server (loopback only)</option>
+        <option value="remote">Enhanced remote checks</option>
+      </select>
+      <p>On-device mode sends no analysis requests. Local server mode contacts only your loopback backend; its provider configuration controls further processing. Remote mode sends page/message text and URL to your configured server and may use a cloud fallback.</p>
+      <label><input type="checkbox" id="quietBrowsing" checked> Quiet browsing: show overlays only for actionable warnings</label>
       <div class="setting-row">
         <div>
           <div class="setting-label">Backend URL</div>
           <div class="setting-desc">Analysis server address</div>
         </div>
-        <input type="text" id="backendUrl" value="https://phishermanai-1.onrender.com">
+        <input type="text" id="backendUrl" value="http://127.0.0.1:8000">
+      </div>
+      <div class="setting-row">
+        <div><label for="verifierUrl" class="setting-label">Financial verifier URL</label>
+          <div class="setting-desc">Separate filing-verification API, normally port 8000. Used only when you explicitly verify selected input.</div></div>
+        <input type="text" id="verifierUrl" value="http://127.0.0.1:8000">
       </div>
     </div>
 
@@ -257,6 +270,14 @@
     </div>
 
     <div class="setting-group">
+      <h2>Remembered websites</h2>
+      <p>Exact-host preferences expire after 30 days. They reduce weak warnings without changing evidence or scores.</p>
+      <div id="personalSites"></div>
+      <h2>Feedback</h2>
+      <p>Review requests stay on this device until you export or submit them. Submission sends the hostname and warning reasons to your configured backend for pending review. No shared whitelist changes automatically.</p>
+      <button id="exportReviews" type="button">Export review requests</button>
+      <button id="submitReviews" type="button">Submit saved requests</button>
+      <p id="reviewStatus" role="status"></p>
       <h2>Data</h2>
       <div class="setting-row">
         <div>

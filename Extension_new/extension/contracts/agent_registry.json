@@ -12,7 +12,7 @@
     "approval_required": true,
     "side_effects": false,
     "network_hosts": [
-      "http://127.0.0.1:8799/*",
+      "http://127.0.0.1:8000/*",
       "https://phishermanai-1.onrender.com/*"
     ],
     "guardrails": [
@@ -20,7 +20,7 @@
       "No autonomous sharing",
       "No impersonation or coercive copy"
     ],
-    "integrity_sha256": "ce9d4644cfbe308a4502bce1b5728b1ee2b88d05413dbdaf44be485f7c00ba67"
+    "integrity_sha256": "e60d981fd40405f5aff92f9d079b40f26d8091b9a79398c5969bb2fa37c38acf"
   },
   {
     "id": "evidence_pack_builder",
@@ -36,7 +36,7 @@
     "approval_required": true,
     "side_effects": false,
     "network_hosts": [
-      "http://127.0.0.1:8799/*",
+      "http://127.0.0.1:8000/*",
       "https://phishermanai-1.onrender.com/*"
     ],
     "guardrails": [
@@ -44,7 +44,7 @@
       "No remote upload",
       "No background retention"
     ],
-    "integrity_sha256": "9f849a2d1a102b19c8f428e3bf5aba03257ed25ade7b3a213401e1e6b951a655"
+    "integrity_sha256": "6e148d39088a10f7786b9dafee7cc51a3c119bfecd96f50fc6da0abd5a840c63"
   },
   {
     "id": "factcheck_researcher",
@@ -60,7 +60,7 @@
     "approval_required": true,
     "side_effects": false,
     "network_hosts": [
-      "http://127.0.0.1:8799/*",
+      "http://127.0.0.1:8000/*",
       "https://phishermanai-1.onrender.com/*"
     ],
     "guardrails": [
@@ -68,7 +68,7 @@
       "Must not claim certainty where evidence is absent",
       "Must keep fact checking separate from scam scoring"
     ],
-    "integrity_sha256": "11fe396e354d91f0b5ce445e4670bdd5abe7f56c3e7a7f8b721b5c71690e4da3"
+    "integrity_sha256": "9ccbd580dbff4a2a8f222ded221386ed587cb5f6c7d8e04bbdd9b5c31b3dafb4"
   },
   {
     "id": "recovery_case_builder",
@@ -84,7 +84,7 @@
     "approval_required": true,
     "side_effects": false,
     "network_hosts": [
-      "http://127.0.0.1:8799/*",
+      "http://127.0.0.1:8000/*",
       "https://phishermanai-1.onrender.com/*"
     ],
     "guardrails": [
@@ -92,7 +92,7 @@
       "No hidden outreach",
       "Must keep official rails explicit and user-visible"
     ],
-    "integrity_sha256": "f22802b918450a52dd9ff685d4fe717ce11c52715ab0a99d31ce9ced3f4b8c05"
+    "integrity_sha256": "b60b8e5439656ca52d0e40ff06d498fb016b97c558b33c0ca8a3ad2ec0acc41f"
   },
   {
     "id": "channel_trust_advisor",
@@ -107,7 +107,7 @@
     "approval_required": true,
     "side_effects": false,
     "network_hosts": [
-      "http://127.0.0.1:8799/*",
+      "http://127.0.0.1:8000/*",
       "https://phishermanai-1.onrender.com/*"
     ],
     "guardrails": [
@@ -115,7 +115,7 @@
       "Must not claim live identity verification without an integrated rail",
       "No outbound messaging"
     ],
-    "integrity_sha256": "4e08082a955623f14a430fc46438f1d9ec2bd3a7561bd48b8f78918ee7f0d466"
+    "integrity_sha256": "833f27c1dfacd1bbcb2c231a6eb454c800df16ea3c688c719541889d08a14d58"
   },
   {
     "id": "provenance_reviewer",
@@ -130,7 +130,7 @@
     "approval_required": true,
     "side_effects": false,
     "network_hosts": [
-      "http://127.0.0.1:8799/*",
+      "http://127.0.0.1:8000/*",
       "https://phishermanai-1.onrender.com/*"
     ],
     "guardrails": [
@@ -138,6 +138,6 @@
       "Keep unverified as a valid output",
       "No autonomous publishing"
     ],
-    "integrity_sha256": "4508471e706b458437cb4865683b7b86b52a1e55c9bfad0d0d05c7a2175d8368"
+    "integrity_sha256": "69807dd62b48070b3949bef6bf4b02773dbf11c3f2336a3685a233869705e049"
   }
 ]

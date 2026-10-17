@@ -9,7 +9,11 @@ Quick start
 2. Install dependencies: `pip install -r requirements.txt`.
 3. Run the server locally: `uvicorn main:app --host 127.0.0.1 --port 8799`.
 
-The extension will detect a backend on `localhost:8799` automatically. If the backend is not available, the extension falls back to offline checks.
+The extension defaults to on-device analysis. Select **Local server** in extension settings and set the backend URL to `http://127.0.0.1:8799` to enable this server. If unavailable, the immediate local assessment remains usable.
+
+The backend defaults to pattern-only inference. Set `SCAMGATE_MAX_TIER=1` to permit local Ollama inference or `SCAMGATE_MAX_TIER=2` to permit configured cloud providers as well. Selecting local-server mode in the browser does not override a backend operator's provider configuration.
+
+`POST /api/reviews` accepts a hostname and up to five short warning reasons, deduplicates submissions, and stores them as pending. No submission automatically changes the shared website allowlist.
 
 Models and Ollama
 -----------------

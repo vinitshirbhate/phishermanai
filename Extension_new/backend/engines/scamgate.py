@@ -227,13 +227,9 @@ def extract_all(text: str) -> dict:
 def domain_of(url: str) -> str:
     try:
         from urllib.parse import urlparse
-        host = urlparse(url).hostname or ""
-        parts = host.lower().split(".")
-        if len(parts) >= 3 and parts[-2] in ("co", "gov", "org", "ac", "net"):
-            return ".".join(parts[-3:])
-        if len(parts) >= 2:
-            return ".".join(parts[-2:])
-        return host
+        host = urlparse(url if '://' in url else 'https://' + url).hostname or ""
+        from .rbi_domains import registrable_domain
+        return registrable_domain(host.lower())
     except Exception:
         return ""
 
@@ -247,7 +243,8 @@ class L0PatternDetector:
     def __init__(self):
         self.signals = _load_json("scam_signals.json")
         self.weights = _load_json("risk_weights.json")
-        self.whitelist = _load_json("domain_whitelist.json")
+        from .domain_intel import _load_whitelist
+        self.whitelist = _load_whitelist()
         self.govt_domains = _load_json("govt_domains_india.json")
         self._scam_domains: set[str] | None = None
         self._phish_domains: set[str] | None = None
@@ -373,25 +370,25 @@ class L0PatternDetector:
             score = max(0, score - 20)
         link_urls = [u for u in extracted["urls"] if domain_of(u) != page_dom][:10]
 
-        wl_domains = set()
-        for key, domains in self.whitelist.items():
-            if key.startswith("_") or not isinstance(domains, list):
-                continue  # skip the _meta block
-            wl_domains.update(d.lower() for d in domains)
+        wl_domains = {entry['hostname'] for entry in self.whitelist.get('entries', [])}
 
         def _whitelisted(d: str) -> bool:
-            return any(d == a or d.endswith("." + a) for a in wl_domains)
+            return d in wl_domains or (d.startswith('www.') and d[4:] in wl_domains)
 
         def _blocklist_check(u: str, dom: str, where: str):
             """Hard evidence only: named on a threat blocklist."""
             nonlocal score
-            if dom in self.scam_domains:
-                signals.append(f"Known scam domain{where}: {dom}")
+            from urllib.parse import urlparse
+            host = (urlparse(u if '://' in u else 'https://' + u).hostname or dom).lower()
+            if host in self.scam_domains or dom in self.scam_domains:
+                hit = host if host in self.scam_domains else dom
+                signals.append(f"Known scam domain{where}: {hit}")
                 score += 40
                 if "scam_domain" not in categories:
                     categories.append("scam_domain")
-            if dom in self.phish_domains:
-                signals.append(f"Known phishing domain{where}: {dom}")
+            if host in self.phish_domains or dom in self.phish_domains:
+                hit = host if host in self.phish_domains else dom
+                signals.append(f"Known phishing domain{where}: {hit}")
                 score += 50
                 if "phishing_domain" not in categories:
                     categories.append("phishing_domain")
@@ -406,17 +403,19 @@ class L0PatternDetector:
                     score += 15
                     break
 
-            if not _whitelisted(page_dom):
+            from urllib.parse import urlparse
+            page_host = (urlparse(url).hostname or page_dom).lower()
+            if not _whitelisted(page_host):
                 # Impersonating a government host is evidence. Simply not being
                 # on our 26-entry whitelist is not - that describes almost every
                 # domain on the internet, so it can corroborate suspicion but
                 # must never create it.
-                if any(page_dom.endswith(s) and page_dom != s
-                       for s in ["gov.in", "nic.in", "sbi.co.in"]):
+                if any(s in page_host and page_host != s and not page_host.endswith('.' + s)
+                       for s in ["gov.in", "nic.in"]):
                     signals.append(f"Possible government typosquat: {page_dom}")
                     score += 30
                 elif "." in page_dom and score > 0:
-                    signals.append(f"Domain not in the verified list: {page_dom}")
+                    signals.append(f"Domain not in the reference list: {page_dom}")
                     score += 5
 
             if url.startswith("http://") and not url.startswith("http://localhost"):

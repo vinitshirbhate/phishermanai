@@ -4,8 +4,8 @@
 |---|---|
 | model_version | `lr_v1` |
 | feature_set_version | `fs_v2` |
-| trained_at | 2026-08-09T11:12:13.891183+00:00 |
-| commit | `4707c7b-dirty` |
+| trained_at | 2026-10-02T16:57:12.056902+00:00 |
+| commit | `unknown` |
 | dataset | PhiUSIIL (UCI id 967), URL column only |
 | dataset_sha256 (16) | `45134bb6ced2138d` |
 | n_train / n_test | 13,898 / 6,102 |
@@ -18,24 +18,24 @@
 
 | Metric | Value | Target (requirement.md §7.1) | Met? |
 |---|---|---|---|
-| MCC | 0.6370 (95% CI 0.6190-0.6554) | >= 0.55 | YES |
+| MCC | 0.6370 (95% CI 0.6174-0.6561) | >= 0.55 | YES |
 | PR-AUC | 0.8907 | - | - |
 | Recall @ FPR<=1% | 0.5705 | - | - |
 | Brier | 0.1420 | <= 0.12 | NO |
 | Confusion | TN=2815 FP=165 FN=1028 TP=2094 | - | - |
 
-## Split-to-split robustness (5-fold GroupKFold, reporting only)
+## Split-to-split robustness (3-fold GroupKFold, reporting only)
 
 The single held-out number above comes with a bootstrap CI that only reflects
 sampling variance of the test *rows* given the domains that happened to land in
 test. Since `GroupShuffleSplit`'s domain assignment is itself a random draw,
-this 5-fold group-CV summary gives a more honest picture of how much
+this 3-fold group-CV summary gives a more honest picture of how much
 MCC would move under a different domain split. It does not change what ships —
 the model above is trained on the single split, per the split rationale below.
 
 | Fold MCC | Mean | Std |
 |---|---|---|
-| 0.5876, 0.6318, 0.6239, 0.6256, 0.5946 | 0.6127 | 0.0180 |
+| 0.6303, 0.6027, 0.6135 | 0.6155 | 0.0114 |
 
 The MCC target was revised from 0.85 to 0.55 on the evidence of
 `eval/corpus_audit.py`. The rationale is in `eval/REPORT.md` §B.2: 0.85 was set

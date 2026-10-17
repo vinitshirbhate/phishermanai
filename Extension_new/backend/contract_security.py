@@ -14,7 +14,7 @@ from cryptography.hazmat.primitives.asymmetric import ec
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACTS_DIR = ROOT / "extension" / "contracts"
-KEYS_DIR = CONTRACTS_DIR / "keys"
+KEYS_DIR = ROOT / "state" / "dev_signing"
 SIGNATURES_DIR = CONTRACTS_DIR / "signatures"
 STATE_SIGNING_DIR = ROOT / "state" / "dev_signing"
 
@@ -138,7 +138,7 @@ def bootstrap_dev_signing_materials() -> dict[str, str]:
             "key_id": DEFAULT_SIGNER_KEY_ID,
             "name": DEFAULT_SIGNER_NAME,
             "algorithm": DEFAULT_SIGNER_ALGORITHM,
-            "public_key_path": "keys/sandbox_dev_signer_pub.pem",
+            "public_key_path": "../../state/dev_signing/sandbox_dev_signer_pub.pem",
             "fingerprint_sha256": fingerprint,
             "status": "active",
             "scope": sorted(CONTRACT_FILES.keys()),

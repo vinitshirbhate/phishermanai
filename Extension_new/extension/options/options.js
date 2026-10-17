@@ -1,7 +1,10 @@
 // Phisherman AI v6 - Options Page Logic
 
 const DEFAULT_SETTINGS = {
-  backendUrl: 'https://phishermanai-1.onrender.com',
+  backendUrl: 'http://127.0.0.1:8000',
+  verifierUrl: 'http://127.0.0.1:8000',
+  analysisMode: 'local',
+  quietBrowsing: true,
   autoScan: true,
   submitGuard: true,
   overlayPosition: 'bottom-right',
@@ -12,6 +15,9 @@ const DEFAULT_SETTINGS = {
 };
 
 const fields = {
+  verifierUrl: document.getElementById('verifierUrl'),
+  analysisMode: document.getElementById('analysisMode'),
+  quietBrowsing: document.getElementById('quietBrowsing'),
   backendUrl: document.getElementById('backendUrl'),
   autoScan: document.getElementById('autoScan'),
   submitGuard: document.getElementById('submitGuard'),
@@ -23,7 +29,13 @@ const fields = {
 
 function loadSettingsIntoUI(settings) {
   const s = { ...DEFAULT_SETTINGS, ...settings };
+  for (const key of ['backendUrl', 'verifierUrl']) {
+    if (/^http:\/\/(?:127\.0\.0\.1|localhost):879[89]\/?$/.test(s[key] || '')) s[key] = 'http://127.0.0.1:8000';
+  }
+  fields.analysisMode.value = s.analysisMode;
+  fields.quietBrowsing.checked = s.quietBrowsing;
   fields.backendUrl.value = s.backendUrl;
+  fields.verifierUrl.value = s.verifierUrl;
   fields.autoScan.checked = s.autoScan;
   fields.submitGuard.checked = s.submitGuard;
   fields.linkHoverTooltips.checked = s.linkHoverTooltips;
@@ -34,6 +46,9 @@ function loadSettingsIntoUI(settings) {
 
 function readSettingsFromUI() {
   return {
+    verifierUrl: fields.verifierUrl.value.trim() || DEFAULT_SETTINGS.verifierUrl,
+    analysisMode: fields.analysisMode.value,
+    quietBrowsing: fields.quietBrowsing.checked,
     backendUrl: fields.backendUrl.value.trim() || DEFAULT_SETTINGS.backendUrl,
     autoScan: fields.autoScan.checked,
     submitGuard: fields.submitGuard.checked,
@@ -58,7 +73,8 @@ chrome.runtime.sendMessage({ action: 'getSettings' }, (settings) => {
 // Save
 document.getElementById('saveBtn').addEventListener('click', () => {
   const settings = readSettingsFromUI();
-  chrome.runtime.sendMessage({ action: 'saveSettings', settings }, () => {
+  chrome.runtime.sendMessage({ action: 'saveSettings', settings }, (response) => {
+    if (response?.error) { alert(response.error); return; }
     showSaved();
   });
 });
@@ -73,3 +89,40 @@ document.getElementById('clearHistory').addEventListener('click', () => {
     });
   }
 });
+
+async function renderPersonalSites() {
+  const entries = await chrome.runtime.sendMessage({ action: 'getPersonalSites' });
+  const list = document.getElementById('personalSites');
+  list.replaceChildren();
+  for (const entry of entries || []) {
+    const row = document.createElement('div');
+    const label = document.createElement('span');
+    label.textContent = entry.hostname + ' (expires ' + new Date(entry.expiresAt).toLocaleDateString() + ') ';
+    const button = document.createElement('button');
+    button.textContent = 'Remove';
+    button.onclick = async () => {
+      await chrome.runtime.sendMessage({ action: 'removePersonalSite', hostname: entry.hostname });
+      renderPersonalSites();
+    };
+    row.append(label, button); list.append(row);
+  }
+  if (!list.childNodes.length) list.textContent = 'No remembered sites.';
+  const reviewData = await chrome.storage.local.get('phisherman_review_requests');
+  const count = (reviewData.phisherman_review_requests || []).length;
+  document.getElementById('exportReviews').textContent = 'Export review requests (' + count + ')';
+}
+renderPersonalSites();
+document.getElementById('exportReviews').onclick = async () => {
+  const data = await chrome.storage.local.get('phisherman_review_requests');
+  const blob = new Blob([JSON.stringify(data.phisherman_review_requests || [], null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'phisherman-feedback.json'; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
+document.getElementById('submitReviews').onclick = async event => {
+  if (!confirm('Send saved website hostnames and warning reasons to your configured backend? No page body is included. Requests remain pending and do not change the shared whitelist.')) return;
+  event.target.disabled = true;
+  try {
+    const result = await chrome.runtime.sendMessage({ action: 'submitReviewRequests' });
+    document.getElementById('reviewStatus').textContent = result.error || result.message;
+  } finally { event.target.disabled = false; }
+};

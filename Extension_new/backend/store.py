@@ -320,6 +320,23 @@ class Store:
             self._conn.execute("DELETE FROM observation")
             self._conn.commit()
 
+    def submit_review(self, review_id: str, hostname: str, reasons: list[str]) -> dict:
+        """Pending feedback is never promoted into the shared website allowlist."""
+        with self._lock:
+            self._conn.execute('''CREATE TABLE IF NOT EXISTS website_review (
+                id TEXT PRIMARY KEY, hostname TEXT NOT NULL,
+                reasons TEXT NOT NULL, created_at TEXT NOT NULL,
+                status TEXT NOT NULL DEFAULT 'pending'
+            )''')
+            self._conn.execute('''INSERT OR IGNORE INTO website_review
+                (id, hostname, reasons, created_at) VALUES (?, ?, ?, ?)''',
+                (review_id, hostname, json.dumps(reasons), _utc_now()))
+            self._conn.execute('''DELETE FROM website_review WHERE id IN (
+                SELECT id FROM website_review ORDER BY created_at DESC LIMIT -1 OFFSET 1000)''')
+            self._conn.commit()
+        return {'id': review_id, 'hostname': hostname, 'status': 'pending',
+                'allowlist_changed': False}
+
     def counts(self) -> dict[str, int]:
         out = {}
         for t in ("intermediary", "official_domain", "upi_namespace",

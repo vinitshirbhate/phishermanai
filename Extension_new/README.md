@@ -1,144 +1,91 @@
-# Phisherman AI
+# Phisherman AI — Browser Guard MVP
 
-**A Chrome extension that warns Indian retail investors about securities fraud — before they click, install, or pay.**
+A Chrome extension that checks rendered websites, links, financial identity claims, and visible chat messages for scam indicators. Version **6.3.0** defaults to on-device analysis and provides optional server enhancement, with a shared dark toolbar popup and side panel.
 
-Built for **SEBI Securities Market Hackathon — PS-01**, *AI-Driven Detection of Synthetic Media and Phishing Attacks in Securities Markets*.
+## Start using it
 
-No build step · No npm · Works with the network off · Nothing leaves your device
+1. Open `chrome://extensions`, enable Developer mode, and choose **Load unpacked**.
+2. Select the `extension/` directory, then refresh open website tabs.
+3. Browse normally. Clean pages stay quiet; click the toolbar icon for the dark popup, then **Open side panel** for the persistent workspace.
+4. Use extension settings to choose on-device, local-server, or enhanced remote analysis.
 
-[Architecture](#architecture) · [Try it in 5 minutes](#try-it-in-5-minutes) · [The numbers](#the-numbers-including-the-bad-ones) · [Evaluation report](eval/REPORT.md)
+No npm build is required. [MVP usage](docs/MVP.md) explains the modes, feedback workflow, and validation. [Repository explainer](explainer.md) covers architecture, baseline findings, and current implementation status.
 
----
+## What is implemented
 
-## The problem, in one message
+- Immediate local page assessments with optional asynchronous enhancement.
+- Link identity and deceptive-address checks, registration lookups, APK filename checks, and scam-language rules.
+- A bundled URL model used as supporting evidence, with a documented model card.
+- One shared website dataset consolidating 911 inherited entries; exact-host matching avoids blanket shared-hosting trust.
+- Selective personal site preferences with 30-day expiry, removal controls, and prompt cooldown.
+- Incorrect-warning feedback saved locally, exportable or explicitly submitted to a pending backend queue.
+- Modular WhatsApp observers with health reporting and chat-state invalidation.
+- Quiet browsing, evidence details, analysis coverage, and keyboard-accessible chat badges.
+- Shared popup/side-panel tools for pasted text, links, and selected page text, with local checks independent of the page score.
+- Explicit financial-claim verification against the separate filing API, showing reasons, matched filings, comparisons, and recommended actions.
 
-Someone sends your uncle a WhatsApp message:
+An absence of findings is not a guarantee. APK checks use filenames/context, credibility checks use heuristics, and optional C2PA inspection reports provenance rather than a general synthetic-media verdict.
 
-> *"SEBI-registered advisor. Guaranteed 40% returns. VIP group closing today. Pay to `investprofit99@ybl`."*
+## Privacy and analysis modes
 
-Then a file: `Zerodha_Kite_Pro_Unlocked.apk`. Then a link that looks almost exactly like his broker's site.
+**On-device checks** send no analysis network requests. **Local server** contacts the configured loopback backend and disables the browser cloud fallback. **Enhanced remote checks** permit page/message text and URL transmission to the configured backend and cloud fallback. Link destination expansion requires a separate opt-in and remote mode.
 
-He loses his savings.
+The backend defaults to deterministic inference. Its operator can enable local Ollama with `SCAMGATE_MAX_TIER=1` or configured cloud inference with `SCAMGATE_MAX_TIER=2`. Browser mode does not audit the behavior of a server.
 
-## Why the usual approach fails
+Personal exceptions change interruption preferences, not evidence or scores. Submitted feedback stays pending and never automatically modifies the shared website dataset.
 
-Most scam blockers keep a list of known-bad websites. That list is always a day behind — fraudsters change domains daily, and by the time a domain is on a blocklist it has done its work.
+## Optional local backend
 
-**We ask a different question.**
+From this directory, with a virtual environment active:
 
-SEBI requires every legitimate adviser, broker and research analyst to display a registration number, and to take money only through a verified `@valid` UPI handle. So instead of hunting for signs of a scam, we check whether **the credential the law requires is actually there — and whether it really belongs to whoever is showing it.**
-
-That puts a scammer in a trap with no exit:
-
-| They... | And then |
-|---|---|
-| **Keep** a registration number | We resolve it against the real SEBI register and catch that it belongs to *someone else* |
-| **Remove** it | The page is breaking a disclosure rule mandatory since 1 May 2026 |
-
-A fraudster can rewrite their sales pitch endlessly. They cannot fake a number that resolves to a real registered firm.
-
----
-
-## Architecture
-
-### The flow, end to end
-
-![Extension flow](docs/architecture-extension.svg)
-
-Four inputs, one question each, merged into a single verdict that carries its own reasoning. Source: [`docs/architecture-extension.excalidraw`](docs/architecture-extension.excalidraw).
-
-**Merge signals** is where four independent checks — which know nothing about each other — become one answer. Each finding gets classified by *its own meaning* (risk / protective / context), deduplicated, ordered worst-first, and combined with a **floor-only** rule: an APK finding can drag trust down, but a benign attachment can never lift a page that already looks dangerous.
-
-**Verdict** is not a score. It's a code plus its evidence plus its provenance — and every finding stays tagged with which of four truths it speaks to: *identity*, *content*, *channel*, *interaction*. They're never collapsed into one number, because "this chat behaves oddly" and "this registration belongs to someone else" are different claims with different consequences.
-
-### The full system
-
-![System architecture](docs/architecture.svg)
-
-Source: [`docs/architecture.excalidraw`](docs/architecture.excalidraw). Regenerate both with:
-
-```bash
-python scripts/gen_extension_flow.py && python scripts/gen_architecture_diagram.py
-python scripts/excalidraw_to_svg.py --all
+```powershell
+python -m pip install -r backend/requirements.txt
+cd backend
+python -m uvicorn main:app --host 127.0.0.1 --port 8000
 ```
 
-### The four lanes
+In extension settings choose **Local server** and set both URLs to `http://127.0.0.1:8000`. One server exposes browser analysis and financial verification. API documentation is available at `/docs`; corpus health is `/health` and browser engine health is `/api/health`.
 
-| Lane | Question | How |
-|---|---|---|
-| **Links** `preflight/` | Is this domain really who it claims? | Public Suffix List, so `paytm.evil.co.in` resolves to `evil.co.in`. Homoglyph and punycode detection. IP literals in decimal/octal/hex. Redirect chains. |
-| **Advisors** `securities_identity` | Is that SEBI number real? | 3,179 real registrants scraped from SEBI's public register (IA + RA categories). Pattern **derived from the data**, with a load-time assertion it matches every row. |
-| **Chats** `whatsapp/` | Does this chat behave like a scam? | Reply-timing uniformity, escalating money asks, template reuse across groups — computed from timing and hashes, without reading content. |
-| **Files** `shared/apk_check` | Should you install that APK? | Filename + delivery channel. `Spotify (Premium) Mod2.apk` → app file sent in chat, advertises a paid app unlocked free. |
+See [models/README.md](models/README.md) for optional Ollama setup and [ml/model_card.md](ml/model_card.md) for URL-model measurements.
 
-> **One design call worth calling out.** We deliberately do *not* fold lookalike letters when comparing identity. Folding makes Cyrillic `nsеindia.com` compare **equal** to the real NSE domain — the tool would actively vouch for the impostor. Missing an attack is bad; endorsing one is worse.
+## Optional financial verifier
 
----
+PDF checking is available in the popup and side panel under **Check a PDF**. Choose Local server mode, select a PDF, confirm uploading it, and click **Check PDF and links**. The unified server extracts text and embedded links; the extension checks those destinations without opening them. Chrome's built-in PDF viewer does not support the normal page scanner or hover overlay. Restart the updated unified backend to enable `/api/analyze/pdf`. Image-only PDFs need OCR, which this workflow does not include.
 
-## The one rule everything obeys
+The filing engine lives in `../email_detection` and is included by the unified `backend/main.py` server on **8000**. Build its corpus by running `python -m data.load_all` from that directory, using the same virtual environment. Start only the unified server above. Choose **Local server** mode and set both extension URLs to `http://127.0.0.1:8000`.
 
-**Never cry wolf.** A tool that flags your real bank gets uninstalled by Tuesday.
+Paste a claim or use selected text in the popup/panel. **Check on device** needs no server. For filing verification, confirm the per-input checkbox and click **Verify financial claim**. Phone/email redaction is applied; this is not comprehensive anonymization. Financial evidence availability stays separate from website trust scores. Results live in worker memory, not extension storage.
 
-This is enforced by machines, not good intentions:
+Load `Extension_new/extension`, and disable the separate `email_detection/extension` if its old white WhatsApp popup is still visible.
 
-| Gate | What it does |
-|---|---|
-| **G-2** | Counts false accusations on every eval run. Target 0. **Currently 0.** |
-| **Blocked claims** | `"safe"`, `"verified safe"`, `"guaranteed protection"`, `"this is a deepfake"` cannot appear in user-facing text. **The build fails.** |
-| **Parity** | The JS and Python feature implementations must agree to ±0.02, or CI fails |
-| **Reachability** | A module that is built and never loaded fails the suite — twice caught real dead code |
-| **Provenance** | Every answer names its sources and dates |
+If `/health` succeeds but `POST /verify` returns 404, stop the old server and start the unified entry point:
 
-That last one is the difference between a shrug and an answer. A clean link doesn't say "Safe ✓". It says:
-
-```
-Checked — www.marxists.org
-Not listed on 3 blocklists covering 819,572 domains, as of 2026-03-23.
-A domain registered since then would not appear.
+```powershell
+Set-Location F:\chetana-browser\phishermanai\Extension_new
+python -m pip install -r backend/requirements.txt
+Set-Location backend
+python -m uvicorn main:app --host 127.0.0.1 --port 8000
 ```
 
-Dated, checkable, and honest about what it can't see.
+Set both URLs to `http://127.0.0.1:8000`, choose **Local server** mode, and reload the extension. Saved conventional local URLs using ports 8798/8799 migrate to 8000. The verifier checks endpoint compatibility before submitting claim text.
 
----
+## Demos and verification
 
-## Try it in 3 minutes
+Serve local demos from this directory:
 
-```bash
-# 1. Load the extension
-chrome://extensions/ → Developer mode → Load unpacked → select extension/
-
-# 2. Serve the demo pages
+```powershell
 python -m http.server 8801
+```
 
-# Phisherman AI — Browser Guard
+Open `http://localhost:8801/demo/`. Run checks with:
 
-A small, local-first browser extension and optional backend that helps spot securities-related scams and phishing aimed at Indian retail investors.
+```powershell
+python -m pip install -r backend/requirements-dev.txt
+python -m pytest tests -q
+node tests/mvp_browser_harness.js
+node tests/financial_verifier_harness.js
+python scripts/check_blocked_claims.py
+python scripts/validate_sandbox.py
+```
 
-This repo contains the extension (`extension/`), an optional FastAPI backend (`backend/`), evaluation scripts (`eval/`), and supporting data and models.
-
-Why it exists: instead of guessing which pages are malicious, the tool checks whether the legally required credentials are present and valid (SEBI registration numbers, verified UPI handles), and surfaces clear, dated evidence for every finding.
-
-Quick start
-----------
-- Load the extension: open `chrome://extensions/`, enable *Developer mode*, click *Load unpacked* and pick the `extension/` folder.
-- Serve demos: `python -m http.server 8801` and open `http://localhost:8801/demo/`.
-- Optional backend: `cd backend && pip install -r requirements.txt && uvicorn main:app --host 127.0.0.1 --port 8799`.
-
-Regenerating evaluation artifacts
----------------------------------
-Evaluation outputs like `eval/REPORT.md` are generated by `python eval/run_eval.py`. Generated reports and JSON are not committed (they are ignored by `.gitignore`).
-
-Contributing
-------------
-- Run tests: `python -m pytest -q`
-- Keep user-facing copy conservative: the UI must not claim absolute safety. See `scripts/check_blocked_claims.py` for the automated guard.
-
-Where to look next
-------------------
-- Extension code: `extension/`
-- Backend API: `backend/`
-- Data and fixtures: `data/` and `eval/fixtures/`
-- Models: `models/`
-
-If you'd like, I can also tidy other docs, remove additional generated artifacts, or add a CONTRIBUTING.md explaining how to run tests locally.
-### Hover any link
+The automated suite and Node VM harness exercise code paths. They do not replace live Chrome, WhatsApp, usability, latency, or representative website accuracy testing. See [docs/MVP.md](docs/MVP.md) for the verification scope and remaining work.

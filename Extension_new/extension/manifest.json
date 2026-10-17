@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Phisherman AI - Trust by Design",
-  "version": "6.1.0",
-  "description": "Every page gets a trust score. Scam detection, WhatsApp scam catching, news fact-checking, and manipulation detection - passive, built-in, trust-first.",
+  "version": "6.3.0",
+  "description": "Browser trust checks and selected financial-message verification in a shared dark popup and side panel.",
   "permissions": [
     "activeTab",
     "scripting",
@@ -13,36 +13,35 @@
     "contextMenus"
   ],
   "host_permissions": [
+    "http://127.0.0.1:8000/*",
+    "https://phishermanai-1.onrender.com/*",
     "http://*/*",
     "https://*/*",
-    "http://localhost/*",
-    "http://127.0.0.1/*",
-    "http://127.0.0.1:8799/*",
-    "https://localhost/*",
-    "https://127.0.0.1/*",
-    "https://phishermanai-1.onrender.com/*",
-    "https://*.onrender.com/*",
-    "https://*.vercel.app/*",
-    "https://*.github.dev/*",
-    "https://chetana.activemirror.ai/*",
     "https://web.whatsapp.com/*",
-    "https://web.telegram.org/*"
+    "https://web.telegram.org/*",
+    "https://chetana.activemirror.ai/*"
   ],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["http://*/*", "https://*/*"],
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
       "js": [
         "shared/signal_polarity.js",
         "shared/apk_check.js",
+        "securities_check.js",
         "content_script.js"
       ],
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://web.whatsapp.com/*"],
+      "matches": [
+        "https://web.whatsapp.com/*"
+      ],
       "js": [
         "shared/normalise.js",
         "shared/overlay.js",
@@ -52,7 +51,8 @@
         "whatsapp/extract.js",
         "whatsapp/context.js",
         "whatsapp/verdict.js",
-        "whatsapp/adapter_mv3.js"
+        "whatsapp/adapter_mv3.js",
+        "whatsapp_bootstrap.js"
       ],
       "run_at": "document_idle"
     }
@@ -67,7 +67,8 @@
       "48": "icons/icon48.png",
       "128": "icons/icon128.png"
     },
-    "default_title": "Phisherman AI - Trust by Design"
+    "default_title": "Phisherman AI - Trust by Design",
+    "default_popup": "popup/popup.html"
   },
   "icons": {
     "16": "icons/icon16.png",
