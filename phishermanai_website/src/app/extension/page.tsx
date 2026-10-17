@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     "Download the PhishermanAI Chrome extension — checks the page you're on against SEBI's real registers, offline, in about 0.1 ms.",
 };
 
-const ZIP_HREF = "/extension/phisherman-extension-V07.zip";
+const ZIP_HREF = "/extension/phisherman-extension-V0.8.zip";
 
 const steps = [
   {
@@ -67,7 +67,7 @@ export default function ExtensionPage() {
             <Link href="#install">See how to install it</Link>
           </Button>
         </div>
-        <p className="mono-label mt-5 text-foreground/35">v0.6 · 252 KB · unsigned · no telemetry</p>
+        <p className="mono-label mt-5 text-foreground/35">v0.8 · 283 KB · unsigned · no telemetry</p>
       </PageHeader>
 
       <Section id="install" tone="navy" className="py-14 sm:py-16">
