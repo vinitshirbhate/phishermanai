@@ -104,6 +104,34 @@ export interface EngineHealth {
   demo_mode: boolean;
 }
 
+export interface GmailEmailPreview {
+  gmail_message_id: string;
+  subject: string;
+  from: string;
+  to: string;
+  date: string;
+  message_id: string;
+  preview: string;
+}
+
+export interface GmailEmailMessage extends Omit<GmailEmailPreview, "preview"> {
+  body: string;
+}
+
+export interface BodyDetectionResult {
+  text: string;
+  label: string;
+  confidence: number;
+  is_phishing: boolean;
+  message: string;
+}
+
+export interface GmailVerificationResponse {
+  email: GmailEmailMessage;
+  email_verification: EngineVerdictResponse;
+  body_detection: BodyDetectionResult;
+}
+
 /**
  * Verdict codes map onto the four outcome colours the site already uses.
  * Only the colour is mapped — the wording always comes from `label`.

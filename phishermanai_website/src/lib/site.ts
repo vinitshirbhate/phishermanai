@@ -1,9 +1,11 @@
 import {
   Braces,
+  Bug,
   Compass,
   FileCheck2,
   Globe,
   MailSearch,
+  MessageSquareWarning,
   PlayCircle,
   Puzzle,
   ShieldCheck,
@@ -100,6 +102,18 @@ export const moreNav: NavLink[] = [
     label: "Web and browser",
     description: "Lookalike sites, registration lookups and the four lanes that watch the page.",
     icon: Globe,
+  },
+  {
+    href: "/honeypot",
+    label: "AI Honeypot",
+    description: "Explore a contained simulation of scammer engagement and threat intelligence capture.",
+    icon: Bug,
+  },
+  {
+    href: "/sms-detection",
+    label: "SMS Detection",
+    description: "Check a suspicious SMS for phishing and scam signals.",
+    icon: MessageSquareWarning,
   },
   {
     href: "/demo",

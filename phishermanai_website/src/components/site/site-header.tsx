@@ -160,11 +160,16 @@ export function SiteHeader() {
                       href={item.href}
                       onClick={() => setMobileOpen(false)}
                       className={cn(
-                        "rounded-none px-3 py-2.5 text-[0.9375rem] hover:bg-muted",
+                        "rounded-xl px-3 py-2.5 hover:bg-muted",
                         isActive(item.href) && "text-primary",
                       )}
                     >
-                      {item.label}
+                      <span className="block text-[0.9375rem]">{item.label}</span>
+                      {item.description ? (
+                        <span className="mt-0.5 block text-xs leading-relaxed text-muted-foreground">
+                          {item.description}
+                        </span>
+                      ) : null}
                     </Link>
                   ))}
                 </nav>
